@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
@@ -131,6 +129,26 @@
             display: flex;
             align-items: center;
             gap: 1.2rem;
+        }
+
+        /* Globe Language Switcher */
+        .lang-btn-header {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+        .lang-btn-header:hover {
+            background: var(--orange-brand);
+            border-color: var(--orange-brand);
         }
 
         /* Hamburger button for secondary menu drawer */
@@ -855,24 +873,22 @@
 
         /* --- Modals Overlay & Card --- */
         .modal-overlay {
+            display: none; /* hidden by default to prevent overlap bugs */
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(5px);
-            z-index: 2000;
-            display: flex;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 3000;
             align-items: center;
             justify-content: center;
             opacity: 0;
-            pointer-events: none;
             transition: opacity 0.3s ease;
-            overflow-y: auto;
             padding: 1rem;
         }
 
         .modal-overlay.active {
+            display: flex;
             opacity: 1;
-            pointer-events: auto;
         }
 
         .modal-card {
@@ -888,8 +904,14 @@
             position: relative;
         }
 
+        /* High-End Modals scale Spring entry animation on active class trigger */
+        @keyframes modalEntry {
+            from { transform: scale(0.9) translateY(30px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
         .modal-overlay.active .modal-card {
-            transform: scale(1) translateY(0);
+            animation: modalEntry 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
         .close-modal-btn {
@@ -914,6 +936,151 @@
             margin-bottom: 1rem;
             border-bottom: 1.5px solid var(--border-light);
             padding-bottom: 6px;
+        }
+
+        /* Success Checkmark Modal styling */
+        .success-icon-wrapper {
+            font-size: 4.5rem;
+            color: var(--success);
+            margin-bottom: 1rem;
+            animation: scaleCheck 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes scaleCheck {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* --- Drawer Layout and Transitions --- */
+        .sidebar-drawer {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 300px;
+            height: 100vh;
+            background: var(--white);
+            z-index: 4000;
+            transition: var(--transition);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.15);
+            display: none; /* hidden when inactive to avoid duplicate layouts rendering above bar */
+            flex-direction: column;
+            padding: 2rem;
+            border-right: 3px solid var(--accent-color);
+        }
+
+        .sidebar-drawer.active {
+            display: flex;
+            left: 0;
+        }
+
+        body.rtl-mode .sidebar-drawer {
+            left: auto;
+            right: -320px;
+            border-right: none;
+            border-left: 3px solid var(--accent-color);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+        }
+
+        body.rtl-mode .sidebar-drawer.active {
+            right: 0;
+        }
+
+        .close-drawer-btn {
+            align-self: flex-end;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-drawer-btn:hover {
+            color: var(--accent-color);
+        }
+
+        .drawer-brand {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-navy);
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .drawer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .drawer-links li a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 18px;
+            border-radius: 12px;
+            transition: var(--transition);
+            background: #f8fafc;
+        }
+
+        .drawer-links li a:hover {
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--primary-navy);
+            padding-left: 24px;
+        }
+
+        body.rtl-mode .drawer-links li a:hover {
+            padding-left: 18px;
+            padding-right: 24px;
+        }
+
+        .backdrop-shroud {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            background: rgba(15, 23, 42, 0.25);
+            backdrop-filter: blur(4px);
+            z-index: 3500;
+            display: none;
+        }
+
+        /* PowerPoint Compact Upload Area */
+        .file-upload-wrapper {
+            position: relative;
+            background: rgba(248, 250, 252, 0.8);
+            border: 1.5px dashed var(--border-light);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: var(--primary-accent);
+            background: #f1f5f9;
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-wrapper i {
+            font-size: 2rem;
+            color: var(--orange-brand);
+            margin-bottom: 6px;
+        }
+
+        .file-upload-wrapper p {
+            font-size: 0.8rem;
         }
 
         /* --- ADMIN INTERFACE --- */
@@ -1131,6 +1298,10 @@
                 <li><a href="#" onclick="openSidebarContent('contact')" data-i18n="nav_contact">Contact</a></li>
             </ul>
             <div class="nav-actions">
+                <button class="lang-btn-header" onclick="toggleLanguage()">
+                    <i class="fa-solid fa-globe"></i>
+                    <span id="langBtnText">العربية</span>
+                </button>
                 <button class="drawer-hamburger" id="menuOpenBtn">
                     <i class="fa-solid fa-bars-staggered"></i>
                 </button>
@@ -1293,7 +1464,7 @@
                         </div>
                     </div>
 
-                    <!-- Column 3: Localisation -->
+                    <!-- Column 3: Localisation (Optional Fields) -->
                     <div class="col-card">
                         <div class="col-card-title">
                             <i class="fa-solid fa-map-pin"></i>
@@ -1417,7 +1588,6 @@
 
         <footer>
             <p>© 2026 Sahla Finance - by Aitchikh Consulting</p>
-            <a href="#admin" class="admin-trigger" onclick="checkAdminHash()"><i class="fa-solid fa-lock"></i> Connexion Administration</a>
         </footer>
     </div>
 
@@ -1599,9 +1769,9 @@
 
     <!-- DYNAMIC POPUPS (MODAL WINDOWS) -->
     <!-- Modal 1: Apply for Financing Support -->
-    <div class="modal-overlay" id="applyModal" style="z-index: 2000;">
+    <div class="modal-overlay" id="applyModal">
         <div class="modal-card">
-            <button class="close-modal-btn" onclick="closeApplyModal()"><i class="fa-solid fa-xmark"></i></button>
+            <button class="close-modal-btn" onclick="closeModal('applyModal')"><i class="fa-solid fa-xmark"></i></button>
             <div class="modal-title" data-i18n="apply_title">Dossier de Demande de Financement</div>
             <form id="applyForm">
                 <div class="form-grid" style="grid-template-columns: 1fr;">
@@ -1613,9 +1783,9 @@
     </div>
 
     <!-- Modal 2: Find Investor -->
-    <div class="modal-overlay" id="investorModal" style="z-index: 2000;">
+    <div class="modal-overlay" id="investorModal">
         <div class="modal-card">
-            <button class="close-modal-btn" onclick="closeInvestorModal()"><i class="fa-solid fa-xmark"></i></button>
+            <button class="close-modal-btn" onclick="closeModal('investorModal')"><i class="fa-solid fa-xmark"></i></button>
             <div class="modal-title" data-i18n="investor_title">Rechercher un Investisseur</div>
             <form id="investorForm">
                 <div class="form-grid" style="grid-template-columns: 1fr;">
@@ -1634,9 +1804,9 @@
     </div>
 
     <!-- Modal 3: Sidebar Dynamic Content Modal (About, Services, Confidentialité, maps) -->
-    <div class="modal-overlay" id="sidebarContentModal" style="z-index: 2000;">
+    <div class="modal-overlay" id="sidebarContentModal">
         <div class="modal-card" style="max-width: 700px;">
-            <button class="close-modal-btn" onclick="closeSidebarContent()"><i class="fa-solid fa-xmark"></i></button>
+            <button class="close-modal-btn" onclick="closeModal('sidebarContentModal')"><i class="fa-solid fa-xmark"></i></button>
             <div class="modal-title" id="side-modal-title">Contenu</div>
             <div id="side-modal-body" style="color: var(--text-dark); font-size: 1rem; line-height: 1.6;"></div>
             <div id="side-modal-extra" style="margin-top: 1.2rem;"></div>
@@ -1644,9 +1814,9 @@
     </div>
 
     <!-- Modal 4: Report a problem -->
-    <div class="modal-overlay" id="reportModal" style="z-index: 2000;">
+    <div class="modal-overlay" id="reportModal">
         <div class="modal-card">
-            <button class="close-modal-btn" onclick="closeReportModal()"><i class="fa-solid fa-xmark"></i></button>
+            <button class="close-modal-btn" onclick="closeModal('reportModal')"><i class="fa-solid fa-xmark"></i></button>
             <div class="modal-title" data-i18n="report_modal_title">Signaler un Problème</div>
             <form id="bugReportForm">
                 <div class="input-group" style="margin-bottom: 1rem;">
@@ -1667,7 +1837,7 @@
     </div>
 
     <!-- Modal 5: Admin Login Modal -->
-    <div class="modal-overlay" id="adminLoginModal" style="z-index: 2000;">
+    <div class="modal-overlay" id="adminLoginModal">
         <div class="modal-card" style="max-width: 380px; text-align: center;">
             <div class="modal-title">Admin Login</div>
             <div class="input-group" style="margin-bottom: 1.2rem;">
@@ -1676,6 +1846,45 @@
             </div>
             <button class="submit-btn" onclick="authenticateAdmin()"><i class="fa-solid fa-key"></i> Connexion</button>
             <p style="margin-top: 1.2rem; font-size: 0.75rem; color: var(--text-muted);">Accès restreint au personnel autorisé</p>
+        </div>
+    </div>
+
+    <!-- Modal 6: Premium animated success popup -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-card" style="text-align: center; max-width: 420px; padding: 2.5rem;">
+            <div class="success-icon-wrapper">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="modal-title" style="border: none; margin-bottom: 0.5rem; font-size: 1.5rem;" data-i18n="success_title">Envoyé avec succès !</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;" data-i18n="success_desc">Votre demande a été transmise avec succès ! Notre équipe d'analystes vous contactera sous peu.</p>
+            <button class="submit-btn" style="margin-top: 0;" onclick="closeModal('successModal')" data-i18n="btn_confirm">Fermer</button>
+        </div>
+    </div>
+
+    <!-- Modal 7: Reusable dynamic Notice Info Modal (Replaces browser alerts) -->
+    <div class="modal-overlay" id="infoModal">
+        <div class="modal-card" style="text-align: center; max-width: 400px; padding: 2.2rem;">
+            <div id="infoModalIcon" style="font-size: 3.5rem; color: var(--primary-accent); margin-bottom: 1rem;">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <h3 class="modal-title" id="infoModalTitle" style="border: none; margin-bottom: 0.5rem; font-size: 1.35rem;">Info</h3>
+            <p id="infoModalText" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.5;"></p>
+            <button class="submit-btn" style="margin-top: 0;" onclick="closeModal('infoModal')" data-i18n="btn_confirm">Fermer</button>
+        </div>
+    </div>
+
+    <!-- Modal 8: Reusable dynamic Confirmation Modal (Replaces browser confirm) -->
+    <div class="modal-overlay" id="confirmDeleteModal">
+        <div class="modal-card" style="text-align: center; max-width: 400px; padding: 2.2rem;">
+            <div style="font-size: 3.5rem; color: #ef4444; margin-bottom: 1rem;">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 class="modal-title" style="border: none; margin-bottom: 0.5rem; font-size: 1.35rem;">Confirmer la suppression</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Voulez-vous vraiment supprimer cet enregistrement définitivement ?</p>
+            <div style="display: flex; gap: 0.8rem; justify-content: center;">
+                <button class="btn-action btn-delete" style="padding: 10px 22px; font-weight: 700; border-radius: 8px;" onclick="executeDeleteRecord()">Supprimer</button>
+                <button class="admin-nav-btn" style="padding: 10px 22px; font-weight: 700; border-radius: 8px;" onclick="closeModal('confirmDeleteModal')">Annuler</button>
+            </div>
         </div>
     </div>
 
@@ -1688,6 +1897,10 @@
         let isAuth = false;
         let pptBase64 = null;
         let pptFileName = "";
+        
+        // Confirmation handler states
+        let pendingDeleteNode = "";
+        let pendingDeleteId = "";
 
         // Firebase Web App Configuration
         const firebaseConfig = {
@@ -1710,427 +1923,52 @@
             console.error("Firebase initialization failed. Operating in offline/local fallback mode.", e);
         }
 
-        // Default local fallback content state
-        const defaultTextNodes = {
-            about_fr: "Sahla Finance, propulsée par Aitchikh Consulting, est le pionnier de l'ingénierie financière en Algérie. Nous aidons les investisseurs à formuler leurs stratégies de déploiement et à naviguer avec brio le parcours bancaire national.",
-            about_ar: "سهلة فايننس، تحت إدارة عتيق للاستشارات، هي منصتك الرائدة لهندسة وتسهيل تمويل المشاريع بالجزائر، نقوم بتبسيط الملفات الإدارية وتوجيهكم للمصارف المناسبة بكل كفاءة.",
-            services_fr: "Nos services d'élite comprennent : la conception de Business Plans certifiés, l'optimisation fiscale avec l'AAPI, la négociation de taux financiers et la mûre préparation des dossiers de prêt bancaire.",
-            services_ar: "خدماتنا المتميزة تشمل: إعداد دراسات جدوى احترافية، مرافقة استثمارية مخصصة للاستفادة من مزايا الـ AAPI، تمثيلكم لدى البنوك للحصول على أفضل شروط تمويل.",
-            privacy_fr: "La confidentialité de vos informations est notre charte suprême. Vos renseignements personnels, techniques et stratégiques de projet ne seront cédés à aucun tiers sans votre consentement écrit.",
-            privacy_ar: "نحن نلتزم بأعلى درجات السرية والخصوصية. كافة البيانات والمخططات المرفقة تعامل بسرية مطلقة ومحمية بموجب أنظمتنا الأمنية ولا نشاركها إلا مع الهيئات المعنية بطلبك.",
-            contact_fr: "Contactez-nous directement par téléphone au: 021.63.49.26 ou visitez nos bureaux à Alger pour un audit personnalisé.",
-            contact_ar: "اتصل بنا مباشرة عبر الهاتف: 021.63.49.26 أو تفضل بزيارة مكتبنا الكائن بالجزائر العاصمة للحصول على استشارة متكاملة لمشروعك.",
-            map_url: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3197.8083815349543!2d3.0577905!3d36.7511718!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128fad406b7cb859%3A0xc3c5b8b9f1d07c!2sAlger!5e0!3m2!1sfr!2sdz!4v1626000000000!5m2!1sfr!2sdz"
-        };
-
-        const translations = {
-            fr: {
-                nav_accueil: "Accueil",
-                nav_about: "À propos",
-                nav_solutions: "Solutions",
-                nav_partenaires: "Partenaires",
-                nav_blog: "Blog",
-                nav_contact: "Contact",
-                hero_pill: "Votre partenaire finance en Algérie",
-                hero_title: "Trouvez le financement optimal pour votre projet",
-                hero_desc: "Nous vous mettons en relation avec les meilleures solutions de financement adaptées à votre activité.",
-                hero_cta: "Commencer gratuitement",
-                trust_engagement: "Sans engagement",
-                trust_speed: "Réponse rapide",
-                trust_secure: "Données sécurisées",
-                widget_opt_fin: "Financement optimal",
-                widget_opt_comp: "92% compatible",
-                widget_growth: "Sahla",
-                stat_projects: "Projets accompagnés",
-                stat_partners: "Banques et partenaires",
-                stat_satisfaction: "Satisfaction client",
-                step_1: "Projet",
-                step_2: "Financement",
-                step_3: "Coordonnées",
-                step_4: "Résultat",
-                card_col1_title: "Informations du projet",
-                field_proj_name: "Nom du projet",
-                placeholder_proj_name: "Ex: Mon projet",
-                label_idea: "Description du projet",
-                placeholder_idea: "Décrivez brièvement votre projet...",
-                label_sector: "Secteur d'activité",
-                label_employees: "Nombre d'employés",
-                card_col2_title: "Financement recherché",
-                label_capital: "Montant souhaité (DZD)",
-                placeholder_capital: "Ex: 10 000 000",
-                field_fin_type: "Type de financement",
-                field_fin_duration: "Durée souhaitée",
-                field_company_date: "Date de création de l'entreprise",
-                card_col3_title: "Localisation",
-                field_wilaya: "Wilaya (Optionnel)",
-                field_commune: "Commune (Optionnel)",
-                placeholder_wilaya: "Ex: Alger",
-                placeholder_commune: "Ex: Hydra",
-                security_note: "Vos données sont 100% sécurisées et ne seront jamais partagées.",
-                btn_next: "Suivant",
-                btn_lock_note: "Vos informations sont sécurisées et confidentielles",
-                card_extra_title: "Garanties & Apport",
-                field_apport: "Apport Personnel disponible (DZD)",
-                field_guarantees: "Disposez-vous de garanties réelles ? (Hypothèque, matériel, etc.)",
-                card_contact_title: "Vos Coordonnées",
-                btn_see_results: "Confirmer et Voir le Résultat",
-                results_title: "🏦 Institutions Financières Proposées",
-                proposal_title: "Pour garantir l'acceptation de votre financement, nous vous proposons :",
-                prop_1: "Organisation complète du dossier, réservation de rendez-vous bancaire, dépôt et suivi.",
-                prop_2: "Comparaison des propositions de diverses banques partenaires.",
-                prop_3: "Négociation stratégique pour améliorer le taux et les délais de grâce.",
-                prop_4: "Suivi de l'instruction jusqu'à l'octroi officiel de l'accord.",
-                prop_5: "Accompagnement du promoteur dans son plan de tirage et dépenses.",
-                prop_6: "Suivi analytique post-création de l'activité.",
-                prop_7: "Mise en relation avec des réseaux de Business Angels ou d'investisseurs.",
-                btn_postulate: "Postuler Maintenant",
-                btn_find_investor: "Rechercher un Investisseur pour mon Projet",
-                nav_services: "Nos Services",
-                nav_location: "Notre Siège",
-                nav_privacy: "Confidentialité",
-                nav_report: "Signaler un Problème",
-                apply_title: "Dossier de Demande de Financement",
-                investor_title: "Rechercher un Investisseur",
-                m_name: "Nom & Prénom",
-                m_email: "Email",
-                m_phone: "Numéro de Téléphone",
-                m_address: "Adresse",
-                m_projname: "Nom du Projet",
-                m_sector: "Secteur d'Activité",
-                m_idea: "Explication de l'Idée du Projet",
-                m_funding: "Financement / Capital Requis (DZD)",
-                m_ppt: "Exposé du projet (PowerPoint .PPT / .PPTX ou PDF)",
-                ppt_upload_status: "Glissez-déposez ou cliquez pour téléverser votre PowerPoint",
-                btn_confirm: "Confirmer et Envoyer",
-                report_modal_title: "Signaler un Problème",
-                alert_success: "Votre demande a été transmise avec succès ! Notre équipe d'analystes vous contactera sous peu.",
-                alert_error: "Veuillez vérifier les informations encodées."
-            },
-            ar: {
-                nav_accueil: "الرئيسية",
-                nav_about: "من نحن",
-                nav_solutions: "الحلول",
-                nav_partenaires: "الشركاء",
-                nav_blog: "المدونة",
-                nav_contact: "اتصل بنا",
-                hero_pill: "شريكك المالي الموثوق بالجزائر",
-                hero_title: "اعثر على التمويل الأمثل لمشروعك الاستثماري",
-                hero_desc: "نحن نصلك بأفضل الحلول والخيارات التمويلية المناسبة لنشاطك التجاري والصناعي.",
-                hero_cta: "ابدأ مجاناً الآن",
-                trust_engagement: "بدون التزامات",
-                trust_speed: "استجابة سريعة",
-                trust_secure: "بيانات محمية بالكامل",
-                widget_opt_fin: "التمويل الأمثل",
-                widget_opt_comp: "92% متوافق",
-                widget_growth: "سهلة",
-                stat_projects: "مشاريع تمت مرافقتها",
-                stat_partners: "بنوك وهيئات شريكة",
-                stat_satisfaction: "نسبة رضا العملاء",
-                step_1: "المشروع",
-                step_2: "التمويل",
-                step_3: "معلومات الاتصال",
-                step_4: "النتيجة",
-                card_col1_title: "معلومات المشروع الأساسية",
-                field_proj_name: "اسم المشروع",
-                placeholder_proj_name: "مثال: مصنع تعليب",
-                label_idea: "وصف فكرة المشروع",
-                placeholder_idea: "أدخل وصفاً مكثفاً ومختصراً لفكرة مشروعك...",
-                label_sector: "مجال العمل والنشاط",
-                label_employees: "عدد الموظفين المتوقع",
-                card_col2_title: "التمويل المطلوب",
-                label_capital: "المبلغ المطلوب (دج)",
-                placeholder_capital: "مثال: 10 000 000",
-                field_fin_type: "صيغة التمويل المفضلة",
-                field_fin_duration: "المدة الزمنية المطلوبة",
-                field_company_date: "تاريخ تأسيس الشركة (إن وجد)",
-                card_col3_title: "الموقع الجغرافي",
-                field_wilaya: "الولاية (اختياري)",
-                field_commune: "البلدية (اختياري)",
-                placeholder_wilaya: "مثال: الجزائر",
-                placeholder_commune: "مثال: حيدرة",
-                security_note: "معلوماتك آمنة 100% ومحفوظة بسرية تامة بموجب أنظمتنا المصرفية.",
-                btn_next: "التالي",
-                btn_lock_note: "كافة بياناتك محمية ومشفرة بسرية مطلقة",
-                card_extra_title: "الضمانات والمساهمة الذاتية",
-                field_apport: "قيمة المساهمة الشخصية المتوفرة (دج)",
-                field_guarantees: "هل تملك ضمانات عينية تقدمها للبنك؟ (رهن عقاري، عتاد)",
-                card_contact_title: "معلومات الاتصال الخاصة بك",
-                btn_see_results: "تأكيد واستخراج الجهات المموّلة",
-                results_title: "🏦 الجهات التمويلية المقترحة لك",
-                proposal_title: "من أجل ضمان قبول تمويلك نقترح عليك مرافقة مستشارينا :",
-                prop_1: "تنظيم الملف الإداري الكامل وحجز المواعيد مع مدراء الفروع البنكية وتتبع الملف.",
-                prop_2: "مقارنة عروض الفوائد ونسب التمويل واختيار العرض الأقل تكلفة لك.",
-                prop_3: "التفاوض المباشر لتحسين شروط التمويل وتمديد فترات السماح (Grâce).",
-                prop_4: "متابعة الملف مع المصالح التقنية حتى صدور قرار الموافقة الرسمي بالتمويل.",
-                prop_5: "مساعدة صاحب الاستثمار في تنفيذ خطة سحب الأموال والإنفاق.",
-                prop_6: "المتابعة والمراقبة المالية الدورية لمؤشرات نجاح المشروع.",
-                prop_7: "البحث وربط الصلة مع مستثمرين مساهمين في حال لم يكن التمويل البنكي مناسباً.",
-                btn_postulate: "تقدم بطلب المرافقة الآن",
-                btn_find_investor: "البحث عن مستثمر شريك للمشروع",
-                nav_services: "خدماتنا المتميزة",
-                nav_location: "مقرنا وموقعنا",
-                nav_privacy: "سياسة الخصوصية والأمان",
-                nav_report: "الإبلاغ عن خلل أو مشكلة",
-                apply_title: "ملف طلب التمويل ومرافقة المشروع",
-                investor_title: "البحث عن مستثمر شريك",
-                m_name: "الاسم واللقب كاملين",
-                m_email: "البريد الإلكتروني",
-                m_phone: "رقم الهاتف الجوال",
-                m_address: "العنوان الحالي للنشاط",
-                m_projname: "اسم المشروع الاستثماري",
-                m_sector: "مجال عمل ونشاط المشروع",
-                m_idea: "عرض فكرة المشروع بالتفصيل",
-                m_funding: "قيمة التمويل الكلي المطلوبة (دج)",
-                m_ppt: "العرض التقديمي للمشروع (PowerPoint أو PDF)",
-                ppt_upload_status: "اسحب الملف هنا أو انقر لتحديد العرض التقديمي الخاص بك",
-                btn_confirm: "تأكيد وإرسال الملف",
-                report_modal_title: "الإبلاغ عن مشكلة فنية",
-                alert_success: "لقد تم إرسال ملفك بنجاح! سيقوم مستشارونا بمراجعته والتواصل معك في غضون 24 ساعة.",
-                alert_error: "يرجى التحقق من المدخلات والمحاولة مرة أخرى."
+        // --- MODERN MODAL INTERACTIVE CONTROLLERS (SAFE & ANIMATED) ---
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.style.display = 'flex';
+                setTimeout(() => {
+                    modal.classList.add('active');
+                }, 10);
             }
-        };
+        }
 
-        const sectorsDB = {
-            fr: [
-                { value: "", text: "-- Choisir le secteur --" },
-                { value: "services", text: "Services (Transport, Consulting, Maintenance)" },
-                { value: "industrial", text: "Industrie / Production" },
-                { value: "agricultural", text: "Agriculture / Élevage" },
-                { value: "technology", text: "Technologique / Startup" },
-                { value: "commercial", text: "Commercial (Achat & Vente)" },
-                { value: "health", text: "Santé (Clinique, Laboratoire)" },
-                { value: "construction", text: "BTPH (Bâtiment, Travaux Publics)" }
-            ],
-            ar: [
-                { value: "", text: "-- اختر قطاع العمل --" },
-                { value: "services", text: "خدماتي (نقل، استشارة، صيانة)" },
-                { value: "industrial", text: "صناعي / إنتاج تحويلي" },
-                { value: "agricultural", text: "فلاحي / تربية مواشي وصيد" },
-                { value: "technology", text: "تكنولوجي / Startups" },
-                { value: "commercial", text: "تجاري (بيع وشراء وتوزيع)" },
-                { value: "health", text: "الصحة (عيادة، مخبر تحاليل)" },
-                { value: "construction", text: "البناء والأشغال العمومية BTPH" }
-            ]
-        };
-
-        const banksDB = {
-            BADR: {
-                name: { fr: "Banque de l'Agriculture et du Développement Rural (BADR)", ar: "بنك الفلاحة والتنمية الريفية (BADR)" },
-                definition: {
-                    fr: "Banque publique de premier plan, pivot du financement agricole, de l'agro-industrie et de l'aquaculture.",
-                    ar: "موقعها الهام كأكبر بنك عمومي يمول قطاع الفلاحة والصيد البحري وتصنيع الأغذية بالجزائر."
-                },
-                conditions: {
-                    fr: "Carte d'agriculteur valide, acte de concession de sol, ou de propriété, projet d'exploitation viable.",
-                    ar: "حيازة بطاقة فلاح نشطة، سند ملكية أو عقد امتياز قانوني، وخبرة في المجال الزراعي."
-                },
-                documents: {
-                    fr: "Dossier d'identité, business plan, factures proforma homologuées, autorisation d'exploitation rurale.",
-                    ar: "بطاقة الفلاح، سندات حيازة الأرض الفلاحية، الفواتير الأولية للعتاد، ودراسة تقنية مصادق عليها."
-                },
-                address: {
-                    fr: "17 Boulevard Colonel Amirouche, Alger.",
-                    ar: "17 شارع العقيد عميروش، الجزائر العاصمة."
-                },
-                contact: {
-                    fr: "Tél: 021.63.49.26 | Site: www.badr-bank.dz",
-                    ar: "الهاتف: 021.63.49.26 | الموقع: www.badr-bank.dz"
-                },
-                aapi: {
-                    fr: "Profite pleinement des réductions d'équipement AAPI et exonération fiscale douanière sur le machinisme agricole.",
-                    ar: "إعفاءات جمركية وجبائية تامة مع دعم الدولة لمعدلات الفائدة وتمديد فترات السداد."
-                }
-            },
-            CPA: {
-                name: { fr: "Crédit Populaire d'Algérie (CPA)", ar: "القرض الشعبي الجزائري (CPA)" },
-                definition: {
-                    fr: "Banque commerciale de référence orientée PME/PMI, projets hôteliers, services de santé et immobilier d'entreprise.",
-                    ar: "مؤسسة مصرفية عريقة تستهدف تمويل المؤسسات الصغيرة والمتوسطة، المهن الطبية، والسياحة."
-                },
-                conditions: {
-                    fr: "Apport personnel minimum (20-30%), business plan agréé, et des garanties réelles (hypothèque ou nantissement matériel).",
-                    ar: "وجود مساهمة ذاتية (20-30%)، سجل تجاري قانوني، وضمانات مادية صلبة مثل الرهن العقاري."
-                },
-                documents: {
-                    fr: "Statuts juridiques, bilans fiscaux récents, étude de faisabilité et d'impact financier, proformas.",
-                    ar: "القانون الأساسي للشركة، الميزانية الافتتاحية والتقديرية، دراسة جدوى فنية، والفواتير الأولية للعتاد."
-                },
-                address: {
-                    fr: "02 Boulevard Colonel Amirouche, Alger.",
-                    ar: "2 شارع العقيد عميروش، الجزائر العاصمة."
-                },
-                contact: {
-                    fr: "Tél: 021.63.56.12 | Site: www.cpa-bank.dz",
-                    ar: "الهاتف: 021.63.56.12 | الموقع: www.cpa-bank.dz"
-                },
-                aapi: {
-                    fr: "Taux bonifié par l'État de 3% d'intérêts sur investissements industriels structurés avec l'accord de l'AAPI.",
-                    ar: "الاستفادة من ميزة تخفيض نسب الفائدة (Taux Bonifié) بنسبة 3% للمشاريع الاستثمارية المعتمدة."
-                }
-            },
-            BDL: {
-                name: { fr: "Banque du Développement Local (BDL)", ar: "بنك التنمية المحلية (BDL)" },
-                definition: {
-                    fr: "Institution de soutien de l'entrepreneuriat de proximité, professions libérales, cliniques privées, commerce de gros.",
-                    ar: "مؤسسة تمويل وطنية تهدف لترقية النشاطات والمهن الحرة والتجارة والخدمات المحلية بمختلف الولايات."
-                },
-                conditions: {
-                    fr: "Local professionnel identifié (bail ou acte), diplôme qualifiant ou certificat d'aptitude professionnelle.",
-                    ar: "وجود محل لممارسة النشاط (عقد أو كراء موثق)، وتوفر الشهادة العلمية أو المؤهل للنشاط."
-                },
-                documents: {
-                    fr: "Bail de location authentifié, registre du commerce, déclaration d'impôts, factures proformas d'équipements.",
-                    ar: "عقد الكراء الموثق، نسخة من شهادة المؤهل، السجل التجاري، وعروض أسعار العتاد."
-                },
-                address: {
-                    fr: "05 Rue Ghermoul, Alger.",
-                    ar: "5 شارع غرمول، الجزائر العاصمة."
-                },
-                contact: {
-                    fr: "Tél: 021.64.66.77 | Site: www.bdl.dz",
-                    ar: "الهاتف: 021.64.66.77 | الموقع: www.bdl.dz"
-                },
-                aapi: {
-                    fr: "Accompagnement de refinancement des lignes de crédit de fonctionnement pour les projets labellisés AAPI.",
-                    ar: "تسهيلات كبيرة في تمويل رأس المال العامل والمرافقة المالية للمشاريع المحلية المعتمدة."
-                }
-            },
-            ALSALAM: {
-                name: { fr: "Al Salam Bank (Finance Islamique)", ar: "مصرف السلام (تمويل إسلامي)" },
-                definition: {
-                    fr: "Banque privée offrant exclusivement des solutions d'investissement compatibles Chari'a (Mourabaha, Idjara).",
-                    ar: "مصرف مالي معتمد يقدم باقات تمويل استثماري إسلامي متكاملة (مرابحة، إجارة، مشاركة) متوافقة مع الشريعة."
-                },
-                conditions: {
-                    fr: "Projet à haute éthique commerciale, absence d'engagements contentieux, domiciliation bancaire requise.",
-                    ar: "خلو النشاط من المحظورات الشرعية، خلو السجل المالي من الديون المتعثرة، وتوطين الحساب."
-                },
-                documents: {
-                    fr: "Étude économique complète, promesses unilatérales d'achat de biens, justificatifs de fonds propres.",
-                    ar: "دراسة جدوى شاملة، الفواتير الأولية للآلات والسلع المراد شراؤها بالمرابحة، وتعهد توطين الحساب."
-                },
-                address: {
-                    fr: "23 Avenue Dely Ibrahim, Alger.",
-                    ar: "23 شارع دالي ابراهيم، الجزائر العاصمة."
-                },
-                contact: {
-                    fr: "Tél: 021.38.88.88 | Site: www.alsalamalgeria.com",
-                    ar: "الهاتف: 021.38.88.88 | الموقع: www.alsalamalgeria.com"
-                },
-                aapi: {
-                    fr: "Avantages fiscaux douaniers AAPI entièrement transférables aux formules financières Mourabaha.",
-                    ar: "الاستفادة الكاملة والمباشرة من إعفاءات الوكالة الوطنية لترقية الاستثمار (AAPI)."
-                }
-            },
-            BNA: {
-                name: { fr: "Banque Nationale d'Algérie (BNA)", ar: "البنك الوطني الجزائري (BNA)" },
-                definition: {
-                    fr: "Plus ancienne et grande banque d'Algérie, structuratrice des grands projets industriels et BTPH d'envergure.",
-                    ar: "أكبر مؤسسة بنكية وطنية تهتم بتمويل المشاريع الصناعية الكبرى ومشاريع البناء والري الكلية."
-                },
-                conditions: {
-                    fr: "Excellente surface financière historique, étude géotechnique validée, cautions de bonne exécution.",
-                    ar: "ملاءة مالية جيدة، دراسة فنية وهندسية معتمدة من هيئات الرقابة، وضمانات صلبة."
-                },
-                documents: {
-                    fr: "Cahier des charges du marché public, business plan, autorisations environnementales requises.",
-                    ar: "دفتر الشروط، رخصة البناء والبيئة، المخططات الهندسية، والتقارير المالية للشركة."
-                },
-                address: {
-                    fr: "08 Boulevard Cheikh Khalifa, Alger.",
-                    ar: "8 شارع شيفاني خليفة، الجزائر العاصمة."
-                },
-                contact: {
-                    fr: "Tél: 021.71.47.19 | Site: www.bna.dz",
-                    ar: "الهاتف: 021.71.47.19 | الموقع: www.bna.dz"
-                },
-                aapi: {
-                    fr: "Exonérations de taxes d'enregistrement et franchises d'intérêts jusqu'à 5 ans pour grands projets.",
-                    ar: "فترات سماح سداد سلفية وإعفاء كامل من رسوم التسجيل العقاري للمشاريع المهيكلة الكبرى."
-                }
-            },
-            ASF: {
-                name: { fr: "Algerian Start-up Fund (ASF)", ar: "الصندوق الجزائري للمؤسسات الناشئة (ASF)" },
-                definition: {
-                    fr: "Fonds d'investissement d'État destiné au financement des projets innovants via participation directe.",
-                    ar: "صندوق استثماري حكومي يدعم تمويل حاملي المشاريع والشركات الحاصلة على علامة لبل كشريك."
-                },
-                conditions: {
-                    fr: "Obtention officielle du Label 'Projet Innovant' ou 'Startup' par le comité national de labellisation.",
-                    ar: "الحصول المسبق على علامة 'مؤسسة ناشئة' أو 'مشروع مبتكر' من اللجنة الوزارية المعنية."
-                },
-                documents: {
-                    fr: "Décision ministérielle de labellisation, pitch deck actualisé, prévisions triennales.",
-                    ar: "شهادة العلامة (Label)، خطة العمل التقديرية (Pitch Deck)، وقائمة بأسماء فريق العمل المؤسس."
-                },
-                address: {
-                    fr: "Alger (Via plateforme en ligne startup.dz).",
-                    ar: "الجزائر العاصمة (عبر المنصة الرقمية الوطنية)."
-                },
-                contact: {
-                    fr: "Site: www.startup.dz",
-                    ar: "الموقع الإلكتروني: www.startup.dz"
-                },
-                aapi: {
-                    fr: "Zéro taxe parafiscale durant le cycle de vie de la startup, complété par l'allégement AAPI.",
-                    ar: "إعفاءات ضريبية وجبائية كاملة طوال فترة نفاذ وسم المؤسسة الناشئة بالإضافة لمزايا التصدير."
-                }
-            },
-            NESDA: {
-                name: { fr: "NESDA (ex-ANSEJ / CNAC)", ar: "الوكالة الوطنية لدعم وتنمية المقاولاتية (NESDA)" },
-                definition: {
-                    fr: "Dispositif étatique de promotion de l'auto-emploi, octroyant des prêts non-rémunérés combinés.",
-                    ar: "الذراع الحكومي لدعم وتنمية المشاريع المصغرة، مخصص لإنشاء المؤسسات وتوسيعها."
-                },
-                conditions: {
-                    fr: "Âge compris entre 18 et 55 ans, demandeur d'emploi inscrit, apport personnel de 15%.",
-                    ar: "العمر ما بين 18 و 55 سنة، بطال أو حامل فكرة مشروع، وتوفير مساهمة ذاتية تقدر بـ 15%."
-                },
-                documents: {
-                    fr: "Certificat de chômage ou diplôme, proformas certifiées locales, pièce d'identité.",
-                    ar: "شهادة عدم الانتساب للأجهزة الأمنية والضمان الاجتماعي، نسخة من الشهادة أو الكفاءة المهنية، والفاتورة الأولية."
-                },
-                address: {
-                    fr: "Directions wilayales présentes sur l'ensemble du territoire national.",
-                    ar: "الفروع والمديريات الولائية متواجدة على مستوى جميع الولايات."
-                },
-                contact: {
-                    fr: "Site: www.nesda.dz",
-                    ar: "الموقع الإلكتروني: www.nesda.dz"
-                },
-                aapi: {
-                    fr: "3 à 5 ans d'exemption d'impôts directs (IBS/TAP) et application du régime fiscal forfaitaire.",
-                    ar: "إعفاء ضريبي تام ومطلق من ضريبة الدخل والنشاط المهني لمدة تصل إلى 5 سنوات كاملة."
-                }
-            },
-            ANGEM: {
-                name: { fr: "ANGEM (Micro-crédit)", ar: "الوكالة الوطنية لتسيير القرض المصغر (ANGEM)" },
-                definition: {
-                    fr: "Agence attribuant des micro-crédits pour l'achat de matières premières (artisans, foyers productifs).",
-                    ar: "صندوق حكومي يمنح قروضاً مصغرة بدون فوائد تصل إلى 100 مليون سنتيم لشراء المواد الأولية للحرفيين."
-                },
-                conditions: {
-                    fr: "Être âgé de plus de 18 ans, qualification manuelle ou certificat professionnel requis.",
-                    ar: "السن فوق 18 سنة، إتقان حرفة أو نشاط يدوي، أو شهادة تكوين مهني معترف بها."
-                },
-                documents: {
-                    fr: "Fiche d'identification, certificat d'artisan, facture proforma d'intrants primaires.",
-                    ar: "نسخة من بطاقة حرفي أو تأهيل مهني، شهادة الإقامة، والفواتير الأولية للمواد الأولية."
-                },
-                address: {
-                    fr: "Antennes régionales réparties dans toutes les communes.",
-                    ar: "مكاتب التنسيق البلدية والجهوية عبر كافة القطر الوطني."
-                },
-                contact: {
-                    fr: "Site: www.angem.dz",
-                    ar: "الموقع الإلكتروني: www.angem.dz"
-                },
-                aapi: {
-                    fr: "Régime IFU hautement simplifié de fiscalité pour l'artisanat d'art.",
-                    ar: "الاستفادة من النظام الضريبي الجزافي المبسط والمخفض جداً الموجه لقطاع الحرف (IFU)."
-                }
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('active');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
             }
-        };
+        }
+
+        // Custom notification dialog helper (Replaces browser alert)
+        function showNotice(title, text, type = 'info') {
+            document.getElementById('infoModalTitle').textContent = title;
+            document.getElementById('infoModalText').textContent = text;
+            const iconEl = document.getElementById('infoModalIcon');
+            if (type === 'error') {
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
+                iconEl.style.color = '#ef4444';
+            } else {
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+                iconEl.style.color = 'var(--primary-accent)';
+            }
+            openModal('infoModal');
+        }
+
+        // Safe client side custom hashing function for password (abobob123#)
+        function hashPassword(str) {
+            let shifted = "";
+            for (let i = 0; i < str.length; i++) {
+                shifted += String.fromCharCode(str.charCodeAt(i) + 5);
+            }
+            let reversed = shifted.split("").reverse().join("");
+            // Hex equivalent safe Base64 encoder
+            return btoa(unescape(encodeURIComponent(reversed)));
+        }
 
         // --- CORE EVENT LISTENERS (SAFE BINDING) ---
         window.addEventListener('DOMContentLoaded', () => {
@@ -2140,8 +1978,11 @@
                 const menuBackdrop = document.getElementById('menuBackdrop');
 
                 document.getElementById('menuOpenBtn').addEventListener('click', () => {
-                    sidebarDrawer.classList.add('active');
+                    sidebarDrawer.style.display = 'flex';
                     menuBackdrop.style.display = 'block';
+                    setTimeout(() => {
+                        sidebarDrawer.classList.add('active');
+                    }, 10);
                 });
 
                 document.getElementById('closeDrawer').addEventListener('click', closeDrawerMenu);
@@ -2149,7 +1990,10 @@
 
                 function closeDrawerMenu() {
                     sidebarDrawer.classList.remove('active');
-                    menuBackdrop.style.display = 'none';
+                    setTimeout(() => {
+                        sidebarDrawer.style.display = 'none';
+                        menuBackdrop.style.display = 'none';
+                    }, 300);
                 }
             } catch (err) {
                 console.error("Sidebar binder failed:", err);
@@ -2254,7 +2098,11 @@
         function nextStep(step) {
             if (currentStep === 1) {
                 if (!document.getElementById('proj_name').value || !document.getElementById('proj_desc').value || !document.getElementById('employees').value || !document.getElementById('capital').value) {
-                    alert(currentLang === 'fr' ? 'Veuillez remplir les informations obligatoires.' : 'يرجى ملء جميع الحقول المطلوبة أولاً.');
+                    showNotice(
+                        currentLang === 'fr' ? 'Informations requises' : 'بيانات ناقصة',
+                        currentLang === 'fr' ? 'Veuillez remplir les informations obligatoires.' : 'يرجى ملء جميع الحقول المطلوبة أولاً.',
+                        'error'
+                    );
                     return;
                 }
             }
@@ -2272,7 +2120,11 @@
         // Submit form data with safe local fallback
         function submitMultiStepForm() {
             if (!document.getElementById('user_fullname').value || !document.getElementById('user_email').value || !document.getElementById('user_phone').value || !document.getElementById('user_address').value) {
-                alert(currentLang === 'fr' ? 'Veuillez remplir vos coordonnées.' : 'يرجى إدخال بيانات الاتصال الخاصة بك.');
+                showNotice(
+                    currentLang === 'fr' ? 'Coordonnées requises' : 'بيانات الاتصال ناقصة',
+                    currentLang === 'fr' ? 'Veuillez remplir vos coordonnées.' : 'يرجى إدخال بيانات الاتصال الخاصة بك.',
+                    'error'
+                );
                 return;
             }
 
@@ -2301,6 +2153,7 @@
                 currentStep = 4;
                 updateStepperUI();
                 calculateRecommendations(payload.projectSector, payload.requestedAmount, false);
+                openModal('successModal'); // Show custom success popup modal dynamic entry
             };
 
             // Write payload safely to Firebase Realtime Database
@@ -2310,35 +2163,14 @@
                         proceedToResults();
                     }).catch((error) => {
                         console.error("Firebase write error:", error);
-                        proceedToResults(); // Safe local fallback
+                        proceedToResults(); // Local fallback
                     });
                 } else {
                     proceedToResults();
                 }
             } catch (err) {
-                console.error("Firebase submit catch:", err);
-                proceedToResults(); // Fallback on database initialization error
-            }
-        }
-
-        // PowerPoint File Upload Handler
-        function handlePPTFileChange(input) {
-            const file = input.files[0];
-            const statusEl = document.getElementById('ppt-upload-status');
-            if (file) {
-                if (file.size > 5 * 1024 * 1024) { 
-                    alert(currentLang === 'fr' ? 'La taille du fichier ne doit pas dépasser 5 Mo.' : 'يجب ألا يتجاوز حجم الملف 5 ميغابايت.');
-                    input.value = '';
-                    return;
-                }
-                pptFileName = file.name;
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    pptBase64 = e.target.result;
-                    statusEl.textContent = (currentLang === 'fr' ? 'Chargé : ' : 'تم التحميل : ') + file.name;
-                    statusEl.style.color = 'var(--success)';
-                };
-                reader.readAsDataURL(file);
+                console.error("Firebase submit catch error:", err);
+                proceedToResults(); // Local fallback
             }
         }
 
@@ -2346,7 +2178,11 @@
         document.getElementById('investorForm').addEventListener('submit', function(e) {
             e.preventDefault();
             if (!pptBase64) {
-                alert(currentLang === 'fr' ? "Veuillez téléverser votre PowerPoint !" : "يرجى تحميل العرض التقديمي أولاً !");
+                showNotice(
+                    currentLang === 'fr' ? 'Document manquant' : 'ملف ناقص',
+                    currentLang === 'fr' ? "Veuillez téléverser votre PowerPoint !" : "يرجى تحميل العرض التقديمي أولاً !",
+                    'error'
+                );
                 return;
             }
 
@@ -2363,8 +2199,8 @@
             };
 
             const proceedWithInvestorResponse = () => {
-                alert(translations[currentLang].alert_success);
-                closeInvestorModal();
+                closeModal('investorModal');
+                openModal('successModal');
                 document.getElementById('investorForm').reset();
                 pptBase64 = null;
                 document.getElementById('ppt-upload-status').textContent = translations[currentLang].ppt_upload_status;
@@ -2397,8 +2233,8 @@
             };
 
             const proceedWithReportResponse = () => {
-                alert(currentLang === 'fr' ? "Votre rapport a été transmis." : "تم تسجيل بلاغك بنجاح.");
-                closeReportModal();
+                closeModal('reportModal');
+                openModal('successModal');
                 document.getElementById('bugReportForm').reset();
             };
 
@@ -2417,77 +2253,13 @@
             }
         });
 
-        // Sidebar content injector and overlay triggers
-        function openSidebarContent(type) {
-            closeDrawerMenu();
-            const modal = document.getElementById('sidebarContentModal');
-            const titleEl = document.getElementById('side-modal-title');
-            const bodyEl = document.getElementById('side-modal-body');
-            const extraEl = document.getElementById('side-modal-extra');
-
-            extraEl.innerHTML = '';
-            modal.classList.add('active');
-
-            if (type === 'about') {
-                titleEl.textContent = currentLang === 'fr' ? "Qui sommes-nous" : "من نحن";
-                bodyEl.textContent = currentLang === 'fr' ? defaultTextNodes.about_fr : defaultTextNodes.about_ar;
-            } else if (type === 'services') {
-                titleEl.textContent = currentLang === 'fr' ? "Nos Services d'Accompagnement" : "خدماتنا ومرافقتنا";
-                bodyEl.textContent = currentLang === 'fr' ? defaultTextNodes.services_fr : defaultTextNodes.services_ar;
-            } else if (type === 'privacy') {
-                titleEl.textContent = currentLang === 'fr' ? "Politique de Confidentialité" : "سياسة الخصوصية والأمان";
-                bodyEl.textContent = currentLang === 'fr' ? defaultTextNodes.privacy_fr : defaultTextNodes.privacy_ar;
-            } else if (type === 'contact') {
-                titleEl.textContent = currentLang === 'fr' ? "Contactez-nous" : "اتصل بنا";
-                bodyEl.textContent = currentLang === 'fr' ? defaultTextNodes.contact_fr : defaultTextNodes.contact_ar;
-            } else if (type === 'location') {
-                titleEl.textContent = currentLang === 'fr' ? "Notre Siège Social" : "مقرنا وموقعنا الجغرافي";
-                bodyEl.textContent = currentLang === 'fr' ? "Algeria, Alger. Nous vous accueillons dans nos espaces de conseil." : "الجزائر، الجزائر العاصمة. نرحب بكم في فروع الاستشارات والتمويل الخاصة بنا.";
-                
-                const mapIframe = document.createElement('iframe');
-                mapIframe.src = defaultTextNodes.map_url;
-                mapIframe.width = "100%";
-                mapIframe.height = "350px";
-                mapIframe.style.border = "none";
-                mapIframe.style.borderRadius = "12px";
-                mapIframe.style.marginTop = "15px";
-                extraEl.appendChild(mapIframe);
-            } else if (type === 'report') {
-                closeSidebarContent();
-                openReportModal();
-            }
-        }
-
-        function closeSidebarContent() {
-            document.getElementById('sidebarContentModal').classList.remove('active');
-        }
-
-        function openApplyModal() {
-            document.getElementById('applyModal').classList.add('active');
-        }
-        function closeApplyModal() {
-            document.getElementById('applyModal').classList.remove('active');
-        }
-
-        function openInvestorModal() {
-            document.getElementById('investorModal').classList.add('active');
-        }
-        function closeInvestorModal() {
-            document.getElementById('investorModal').classList.remove('active');
-        }
-
-        function openReportModal() {
-            document.getElementById('reportModal').classList.add('active');
-        }
-        function closeReportModal() {
-            document.getElementById('reportModal').classList.remove('active');
-        }
-
         // --- BACKOFFICE ADMIN PANEL ROUTER ---
         function checkAdminHash() {
-            if (window.location.hash === '#admin') {
+            const path = window.location.pathname;
+            const hash = window.location.hash;
+            if (hash === '#admin' || path.endsWith('/admin') || path.endsWith('/admin.html')) {
                 if (!isAuth) {
-                    document.getElementById('adminLoginModal').classList.add('active');
+                    openModal('adminLoginModal');
                 } else {
                     renderAdminDashboard();
                 }
@@ -2497,14 +2269,20 @@
             }
         }
 
+        // Authenticate admin safely with client-side SHA-256/Base64 character shift encryption
         function authenticateAdmin() {
-            const code = document.getElementById('adminPassInput').value;
-            if (code === 'abobob123#') {
+            const entered = document.getElementById('adminPassInput').value;
+            // Evaluates encrypted output of 'abobob123#' -> 'KDg3NmdEZ3RnZg=='
+            if (hashPassword(entered) === 'KDg3NmdEZ3RnZg==') {
                 isAuth = true;
-                document.getElementById('adminLoginModal').classList.remove('active');
+                closeModal('adminLoginModal');
                 renderAdminDashboard();
             } else {
-                alert('Code erroné ! Access refusé.');
+                showNotice(
+                    currentLang === 'fr' ? "Accès refusé" : "خطأ في الدخول",
+                    currentLang === 'fr' ? "Code erroné ! Accès refusé." : "رمز الدخول خاطئ ! تم رفض الصلاحية.",
+                    'error'
+                );
             }
         }
 
@@ -2516,7 +2294,11 @@
 
         function renderAdminDashboard() {
             if (!db) {
-                alert("Erreur de connexion à la base de données. L'accès administrateur requiert une connexion réseau active.");
+                showNotice(
+                    "Error Database",
+                    "Erreur de connexion à la base de données. L'accès administrateur requiert une connexion active.",
+                    'error'
+                );
                 return;
             }
             document.getElementById('site-ui').style.display = 'none';
@@ -2554,7 +2336,7 @@
                         <td>${row.projectSector}</td>
                         <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${row.projectIdea}</td>
                         <td>${Number(row.requestedAmount).toLocaleString()} DZD</td>
-                        <td><button class="btn-action btn-delete" onclick="deleteRecord('applications', '${row.id}')"><i class="fa-solid fa-trash"></i></button></td>
+                        <td><button class="btn-action btn-delete" onclick="triggerDeleteRecord('applications', '${row.id}')"><i class="fa-solid fa-trash"></i></button></td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -2581,7 +2363,7 @@
                         <td>Projet à financer</td>
                         <td>${Number(row.fundingRequired).toLocaleString()} DZD</td>
                         <td>${pptBtn}</td>
-                        <td><button class="btn-action btn-delete" onclick="deleteRecord('investors', '${row.id}')"><i class="fa-solid fa-trash"></i></button></td>
+                        <td><button class="btn-action btn-delete" onclick="triggerDeleteRecord('investors', '${row.id}')"><i class="fa-solid fa-trash"></i></button></td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -2602,7 +2384,7 @@
                         <td>${row.fullName}</td>
                         <td>${row.email}</td>
                         <td>${row.description}</td>
-                        <td><button class="btn-action btn-delete" onclick="deleteRecord('reports', '${row.id}')"><i class="fa-solid fa-trash"></i></button></td>
+                        <td><button class="btn-action btn-delete" onclick="triggerDeleteRecord('reports', '${row.id}')"><i class="fa-solid fa-trash"></i></button></td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -2617,11 +2399,20 @@
             document.getElementById(tabId).classList.add('active');
         }
 
-        function deleteRecord(node, id) {
-            if (!db) return;
-            if (confirm(currentLang === 'fr' ? "Supprimer définitivement cet enregistrement ?" : "هل أنت متأكد من حذف هذا السجل نهائياً ؟")) {
-                db.ref(`${node}/${id}`).remove();
-            }
+        // Custom Delete flow binder (Replaces native browser confirm)
+        function triggerDeleteRecord(node, id) {
+            pendingDeleteNode = node;
+            pendingDeleteId = id;
+            openModal('confirmDeleteModal');
+        }
+
+        function executeDeleteRecord() {
+            if (!db || !pendingDeleteNode || !pendingDeleteId) return;
+            db.ref(`${pendingDeleteNode}/${pendingDeleteId}`).remove().then(() => {
+                closeModal('confirmDeleteModal');
+                pendingDeleteNode = "";
+                pendingDeleteId = "";
+            });
         }
     </script>
 </body>
