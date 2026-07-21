@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
@@ -6,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sahla Finance | Financement de Projets en Algérie</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Firebase SDK (Compat Version for robust Single-Page App integration) -->
+    <!-- Firebase SDK (Compat Version) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics-compat.js"></script>
@@ -21,15 +20,18 @@
 
     <style>
         :root {
-            --primary-color: #1e3a8a;
-            --accent-color: #d97706;
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-color: #f1f5f9;
-            --text-muted: #94a3b8;
+            --primary-color: #1e3a8a; /* الأزرق الملكي المصرفي */
+            --primary-light: #2563eb;
+            --accent-color: #d97706;  /* الذهبي الأمبر */
+            --accent-hover: #b45309;
+            --bg-color: #f8fafc;      /* خلفية فاتحة ومشرقة */
+            --card-bg: #ffffff;       /* كروت ناصعة البياض */
+            --text-color: #0f172a;    /* نصوص غامقة واضحة */
+            --text-muted: #64748b;    /* نصوص ثانوية هادئة */
             --white: #ffffff;
             --success: #10b981;
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --input-border: #cbd5e1;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -44,11 +46,10 @@
             color: var(--text-color);
             line-height: 1.6;
             overflow-x: hidden;
-            background-image: radial-gradient(circle at top left, rgba(30, 58, 138, 0.15), transparent 40%),
-                              radial-gradient(circle at bottom right, rgba(217, 119, 6, 0.08), transparent 40%);
+            background-image: radial-gradient(circle at top right, rgba(37, 99, 235, 0.05), transparent 45%),
+                              radial-gradient(circle at bottom left, rgba(217, 119, 6, 0.04), transparent 45%);
         }
 
-        /* Lang RTL adjustment class */
         body.rtl-mode {
             font-family: 'Cairo', 'Poppins', sans-serif;
         }
@@ -58,22 +59,25 @@
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: var(--bg-color);
+            background: #f1f5f9;
         }
         ::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
+            background: #cbd5e1;
             border-radius: 4px;
         }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
 
-        /* --- Header Styles & Animations --- */
+        /* --- Header Premium White/Blue Elegant Style --- */
         header {
-            background: linear-gradient(135deg, #090d16 0%, #111827 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
             color: var(--white);
-            padding: 6rem 1rem 10rem 1rem;
+            padding: 7rem 1.5rem 12rem 1.5rem;
             text-align: center;
-            border-bottom: 3px solid var(--accent-color);
+            border-bottom: 4px solid var(--accent-color);
             position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
             overflow: hidden;
         }
 
@@ -81,48 +85,47 @@
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
-            opacity: 0.08;
+            background: url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+            opacity: 0.05;
             pointer-events: none;
         }
 
         .header-content {
             position: relative;
             z-index: 2;
-            animation: fadeInDown 1s ease-out;
+            animation: fadeInDown 0.8s ease-out;
         }
 
         header h1 {
-            font-size: 3.8rem;
+            font-size: 3.5rem;
             margin-bottom: 0.2rem;
             font-weight: 800;
-            letter-spacing: -1px;
-            background: linear-gradient(135deg, #fff 30%, var(--accent-color));
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 40%, #93c5fd);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
 
         header .sub-brand {
-            font-size: 0.95rem;
-            font-weight: 400;
+            font-size: 0.9rem;
+            font-weight: 600;
             letter-spacing: 2px;
-            color: var(--text-muted);
+            color: #94a3b8;
             text-transform: uppercase;
             margin-bottom: 1.5rem;
             display: block;
         }
 
         header p {
-            font-size: 1.4rem;
-            opacity: 0.95;
-            max-width: 700px;
+            font-size: 1.35rem;
+            opacity: 0.9;
+            max-width: 750px;
             margin: 0 auto;
             color: #cbd5e1;
             font-weight: 300;
         }
 
-        /* Language Switcher Button */
+        /* Language Button Stylings */
         .lang-switch-container {
             position: absolute;
             top: 2rem;
@@ -135,10 +138,10 @@
         }
 
         .lang-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             color: var(--white);
-            padding: 8px 16px;
+            padding: 10px 20px;
             border-radius: 30px;
             cursor: pointer;
             font-size: 0.9rem;
@@ -156,7 +159,7 @@
             transform: scale(1.05);
         }
 
-        /* --- Navigation Menu (Sidebar Drawer) --- */
+        /* --- Drawer Trigger --- */
         .menu-trigger {
             position: absolute;
             top: 2rem;
@@ -169,8 +172,8 @@
         }
 
         .menu-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             color: var(--white);
             width: 45px;
             height: 45px;
@@ -184,22 +187,22 @@
         }
 
         .menu-btn:hover {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
+            background: var(--primary-light);
+            border-color: var(--primary-light);
             transform: rotate(90deg);
         }
 
-        /* Drawer Overlay & Content */
+        /* Drawer Overlay */
         .sidebar-drawer {
             position: fixed;
             top: 0;
             left: -320px;
             width: 320px;
             height: 100vh;
-            background: #0f172a;
+            background: #ffffff;
             z-index: 1000;
             transition: var(--transition);
-            box-shadow: 5px 0 30px rgba(0,0,0,0.5);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             padding: 2.5rem;
@@ -210,6 +213,7 @@
             right: -320px;
             border-right: none;
             border-left: 3px solid var(--accent-color);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
         }
 
         .sidebar-drawer.active {
@@ -236,7 +240,7 @@
         .drawer-brand {
             font-size: 1.8rem;
             font-weight: 800;
-            color: var(--white);
+            color: var(--primary-color);
             margin: 2rem 0;
             text-align: center;
         }
@@ -256,25 +260,26 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 12px 18px;
+            border-radius: 12px;
             transition: var(--transition);
+            background: #f8fafc;
         }
 
         .drawer-links li a:hover {
-            background: rgba(30, 58, 138, 0.4);
-            color: var(--accent-color);
-            padding-left: 20px;
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--primary-color);
+            padding-left: 24px;
         }
         body.rtl-mode .drawer-links li a:hover {
-            padding-left: 15px;
-            padding-right: 20px;
+            padding-left: 18px;
+            padding-right: 24px;
         }
 
         .backdrop-shroud {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
-            background: rgba(0,0,0,0.6);
+            background: rgba(15, 23, 42, 0.4);
             backdrop-filter: blur(4px);
             z-index: 999;
             display: none;
@@ -283,21 +288,20 @@
         /* --- Main Layout Container --- */
         .container {
             max-width: 1100px;
-            margin: -7rem auto 4rem;
+            margin: -9rem auto 4rem;
             padding: 0 1.5rem;
             position: relative;
             z-index: 10;
         }
 
-        /* --- Modern Styled Input & Select Elements --- */
+        /* --- Modern Refined Interactive Input Container --- */
         .consultation-form {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 3rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            animation: fadeInUp 0.8s ease-out;
+            background: var(--white);
+            border-radius: 24px;
+            padding: 3.5rem;
+            box-shadow: 0 20px 40px -5px rgba(15, 23, 42, 0.08), 0 10px 20px -10px rgba(15, 23, 42, 0.04);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            animation: fadeInUp 0.6s ease-out;
         }
 
         .form-grid {
@@ -308,45 +312,50 @@
 
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
-            header h1 { font-size: 2.5rem; }
-            .container { margin-top: -5rem; }
-            .consultation-form { padding: 1.5rem; }
+            header h1 { font-size: 2.3rem; }
+            .container { margin-top: -7rem; }
+            .consultation-form { padding: 2rem 1.5rem; }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
         }
 
         .input-group label {
             display: block;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.6rem;
             font-weight: 700;
-            color: var(--accent-color);
+            color: var(--primary-color);
             font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
 
-        /* Modern Select & Textarea CSS Styling */
+        /* Modern interactive fields */
         .input-group input, 
         .input-group select, 
         .input-group textarea {
             width: 100%;
-            padding: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            padding: 16px 18px;
+            border: 1.5px solid var(--input-border);
+            border-radius: 14px;
             font-size: 1rem;
-            color: var(--white);
-            background: rgba(15, 23, 42, 0.6);
+            color: var(--text-color);
+            background: #ffffff;
             transition: var(--transition);
             outline: none;
+            box-shadow: 0 2px 4px rgba(15, 23, 42, 0.02);
         }
 
         .input-group input:focus, 
         .input-group select:focus, 
         .input-group textarea:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 15px rgba(217, 119, 6, 0.25);
-            background: rgba(15, 23, 42, 0.9);
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+            background: #ffffff;
         }
 
-        /* Custom Modern Dropdown list decoration */
+        /* Custom Dropdown Decorator */
         .select-wrapper {
             position: relative;
         }
@@ -358,7 +367,7 @@
             top: 50%;
             right: 1.2rem;
             transform: translateY(-50%);
-            color: var(--accent-color);
+            color: var(--primary-light);
             pointer-events: none;
             transition: var(--transition);
         }
@@ -373,20 +382,20 @@
             padding-right: 3rem;
         }
         body.rtl-mode .select-wrapper select {
-            padding-right: 1rem;
+            padding-right: 1.2rem;
             padding-left: 3rem;
         }
 
         .full-width { grid-column: 1 / -1; }
 
         .submit-btn {
-            background: linear-gradient(135deg, var(--accent-color) 0%, #b45309 100%);
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
             color: var(--white);
             border: none;
-            padding: 1.2rem;
+            padding: 1.3rem;
             font-size: 1.25rem;
             font-weight: 700;
-            border-radius: 12px;
+            border-radius: 14px;
             cursor: pointer;
             width: 100%;
             margin-top: 2rem;
@@ -395,13 +404,13 @@
             justify-content: center;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 10px 20px rgba(217, 119, 6, 0.3);
+            box-shadow: 0 8px 20px rgba(217, 119, 6, 0.25);
         }
 
         .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(217, 119, 6, 0.5);
-            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(217, 119, 6, 0.4);
+            filter: brightness(1.05);
         }
 
         /* Loader */
@@ -425,22 +434,22 @@
         }
 
         .bank-card {
-            background: var(--card-bg);
-            border-radius: 16px;
+            background: var(--white);
+            border-radius: 20px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
             transition: var(--transition);
         }
 
         .bank-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            border-color: var(--accent-color);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+            border-color: var(--primary-light);
         }
 
         .bank-header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1d4ed8 100%);
             color: white;
             padding: 1.8rem;
             position: relative;
@@ -449,9 +458,10 @@
         .bank-header h3 { font-size: 1.35rem; font-weight: 700; max-width: 75%; }
         .bank-header .tag {
             background: var(--accent-color);
-            padding: 4px 12px;
-            border-radius: 20px;
+            padding: 6px 14px;
+            border-radius: 30px;
             font-size: 0.75rem;
+            font-weight: 600;
             position: absolute;
             top: 1.8rem;
             right: 1.5rem;
@@ -465,7 +475,7 @@
 
         .detail-group { margin-bottom: 1.5rem; }
         .detail-label {
-            color: var(--accent-color);
+            color: var(--primary-light);
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -473,10 +483,10 @@
             margin-bottom: 6px;
             font-size: 0.95rem;
         }
-        .detail-text { color: #cbd5e1; font-size: 0.95rem; }
+        .detail-text { color: var(--text-color); font-size: 0.95rem; }
 
         .contact-box {
-            background: rgba(15, 23, 42, 0.5);
+            background: #f8fafc;
             border-left: 4px solid var(--accent-color);
             padding: 1.2rem;
             margin-top: 1.5rem;
@@ -488,32 +498,26 @@
         }
 
         .aapi-section {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            background: rgba(16, 185, 129, 0.06);
+            border: 1px solid rgba(16, 185, 129, 0.15);
             padding: 1.2rem;
             border-radius: 8px;
             margin-top: 1.5rem;
         }
-        .aapi-section h4 { color: #34d399; font-size: 1rem; margin-bottom: 0.5rem; }
+        .aapi-section h4 { color: #059669; font-size: 1rem; margin-bottom: 0.5rem; }
 
         /* --- Consulting Proposal Card Design --- */
         .proposal-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 20px;
-            border: 2px solid var(--accent-color);
+            background: var(--white);
+            border-radius: 24px;
+            border: 2.5px solid var(--accent-color);
             padding: 3rem;
             margin-top: 4rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            animation: pulse-border 3s infinite alternate;
-        }
-
-        @keyframes pulse-border {
-            0% { border-color: var(--accent-color); }
-            100% { border-color: var(--primary-color); }
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
         }
 
         .proposal-card h3 {
-            color: var(--accent-color);
+            color: var(--primary-color);
             font-size: 1.8rem;
             margin-bottom: 2rem;
             text-align: center;
@@ -533,10 +537,10 @@
         }
 
         .proposal-list li {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             padding: 1.2rem;
-            border-radius: 12px;
+            border-radius: 14px;
             display: flex;
             align-items: flex-start;
             gap: 12px;
@@ -561,20 +565,20 @@
             width: 100%;
             text-align: center;
             display: inline-block;
-            box-shadow: 0 0 25px rgba(217, 119, 6, 0.4);
+            box-shadow: 0 0 25px rgba(217, 119, 6, 0.35);
             transition: var(--transition);
             animation: glowingEffect 1.8s infinite alternate;
         }
 
         @keyframes glowingEffect {
-            0% { box-shadow: 0 0 10px rgba(217, 119, 6, 0.4), 0 0 20px rgba(217, 119, 6, 0.2); }
-            100% { box-shadow: 0 0 30px rgba(217, 119, 6, 0.8), 0 0 40px rgba(217, 119, 6, 0.4); transform: scale(1.02); }
+            0% { box-shadow: 0 0 10px rgba(217, 119, 6, 0.3), 0 0 20px rgba(217, 119, 6, 0.15); }
+            100% { box-shadow: 0 0 25px rgba(217, 119, 6, 0.6), 0 0 35px rgba(217, 119, 6, 0.3); transform: scale(1.02); }
         }
 
         .btn-secondary-glow {
             background: transparent;
-            border: 2px solid var(--primary-color);
-            color: var(--white);
+            border: 2px solid var(--primary-light);
+            color: var(--primary-color);
             font-weight: 700;
             font-size: 1.15rem;
             padding: 1rem 2.5rem;
@@ -588,8 +592,9 @@
         }
 
         .btn-secondary-glow:hover {
-            background: var(--primary-color);
-            box-shadow: 0 0 20px rgba(30, 58, 138, 0.6);
+            background: var(--primary-light);
+            color: white;
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
             transform: scale(1.02);
         }
 
@@ -597,7 +602,7 @@
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(8px);
             z-index: 2000;
             display: flex;
@@ -616,12 +621,12 @@
         }
 
         .modal-card {
-            background: #1e293b;
+            background: var(--white);
             border-radius: 24px;
             max-width: 650px;
             width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15);
             padding: 2.5rem;
             transform: scale(0.85) translateY(50px);
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -653,19 +658,19 @@
         }
 
         .modal-title {
-            color: var(--accent-color);
+            color: var(--primary-color);
             font-size: 1.6rem;
             font-weight: 800;
             margin-bottom: 1.5rem;
-            border-bottom: 2px solid rgba(255,255,255,0.05);
+            border-bottom: 2px solid #e2e8f0;
             padding-bottom: 10px;
         }
 
         /* File Upload Styling for PPT modal */
         .file-upload-wrapper {
             position: relative;
-            background: rgba(15, 23, 42, 0.5);
-            border: 2px dashed rgba(255,255,255,0.1);
+            background: #f8fafc;
+            border: 2px dashed var(--input-border);
             border-radius: 12px;
             padding: 1.5rem;
             text-align: center;
@@ -674,8 +679,8 @@
         }
 
         .file-upload-wrapper:hover {
-            border-color: var(--accent-color);
-            background: rgba(15, 23, 42, 0.8);
+            border-color: var(--primary-light);
+            background: #f1f5f9;
         }
 
         .file-upload-wrapper input[type="file"] {
@@ -705,7 +710,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 3rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid #e2e8f0;
             padding-bottom: 1.5rem;
         }
 
@@ -716,9 +721,9 @@
         }
 
         .admin-nav-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: white;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: var(--text-color);
             padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
@@ -729,6 +734,7 @@
         .admin-nav-btn.active, .admin-nav-btn:hover {
             background: var(--primary-color);
             border-color: var(--primary-color);
+            color: white;
         }
 
         /* Analytics Stats Grid */
@@ -746,7 +752,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
             transition: var(--transition);
         }
 
@@ -765,11 +771,12 @@
         /* Admin Content Area Layout */
         .admin-content-section {
             display: none;
-            background: var(--card-bg);
+            background: var(--white);
             border-radius: 20px;
             padding: 2.5rem;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid #e2e8f0;
             margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.02);
         }
 
         .admin-content-section.active { display: block; }
@@ -779,7 +786,7 @@
             overflow-x: auto;
             margin-top: 1.5rem;
             border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid #cbd5e1;
         }
 
         table {
@@ -791,20 +798,20 @@
         body.rtl-mode table { text-align: right; }
 
         th {
-            background-color: rgba(15, 23, 42, 0.8);
-            color: var(--accent-color);
+            background-color: #f1f5f9;
+            color: var(--primary-color);
             padding: 16px;
             font-weight: 700;
-            border-bottom: 2px solid rgba(255,255,255,0.1);
+            border-bottom: 2px solid #e2e8f0;
         }
 
         td {
             padding: 16px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid #e2e8f0;
             font-size: 0.95rem;
         }
 
-        tr:hover { background: rgba(255,255,255,0.02); }
+        tr:hover { background: #f8fafc; }
 
         .btn-action {
             padding: 6px 12px;
@@ -821,8 +828,8 @@
 
         .btn-pdf { background: #ef4444; color: white; }
         .btn-ppt { background: #ea580c; color: white; }
-        .btn-delete { background: #334155; color: #f1f5f9; }
-        .btn-delete:hover { background: #dc2626; }
+        .btn-delete { background: #cbd5e1; color: #0f172a; }
+        .btn-delete:hover { background: #dc2626; color: white; }
 
         /* Settings configuration layout */
         .settings-grid {
@@ -840,7 +847,7 @@
             padding: 4rem 2rem 2rem;
             margin-top: 6rem;
             color: var(--text-muted);
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid #cbd5e1;
         }
 
         /* Floating Admin login key */
@@ -904,7 +911,7 @@
         <div class="container">
             <!-- Project Financing Finder Form -->
             <div class="consultation-form">
-                <h2 style="color: var(--white); margin-bottom: 2rem; border-bottom: 2px solid rgba(255,255,255,0.05); padding-bottom: 12px; font-weight: 800;" data-i18n="form_title">Entrez les informations de votre projet</h2>
+                <h2 style="color: var(--primary-color); margin-bottom: 2rem; border-bottom: 2px solid #cbd5e1; padding-bottom: 12px; font-weight: 800;" data-i18n="form_title">Entrez les informations de votre projet</h2>
                 <form id="projectForm">
                     <div class="form-grid">
                         <div class="input-group full-width">
@@ -941,7 +948,7 @@
 
             <!-- Matching Banks & Proposal Area -->
             <div id="results-area">
-                <h2 style="text-align: center; color: var(--white); margin-bottom: 3rem; font-weight: 800; font-size: 2rem;" data-i18n="results_title">🏦 Institutions Financières Proposées</h2>
+                <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 3rem; font-weight: 800; font-size: 2rem;" data-i18n="results_title">🏦 Institutions Financières Proposées</h2>
                 <div id="cards-wrapper" class="cards-container"></div>
 
                 <!-- Consulting Proposal Box -->
@@ -973,11 +980,11 @@
     <div id="admin-panel">
         <div class="admin-header">
             <div>
-                <h1 style="color: white; font-weight: 800;">Sahla Finance <span style="color: var(--accent-color); font-size: 1.2rem;">Backoffice</span></h1>
+                <h1 style="color: var(--primary-color); font-weight: 800;">Sahla Finance <span style="color: var(--accent-color); font-size: 1.2rem;">Backoffice</span></h1>
                 <p style="color: var(--text-muted);" id="admin-welcome-text">Tableau de bord de gestion</p>
             </div>
             <div style="display: flex; gap: 1rem;">
-                <button class="lang-btn" onclick="toggleLanguage()"><i class="fa-solid fa-globe"></i> Interface Langue</button>
+                <button class="lang-btn" style="background: var(--primary-color);" onclick="toggleLanguage()"><i class="fa-solid fa-globe"></i> Interface Langue</button>
                 <button class="lang-btn" style="background: #dc2626;" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</button>
             </div>
         </div>
@@ -1096,7 +1103,7 @@
             <form id="settingsForm">
                 <div class="settings-grid">
                     <div>
-                        <h3 style="color: white; margin-bottom: 1.5rem; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 5px;">Langue : Français (FR)</h3>
+                        <h3 style="color: var(--primary-color); margin-bottom: 1.5rem; border-bottom: 1px dashed #cbd5e1; padding-bottom: 5px;">Langue : Français (FR)</h3>
                         <div class="input-group" style="margin-bottom: 1.5rem;">
                             <label>Qui sommes-nous (FR)</label>
                             <textarea id="set-about-fr" rows="4"></textarea>
@@ -1115,7 +1122,7 @@
                         </div>
                     </div>
                     <div>
-                        <h3 style="color: white; margin-bottom: 1.5rem; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 5px;">اللغة : العربية (AR)</h3>
+                        <h3 style="color: var(--primary-color); margin-bottom: 1.5rem; border-bottom: 1px dashed #cbd5e1; padding-bottom: 5px;">اللغة : العربية (AR)</h3>
                         <div class="input-group" style="margin-bottom: 1.5rem;">
                             <label>من نحن (AR)</label>
                             <textarea id="set-about-ar" rows="4" style="direction: rtl;"></textarea>
@@ -1243,7 +1250,7 @@
         <div class="modal-card" style="max-width: 800px;">
             <button class="close-modal-btn" onclick="closeSidebarContent()"><i class="fa-solid fa-xmark"></i></button>
             <div class="modal-title" id="side-modal-title">Contenu</div>
-            <div id="side-modal-body" style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.8;"></div>
+            <div id="side-modal-body" style="color: var(--text-color); font-size: 1.1rem; line-height: 1.8;"></div>
             <div id="side-modal-extra" style="margin-top: 1.5rem;"></div>
         </div>
     </div>
@@ -1273,11 +1280,11 @@
 
     <!-- Modal 5: Admin Login Modal -->
     <div class="modal-overlay" id="adminLoginModal">
-        <div class="modal-card" style="max-width: 400px; background: #0f172a; text-align: center;">
+        <div class="modal-card" style="max-width: 400px; text-align: center;">
             <div class="modal-title">Admin Login</div>
             <div class="input-group" style="margin-bottom: 1.5rem;">
                 <label>Code d'accès sécurisé</label>
-                <input type="password" id="adminPassInput" style="text-align: center; font-size: 1.4rem; tracking: 4px;" required>
+                <input type="password" id="adminPassInput" style="text-align: center; font-size: 1.4rem; letter-spacing: 4px;" required>
             </div>
             <button class="submit-btn" onclick="authenticateAdmin()"><i class="fa-solid fa-key"></i> Connexion</button>
             <p style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted);">Accès restreint au personnel autorisé</p>
@@ -1305,7 +1312,7 @@
         let pptBase64 = null;
         let pptFileName = "";
 
-        // Default content state in case database nodes are empty
+        // Default content state
         const defaultTextNodes = {
             about_fr: "Sahla Finance, propulsée par Aitchikh Consulting, est le pionnier de l'ingénierie financière en Algérie. Nous aidons les investisseurs à formuler leurs stratégies de déploiement et à naviguer avec brio le parcours bancaire national.",
             about_ar: "سهلة فايننس، تحت إدارة عتيق للاستشارات، هي منصتك الرائدة لهندسة وتسهيل تمويل المشاريع بالجزائر، نقوم بتبسيط الملفات الإدارية وتوجيهكم للمصارف المناسبة بكل كفاءة.",
@@ -1368,7 +1375,7 @@
                 subtitle: "بواسطة عتيق للاستشارات - بوابتك نحو التمويل الأمثل لمشروعك في الجزائر",
                 form_title: "أدخل معلومات مشروعك",
                 label_idea: "💡 فكرة المشروع",
-                placeholder_idea: "أدخل وصفاً مختصراً للمشروع...",
+                placeholder_idea: "أدخل وصفاً مكثفاً للمشروع...",
                 label_sector: "🏗️ مجال العمل",
                 label_employees: "👥 عدد العمال",
                 label_capital: "💰 رأس المال المطلوب (دج)",
@@ -1458,7 +1465,7 @@
                     ar: "الهاتف: 021.63.49.26 | الموقع: www.badr-bank.dz"
                 },
                 aapi: {
-                    fr: "Profite pleinement des réductions tarifaires d'équipement AAPI et exonération fiscale douanière sur le machinisme agricole.",
+                    fr: "Profite pleinement des réductions d'équipement AAPI et exonération fiscale douanière sur le machinisme agricole.",
                     ar: "إعفاءات جمركية كاملة على الآلات والمعدات الفلاحية المستوردة، ودعم الدولة لنسبة الفائدة."
                 }
             },
@@ -1539,7 +1546,7 @@
                     ar: "الهاتف: 021.38.88.88 | الموقع: www.alsalamalgeria.com"
                 },
                 aapi: {
-                    fr: "Avantages fiscaux douaniers AAPI entièrement transférables aux formules financières d'intermédiation Mourabaha.",
+                    fr: "Avantages fiscaux douaniers AAPI entièrement transférables aux formules financières Mourabaha.",
                     ar: "الاستفادة الكاملة من المزايا والامتيازات الجمركية التي تمنحها الوكالة (AAPI) عبر صيغ التمويل الإسلامي."
                 }
             },
@@ -1566,14 +1573,14 @@
                     ar: "الهاتف: 021.71.47.19 | الموقع: www.bna.dz"
                 },
                 aapi: {
-                    fr: "Exonérations de taxes d'enregistrement et délais de franchise d'intérêts jusqu'à 5 ans pour grands projets d'infrastructure.",
+                    fr: "Exonérations de taxes d'enregistrement et franchises d'intérêts jusqu'à 5 ans pour grands projets.",
                     ar: "فترات سماح سداد تصل إلى 5 سنوات وإعفاءات تامة من رسوم التسجيل للمشاريع الكبرى المهيكلة."
                 }
             },
             ASF: {
                 name: { fr: "Algerian Start-up Fund (ASF)", ar: "الصندوق الجزائري للمؤسسات الناشئة (ASF)" },
                 definition: {
-                    fr: "Fonds d'investissement d'État destiné au financement des projets innovants via prise de participation directe.",
+                    fr: "Fonds d'investissement d'État destiné au financement des projets innovants via participation directe.",
                     ar: "صندوق استثماري عمومي يهدف للمساهمة المباشرة في تمويل حاملي المشاريع المبتكرة الحاصلة على علامة لبل."
                 },
                 conditions: {
@@ -1581,7 +1588,7 @@
                     ar: "الحصول المسبق على علامة 'مؤسسة ناشئة' أو 'مشروع مبتكر' من اللجنة الوزارية المعنية."
                 },
                 documents: {
-                    fr: "Décision ministérielle de labellisation, pitch deck actualisé, prévisions de cash-flows triennaux.",
+                    fr: "Décision ministérielle de labellisation, pitch deck actualisé, prévisions triennales.",
                     ar: "شهادة العلامة (Label)، خطة العمل التقديرية (Pitch Deck)، وقائمة بأسماء فريق العمل المؤسس."
                 },
                 address: {
@@ -1593,7 +1600,7 @@
                     ar: "الموقع الإلكتروني: www.startup.dz"
                 },
                 aapi: {
-                    fr: "Zéro taxe parafiscale durant le cycle de vie de la startup, complété par l'allégement douanier AAPI.",
+                    fr: "Zéro taxe parafiscale durant le cycle de vie de la startup, complété par l'allégement AAPI.",
                     ar: "إعفاءات ضريبية وجبائية كاملة طوال فترة نفاذ وسم المؤسسة الناشئة بالإضافة لمزايا التصدير."
                 }
             },
@@ -1604,11 +1611,11 @@
                     ar: "الذراع الحكومي لدعم وتنمية المشاريع المصغرة، مخصص لإنشاء المؤسسات وتوسيعها."
                 },
                 conditions: {
-                    fr: "Âge compris entre 18 et 55 ans, demandeur d'emploi inscrit, apport personnel minime de 15%.",
+                    fr: "Âge compris entre 18 et 55 ans, demandeur d'emploi inscrit, apport personnel de 15%.",
                     ar: "العمر ما بين 18 و 55 سنة، بطال أو حامل فكرة مشروع، وتوفير مساهمة ذاتية تقدر بـ 15%."
                 },
                 documents: {
-                    fr: "Certificat de chômage ou diplôme, proformas certifiées locales, pièce d'identité légale.",
+                    fr: "Certificat de chômage ou diplôme, proformas certifiées locales, pièce d'identité.",
                     ar: "شهادة عدم الانتساب للأجهزة الأمنية والضمان الاجتماعي، نسخة من الشهادة أو الكفاءة المهنية، والفاتورة الأولية."
                 },
                 address: {
@@ -1647,7 +1654,7 @@
                     ar: "الموقع الإلكتروني: www.angem.dz"
                 },
                 aapi: {
-                    fr: "Régime IFU hautement simplifié de fiscalité pour l'artisanat d'art et manufacturier.",
+                    fr: "Régime IFU hautement simplifié de fiscalité pour l'artisanat d'art.",
                     ar: "الاستفادة من النظام الضريبي الجزافي المبسط والمخفض جداً الموجه لقطاع الحرف (IFU)."
                 }
             }
@@ -1661,7 +1668,6 @@
             checkAdminHash();
         });
 
-        // Track and persist dynamic visits counters in real-time inside Firebase
         function trackVisits() {
             try {
                 const dateObj = new Date();
@@ -1675,7 +1681,6 @@
             }
         }
 
-        // Real-time synchronization of customizable site contents
         function loadSettings() {
             db.ref('settings').on('value', (snapshot) => {
                 const data = snapshot.val();
@@ -1690,7 +1695,6 @@
                     defaultTextNodes.contact_ar = data.contact_ar || defaultTextNodes.contact_ar;
                     defaultTextNodes.map_url = data.map_url || defaultTextNodes.map_url;
 
-                    // Populate backoffice inputs if authenticated
                     if (isAuth) {
                         document.getElementById('set-about-fr').value = defaultTextNodes.about_fr;
                         document.getElementById('set-about-ar').value = defaultTextNodes.about_ar;
@@ -1706,7 +1710,6 @@
             });
         }
 
-        // Smooth multilingual swap engine
         function toggleLanguage() {
             currentLang = currentLang === 'fr' ? 'ar' : 'fr';
             updateLanguageDOM();
@@ -1729,7 +1732,6 @@
                 langBtnText.textContent = "العربية";
             }
 
-            // Global element localization sweep
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (translations[currentLang][key]) {
@@ -1737,7 +1739,6 @@
                 }
             });
 
-            // Input placeholder localization sweep
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
                 if (translations[currentLang][key]) {
@@ -1745,7 +1746,6 @@
                 }
             });
 
-            // Repopulate dynamic drop down fields
             const sectorSelect = document.getElementById('sector');
             const savedVal = sectorSelect.value;
             sectorSelect.innerHTML = '';
@@ -1757,7 +1757,6 @@
                 sectorSelect.appendChild(opt);
             });
 
-            // Re-render banks recommendation cards dynamically if present
             if (document.getElementById('results-area').style.display === 'block') {
                 const lastSector = document.getElementById('sector').value;
                 const lastCapital = document.getElementById('capital').value;
@@ -1765,7 +1764,7 @@
             }
         }
 
-        // --- SIDEBAR DRAWER INTERACTIVE LOGIC ---
+        // --- DRAWER DRAWER LOGIC ---
         const sidebarDrawer = document.getElementById('sidebarDrawer');
         const menuBackdrop = document.getElementById('menuBackdrop');
 
@@ -1782,7 +1781,6 @@
             menuBackdrop.style.display = 'none';
         }
 
-        // Handle Dynamic Info Modals triggered by the drawer menu links
         function openSidebarContent(type) {
             closeDrawerMenu();
             const modal = document.getElementById('sidebarContentModal');
@@ -1840,7 +1838,6 @@
             loader.style.display = 'block';
             resultsArea.style.display = 'none';
 
-            // Simulate financial algorithm execution
             setTimeout(() => {
                 const sector = document.getElementById('sector').value;
                 const capital = document.getElementById('capital').value;
@@ -1859,7 +1856,6 @@
             const numCapital = Number(capital);
             let finalSelection = [];
 
-            // Financing Matcher Matrix
             if (sector === 'technology') {
                 finalSelection = [banksDB.ASF, banksDB.ALSALAM];
             } else if (sector === 'agricultural') {
@@ -1884,7 +1880,6 @@
                 }
             }
 
-            // Always provide Al Salam as an ethical option for larger loans
             if (!finalSelection.includes(banksDB.ALSALAM) && numCapital > 2000000 && sector !== 'agricultural' && sector !== 'technology') {
                 finalSelection.push(banksDB.ALSALAM);
             }
@@ -1906,7 +1901,7 @@
                             <p class="detail-text">${bank.definition[currentLang]}</p>
                         </div>
                         <div class="detail-group">
-                            <span class="detail-label"><i class="fa-solid fa-list-check"></i> ${currentLang === 'fr' ? 'Conditions d\'Éligibilité :' : 'شروط الاستفادة :'}</span>
+                            <span class="detail-label"><i class="fa-solid fa-list-check"></i> ${currentLang === 'fr' ? 'Conditions :' : 'شروط الاستفادة :'}</span>
                             <p class="detail-text">${bank.conditions[currentLang]}</p>
                         </div>
                         <div class="detail-group">
@@ -1914,12 +1909,12 @@
                             <p class="detail-text">${bank.documents[currentLang]}</p>
                         </div>
                         <div class="contact-box">
-                            <span class="detail-label"><i class="fa-solid fa-map-location"></i> ${currentLang === 'fr' ? 'Adresse & Contact :' : 'المقر والاتصال :'}</span>
+                            <span class="detail-label"><i class="fa-solid fa-map-location"></i> ${currentLang === 'fr' ? 'Adresse &' : 'المقر والاتصال :'}</span>
                             <p class="detail-text">${bank.address[currentLang]}</p>
                             <p class="detail-text" style="direction: ltr; text-align: start; margin-top:5px; font-weight:600;">${bank.contact[currentLang]}</p>
                         </div>
                         <div class="aapi-section">
-                            <h4><i class="fa-solid fa-gem"></i> ${currentLang === 'fr' ? 'Maternité Fiscale (AAPI) :' : 'امتيازات الاستثمار (AAPI) :'}</h4>
+                            <h4><i class="fa-solid fa-gem"></i> ${currentLang === 'fr' ? 'Avantages Fiscaux (AAPI) :' : 'امتيازات الاستثمار (AAPI) :'}</h4>
                             <p class="detail-text">${bank.aapi[currentLang]}</p>
                         </div>
                     </div>
@@ -1927,16 +1922,13 @@
                 cardsWrapper.appendChild(card);
             });
 
-            // Synchronize outputs internally to apply forms automatically
             if (updateFormMapping) {
                 const sectorLabel = document.getElementById('sector').options[document.getElementById('sector').selectedIndex].text;
                 
-                // Form 1 fields mapping
                 document.getElementById('app-sector').value = sectorLabel;
                 document.getElementById('app-idea').value = document.getElementById('idea').value;
                 document.getElementById('app-capital').value = capital;
 
-                // Form 2 fields mapping
                 document.getElementById('inv-sector').value = sectorLabel;
                 document.getElementById('inv-funding').value = capital;
             }
@@ -1993,7 +1985,7 @@
             const file = input.files[0];
             const statusEl = document.getElementById('ppt-upload-status');
             if (file) {
-                if (file.size > 5 * 1024 * 1024) { // 5MB Limit
+                if (file.size > 5 * 1024 * 1024) { 
                     alert(currentLang === 'fr' ? 'La taille du fichier ne doit pas dépasser 5 Mo.' : 'يجب ألا يتجاوز حجم الملف 5 ميغابايت.');
                     input.value = '';
                     return;
@@ -2095,10 +2087,8 @@
             document.getElementById('site-ui').style.display = 'none';
             document.getElementById('admin-panel').style.display = 'block';
 
-            // Populate settings forms once authenticated
             loadSettings();
 
-            // Real-time synchronization of counters
             db.ref('analytics/visits/daily').on('value', (snap) => {
                 const todayStr = new Date().toISOString().slice(0, 10);
                 const val = snap.val() ? snap.val()[todayStr] || 0 : 0;
@@ -2111,7 +2101,6 @@
                 document.getElementById('stat-month').textContent = val;
             });
 
-            // Sync financing files table
             db.ref('applications').on('value', (snap) => {
                 const data = snap.val() || {};
                 const list = Object.keys(data).map(key => ({ id: key, ...data[key] }));
@@ -2136,7 +2125,6 @@
                 });
             });
 
-            // Sync investor list table
             db.ref('investors').on('value', (snap) => {
                 const data = snap.val() || {};
                 const list = Object.keys(data).map(key => ({ id: key, ...data[key] }));
@@ -2164,7 +2152,6 @@
                 });
             });
 
-            // Sync Bug reports list table
             db.ref('reports').on('value', (snap) => {
                 const data = snap.val() || {};
                 const list = Object.keys(data).map(key => ({ id: key, ...data[key] }));
@@ -2195,14 +2182,12 @@
             document.getElementById(tabId).classList.add('active');
         }
 
-        // Database record deletion capability
         function deleteRecord(node, id) {
             if (confirm(currentLang === 'fr' ? "Supprimer définitivement cet enregistrement ?" : "هل أنت متأكد من حذف هذا السجل نهائياً ؟")) {
                 db.ref(`${node}/${id}`).remove();
             }
         }
 
-        // Submit and deploy edited platform settings
         document.getElementById('settingsForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const configPayload = {
@@ -2225,10 +2210,10 @@
         // --- EXPORT PDF GENERATION UTILITY ---
         function downloadTablePDF(tableId, docTitle) {
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('l', 'pt', 'a4'); // Landscape for better fit of fields
+            const doc = new jsPDF('l', 'pt', 'a4'); 
 
             doc.setFontSize(20);
-            doc.setTextColor(30, 58, 138); // Navy blue brand color
+            doc.setTextColor(30, 58, 138); 
             doc.text(`Sahla Finance - Backup Database: ${docTitle.replace('_', ' ')}`, 40, 45);
 
             doc.setFontSize(10);
@@ -2241,7 +2226,6 @@
                 styles: { fontSize: 8, cellPadding: 8, font: 'Helvetica' },
                 headStyles: { fillColor: [30, 58, 138], textColor: [255, 255, 255] },
                 columnStyles: {
-                    // Exclude actions column from printing
                     8: { display: 'none' }
                 }
             });
