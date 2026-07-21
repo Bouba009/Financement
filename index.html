@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
@@ -369,10 +370,10 @@
 
         @keyframes floatReverse {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(10px); }
+            50% { transform: translateY(-10px); }
         }
 
-        /* --- Floating Stats Strip --- */
+        /* --- Floating Stats Strip (ثبات الأيقونات الدائرية الملونة برمجياً في سطر واحد على كافة الشاشات) --- */
         .stats-strip {
             max-width: 1100px;
             margin: -4rem auto 4rem auto;
@@ -381,56 +382,66 @@
             padding: 2rem;
             box-shadow: var(--card-shadow);
             border: 1px solid var(--border-light);
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
             position: relative;
             z-index: 10;
         }
 
         @media (max-width: 992px) {
-            .stats-strip { margin-left: 1.5rem; margin-right: 1.5rem; }
+            .stats-strip { margin-left: 1.5rem; margin-right: 1.5rem; padding: 1.5rem; }
         }
 
         @media (max-width: 768px) {
-            .stats-strip { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; margin-top: -3rem; padding: 1.5rem; }
+            .stats-strip {
+                gap: 1rem;
+                padding: 1.2rem 0.8rem;
+            }
+            .stat-item {
+                flex-direction: row; /* الحفاظ على اتجاه السطر الأفقي في شاشات الهاتف */
+                gap: 0.8rem;
+            }
+            .stat-icon {
+                width: 48px;
+                height: 48px;
+                min-width: 48px; /* منع تصغير الدوائر */
+                font-size: 1.2rem;
+            }
+            .stat-number {
+                font-size: 1.25rem;
+            }
+            .stat-label {
+                font-size: 0.75rem;
+            }
         }
 
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-        }
-        @media (max-width: 768px) {
-            .stat-item { flex-direction: column; }
-        }
-
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
+        @media (max-width: 480px) {
+            .stats-strip {
+                gap: 0.5rem;
+                padding: 1rem 0.5rem;
+            }
+            .stat-item {
+                gap: 0.5rem;
+            }
+            .stat-icon {
+                width: 36px;
+                height: 36px;
+                min-width: 36px;
+                font-size: 0.95rem;
+            }
+            .stat-number {
+                font-size: 0.95rem;
+            }
+            .stat-label {
+                font-size: 0.65rem;
+            }
         }
 
         .stat-icon.blue { background: rgba(37, 99, 235, 0.1); color: var(--primary-accent); }
         .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: var(--success); }
         .stat-icon.purple { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
-
-        .stat-number {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: var(--primary-navy);
-            line-height: 1.2;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
 
         /* --- Multi-Step Stepper Progress Bar --- */
         .form-section {
@@ -914,28 +925,33 @@
             animation: modalEntry 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
+        /* زرا الإغلاق بتأثير دوران 90 درجة عصري فائق الجمال والاحترافية */
         .close-modal-btn {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
+            top: 1.2rem;
+            right: 1.2rem;
+            background: rgba(15, 23, 42, 0.05);
+            border: 1px solid rgba(15, 23, 42, 0.08);
             color: var(--text-muted);
-            font-size: 1.3rem;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: var(--transition);
         }
-        body.rtl-mode .close-modal-btn { right: auto; left: 1rem; }
-
-        .close-modal-btn:hover { color: var(--orange-brand); }
-
-        .modal-title {
-            color: var(--primary-navy);
-            font-size: 1.3rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            border-bottom: 1.5px solid var(--border-light);
-            padding-bottom: 6px;
+        body.rtl-mode .close-modal-btn {
+            right: auto;
+            left: 1.2rem;
+        }
+        .close-modal-btn:hover {
+            background: var(--orange-brand);
+            border-color: var(--orange-brand);
+            color: var(--white);
+            transform: rotate(90deg) scale(1.1);
         }
 
         /* Success Checkmark Modal styling */
@@ -1083,7 +1099,7 @@
             font-size: 0.8rem;
         }
 
-        /* --- ADMIN INTERFACE --- */
+        /* --- ADMIN INTERFACE (لوحة أدمن فائقة العصرية) --- */
         #admin-panel {
             display: none;
             padding: 2rem;
@@ -1111,8 +1127,8 @@
             background: #ffffff;
             border: 1px solid #cbd5e1;
             color: var(--text-dark);
-            padding: 8px 16px;
-            border-radius: 6px;
+            padding: 10px 22px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
             font-size: 0.9rem;
@@ -1134,20 +1150,20 @@
         }
 
         .stat-card {
-            padding: 1.3rem;
-            border-radius: 12px;
+            padding: 1.5rem;
+            border-radius: 14px;
             color: white;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             transition: var(--transition);
         }
 
         .stat-card:hover { transform: translateY(-3px); }
         .stat-card h3 { font-size: 0.85rem; text-transform: uppercase; opacity: 0.8; }
-        .stat-card .value { font-size: 2rem; font-weight: 800; margin: 6px 0; }
-        .stat-card i { font-size: 1.5rem; align-self: flex-end; opacity: 0.3; }
+        .stat-card .value { font-size: 2.2rem; font-weight: 800; margin: 8px 0; }
+        .stat-card i { font-size: 1.8rem; align-self: flex-end; opacity: 0.3; }
 
         /* Colored variations */
         .stat-visits-today { background: linear-gradient(135deg, #10b981, #059669); }
@@ -1579,8 +1595,9 @@
                             <li><i class="fa-solid fa-circle-check"></i><span data-i18n="prop_7">Mise en relation avec des réseaux de Business Angels ou d'investisseurs.</span></li>
                         </ul>
 
-                        <button class="btn-glow" onclick="openApplyModal()" data-i18n="btn_postulate">Postulez Maintenant</button>
-                        <button class="btn-secondary-glow" onclick="openInvestorModal()" data-i18n="btn_find_investor">Rechercher un Investisseur pour mon Projet</button>
+                        <!-- EXACTLY TWO DECISION BUTTONS AS REQUESTED -->
+                        <button class="btn-glow" onclick="finalizeRequest('sahla')" data-i18n="btn_poursuivre" style="margin-bottom: 1rem;">Mobliser mon dossier avec un expert d'Aitchikh Consulting</button>
+                        <button class="btn-secondary-glow" onclick="finalizeRequest('investor')" data-i18n="btn_rechercher_investisseur" style="margin-top: 0;">Rechercher un investisseur ou un associé</button>
                     </div>
                 </div>
             </div>
@@ -1750,7 +1767,7 @@
                             <label>سياسة الخصوصية (AR)</label>
                             <textarea id="set-privacy-ar" rows="3" style="direction: rtl;"></textarea>
                         </div>
-                        <div class="input-group" style="margin-bottom: 1.2rem;">
+                        <div class="input-group" style="margin-top: 1.2rem;">
                             <label>اتصل بنا (AR)</label>
                             <textarea id="set-contact-ar" rows="3" style="direction: rtl;"></textarea>
                         </div>
@@ -1852,6 +1869,7 @@
     <!-- Modal 6: Premium animated success popup -->
     <div class="modal-overlay" id="successModal">
         <div class="modal-card" style="text-align: center; max-width: 420px; padding: 2.5rem;">
+            <button class="close-modal-btn" onclick="closeModal('successModal')"><i class="fa-solid fa-xmark"></i></button>
             <div class="success-icon-wrapper">
                 <i class="fa-solid fa-circle-check"></i>
             </div>
@@ -1864,6 +1882,7 @@
     <!-- Modal 7: Reusable dynamic Notice Info Modal (Replaces browser alerts) -->
     <div class="modal-overlay" id="infoModal">
         <div class="modal-card" style="text-align: center; max-width: 400px; padding: 2.2rem;">
+            <button class="close-modal-btn" onclick="closeModal('infoModal')"><i class="fa-solid fa-xmark"></i></button>
             <div id="infoModalIcon" style="font-size: 3.5rem; color: var(--primary-accent); margin-bottom: 1rem;">
                 <i class="fa-solid fa-circle-info"></i>
             </div>
@@ -1876,6 +1895,7 @@
     <!-- Modal 8: Reusable dynamic Confirmation Modal (Replaces browser confirm) -->
     <div class="modal-overlay" id="confirmDeleteModal">
         <div class="modal-card" style="text-align: center; max-width: 400px; padding: 2.2rem;">
+            <button class="close-modal-btn" onclick="closeModal('confirmDeleteModal')"><i class="fa-solid fa-xmark"></i></button>
             <div style="font-size: 3.5rem; color: #ef4444; margin-bottom: 1rem;">
                 <i class="fa-solid fa-triangle-exclamation"></i>
             </div>
@@ -1898,9 +1918,10 @@
         let pptBase64 = null;
         let pptFileName = "";
         
-        // Confirmation handler states
+        // Confirmation and reference tracking states
         let pendingDeleteNode = "";
         let pendingDeleteId = "";
+        let lastApplicationKey = null;
 
         // Firebase Web App Configuration
         const firebaseConfig = {
@@ -2017,8 +2038,10 @@
                 btn_confirm: "Confirmer et Envoyer",
                 report_modal_title: "Signaler un Problème",
                 success_title: "Envoyé avec succès !",
-                success_desc: "Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.",
-                btn_confirm_label: "Fermer"
+                success_desc: "Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt. Bienvenue à nouveau chez Sahla Finance.",
+                btn_confirm_label: "Fermer",
+                btn_poursuivre: "Poursuivre ma demande avec Sahla Finance",
+                btn_rechercher_investisseur: "Rechercher un investisseur ou un associé"
             },
             ar: {
                 nav_accueil: "الرئيسية",
@@ -2068,7 +2091,7 @@
                 card_extra_title: "الضمانات والمساهمة الذاتية",
                 field_apport: "قيمة المساهمة الشخصية المتوفرة (دج)",
                 field_guarantees: "هل تملك ضمانات عينية تقدمها للبنك؟ (رهن عقاري، عتاد)",
-                card_contact_title: "معلومات الاتصال الخاصة بك",
+                card_contact_title: "Vos Coordonnées",
                 btn_see_results: "تأكيد واستخراج الجهات المموّلة",
                 results_title: "🏦 الجهات التمويلية المقترحة لك",
                 proposal_title: "من أجل ضمان قبول تمويلك نقترح عليك مرافقة مستشارينا :",
@@ -2100,8 +2123,10 @@
                 btn_confirm: "تأكيد وإرسال الملف",
                 report_modal_title: "الإبلاغ عن مشكلة فنية",
                 success_title: "تم إرسال طلبك بنجاح !",
-                success_desc: "تم إرسال طلبك بنجاح! سنتصل بك قريباً.",
-                btn_confirm_label: "إغلاق"
+                success_desc: "لقد تم ارسال طلبك بنجاح سنتصل بك قريبا، مرحبا بك مجددا في sahla finance",
+                btn_confirm_label: "إغلاق",
+                btn_poursuivre: "مواصلة طلبي مع sahla finance",
+                btn_rechercher_investisseur: "أبحث عن مستثمر او شريك"
             }
         };
 
@@ -2188,7 +2213,7 @@
                 name: { fr: "Crédit Populaire d'Algérie (CPA)", ar: "القرض الشعبي الجزائري (CPA)" },
                 definition: {
                     fr: "Banque commerciale de référence orientée PME/PMI, projets hôteliers, services de santé et immobilier d'entreprise.",
-                    ar: "مؤسسة مصرفية عريقة تستهدف تمويل المؤسسات الصغيرة والمتوسطة، المهن الطبية، والسياحة."
+                    ar: "مؤسسة مصرفية عريقة تستهدف تمويل المؤسسات الصغيرة والمتوسطة، الصناعات، والمنشآت الصحية والسياحية."
                 },
                 conditions: {
                     fr: "Apport personnel minimum (20-30%), business plan agréé, et des garanties réelles (hypothèque ou nantissement matériel).",
@@ -2208,11 +2233,11 @@
                 },
                 aapi: {
                     fr: "Taux bonifié par l'État de 3% d'intérêts sur investissements industriels structurés avec l'accord de l'AAPI.",
-                    ar: "الاستفادة من ميزة تخفيض نسب الفائدة (Taux Bonifié) بنسبة 3% للمشاريع الاستثمارية المعتمدة."
+                    ar: "تغفيض نسبة الفائدة بدعم من الدولة بـ 3% للمشاريع الاستثمارية المعتمدة لدى الوكالة الوطنية لترقية الاستثمار."
                 }
             },
             BDL: {
-                name: { fr: "Banque du Développement Local (BDL)", ar: "بنك التنمية المحلية (BDL)" },
+                name: { fr: "Banque du Développement Local (BDL)", ar: "Banque du Développement Local (BDL)" },
                 definition: {
                     fr: "Institution de soutien de l'entrepreneuriat de proximité, professions libérales, cliniques privées, commerce de gros.",
                     ar: "مؤسسة تمويل وطنية تهدف لترقية النشاطات والمهن الحرة والتجارة والخدمات المحلية بمختلف الولايات."
@@ -2322,7 +2347,7 @@
             NESDA: {
                 name: { fr: "NESDA (ex-ANSEJ / CNAC)", ar: "الوكالة الوطنية لدعم وتنمية المقاولاتية (NESDA)" },
                 definition: {
-                    fr: "Dispositif étatique de promotion de l'auto-emploi, octroyant des prêts non-rémunérés combinés.",
+                    fr: "Dispositif étatique de promotion de l'auto-emploi, octroyant des prêts non-رعوية combinés.",
                     ar: "الذراع الحكومي لدعم وتنمية المشاريع المصغرة، مخصص لإنشاء المؤسسات وتوسيعها."
                 },
                 conditions: {
@@ -2375,53 +2400,6 @@
             }
         };
 
-        // --- MODERN MODAL INTERACTIVE CONTROLLERS (SAFE & ANIMATED) ---
-        function openModal(id) {
-            const modal = document.getElementById(id);
-            if (modal) {
-                modal.style.display = 'flex';
-                setTimeout(() => {
-                    modal.classList.add('active');
-                }, 10);
-            }
-        }
-
-        function closeModal(id) {
-            const modal = document.getElementById(id);
-            if (modal) {
-                modal.classList.remove('active');
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                }, 300);
-            }
-        }
-
-        // Custom notification dialog helper (Replaces browser alert)
-        function showNotice(title, text, type = 'info') {
-            document.getElementById('infoModalTitle').textContent = title;
-            document.getElementById('infoModalText').textContent = text;
-            const iconEl = document.getElementById('infoModalIcon');
-            if (type === 'error') {
-                iconEl.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
-                iconEl.style.color = '#ef4444';
-            } else {
-                iconEl.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
-                iconEl.style.color = 'var(--primary-accent)';
-            }
-            openModal('infoModal');
-        }
-
-        // Safe client side custom hashing function for password (abobob123#)
-        function hashPassword(str) {
-            let shifted = "";
-            for (let i = 0; i < str.length; i++) {
-                shifted += String.fromCharCode(str.charCodeAt(i) + 5);
-            }
-            let reversed = shifted.split("").reverse().join("");
-            // Hex equivalent safe Base64 encoder
-            return btoa(unescape(encodeURIComponent(reversed)));
-        }
-
         // --- CORE EVENT LISTENERS (SAFE BINDING) ---
         window.addEventListener('DOMContentLoaded', () => {
             // Bind Drawer Navigation triggers safely
@@ -2455,17 +2433,13 @@
             try {
                 document.querySelector('.btn-hero-cta').addEventListener('click', function(e) {
                     e.preventDefault();
-                    const target = document.getElementById('project-form-container');
-                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                    // Highlight card layout blocks as visual target cues
-                    const colCards = document.querySelectorAll('.col-card');
-                    colCards.forEach(card => {
-                        card.style.animation = 'pulseHighlight 1s ease-out';
+                    const firstInput = document.getElementById('proj_name');
+                    if (firstInput) {
+                        firstInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         setTimeout(() => {
-                            card.style.animation = '';
-                        }, 1000);
-                    });
+                            firstInput.focus();
+                        }, 800); // Focus input after smooth scroll is complete
+                    }
                 });
             } catch (err) {
                 console.error("Hero CTA scroll binder failed:", err);
@@ -2569,7 +2543,7 @@
             }
         }
 
-        // Submit form data with safe local fallback
+        // Submit form data with safe local fallback and hanging-promise failsafe timeout
         function submitMultiStepForm() {
             if (!document.getElementById('user_fullname').value || !document.getElementById('user_email').value || !document.getElementById('user_phone').value || !document.getElementById('user_address').value) {
                 showNotice(
@@ -2600,29 +2574,72 @@
                 timestamp: new Date().getTime()
             };
 
+            let proceeded = false;
             const proceedToResults = () => {
+                if (proceeded) return; // Prevent double execution
+                proceeded = true;
                 loader.style.display = 'none';
                 currentStep = 4;
                 updateStepperUI();
-                calculateRecommendations(payload.projectSector, payload.requestedAmount, false);
-                openModal('successModal'); // Show custom success popup modal dynamic entry
+                calculateRecommendations(payload.projectSector, payload.requestedAmount);
             };
+
+            // Race condition timeout of 1.5 seconds so we NEVER get stuck on pending promises!
+            const timeoutId = setTimeout(() => {
+                if (!proceeded) {
+                    console.warn("Firebase submit timed out. Falling back to local results.");
+                    proceedToResults();
+                }
+            }, 1500);
 
             // Write payload safely to Firebase Realtime Database
             try {
                 if (db) {
-                    db.ref('applications').push(payload).then(() => {
-                        proceedToResults();
-                    }).catch((error) => {
-                        console.error("Firebase write error:", error);
-                        proceedToResults(); // Local fallback
-                    });
+                    const ref = db.ref('applications').push();
+                    lastApplicationKey = ref.key;
+                    ref.set(payload)
+                        .then(() => {
+                            clearTimeout(timeoutId);
+                            proceedToResults();
+                        })
+                        .catch((error) => {
+                            console.error("Firebase set error:", error);
+                            clearTimeout(timeoutId);
+                            proceedToResults(); // Local fallback
+                        });
                 } else {
+                    clearTimeout(timeoutId);
                     proceedToResults();
                 }
             } catch (err) {
                 console.error("Firebase submit catch error:", err);
+                clearTimeout(timeoutId);
                 proceedToResults(); // Local fallback
+            }
+        }
+
+        // Finalize selection decision flow with full promise handling
+        function finalizeRequest(choiceType) {
+            const proceed = () => {
+                openModal('successModal');
+            };
+
+            try {
+                if (db && lastApplicationKey && typeof lastApplicationKey === 'string' && lastApplicationKey.trim() !== '') {
+                    db.ref(`applications/${lastApplicationKey}`).update({
+                        finalChoice: choiceType
+                    }).then(() => {
+                        proceed();
+                    }).catch((err) => {
+                        console.error("Firebase update failed:", err);
+                        proceed(); // local fallback
+                    });
+                } else {
+                    proceed();
+                }
+            } catch (e) {
+                console.error("Firebase update sync failed:", e);
+                proceed();
             }
         }
 
@@ -2773,8 +2790,8 @@
         // Authenticate admin safely with client-side SHA-256/Base64 character shift encryption
         function authenticateAdmin() {
             const entered = document.getElementById('adminPassInput').value;
-            // Evaluates encrypted output of 'abobob123#' -> 'KDg3NmdEZ3RnZg=='
-            if (hashPassword(entered) === 'KDg3NmdEZ3RnZg==') {
+            // Evaluates encrypted output of 'abobob123@@' -> 'RUU4NzdndGd0Z2Y='
+            if (hashPassword(entered) === 'RUU4NzdndGd0Z2Y=') {
                 isAuth = true;
                 closeModal('adminLoginModal');
                 renderAdminDashboard();
@@ -2922,24 +2939,127 @@
             });
         }
 
-        function handlePPTFileChange(input) {
-            const file = input.files[0];
-            const statusEl = document.getElementById('ppt-upload-status');
-            if (file) {
-                if (file.size > 5 * 1024 * 1024) { 
-                    alert(currentLang === 'fr' ? 'La taille du fichier ne doit pas dépasser 5 Mo.' : 'يجب ألا يتجاوز حجم الملف 5 ميغابايت.');
-                    input.value = '';
-                    return;
+        // Dynamic Sector-Based Bank Decision Logic (Robust Matching Keys)
+        function calculateRecommendations(sector, capital) {
+            const numCapital = Number(capital) || 0;
+            let finalSelection = [];
+
+            if (sector === 'technology' || sector === 'it') {
+                finalSelection = [banksDB.ASF, banksDB.ALSALAM];
+            } else if (sector === 'agriculture') {
+                finalSelection = [banksDB.BADR, banksDB.NESDA];
+            } else if (sector === 'health') {
+                finalSelection = [banksDB.CPA, banksDB.BDL];
+            } else if (sector === 'construction') {
+                finalSelection = [banksDB.BNA, banksDB.CPA];
+            } else if (sector === 'industry') {
+                finalSelection = [banksDB.CPA, banksDB.BNA];
+            } else if (sector === 'finance') {
+                finalSelection = [banksDB.BNA, banksDB.CPA];
+            } else if (numCapital <= 1000000) {
+                finalSelection = [banksDB.ANGEM];
+            } else {
+                // Sizing based defaults
+                if (numCapital <= 15000000) {
+                    finalSelection = [banksDB.NESDA, banksDB.BDL];
+                } else {
+                    finalSelection = [banksDB.CPA, banksDB.ALSALAM];
                 }
-                pptFileName = file.name;
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    pptBase64 = e.target.result;
-                    statusEl.textContent = (currentLang === 'fr' ? 'Chargé : ' : 'تم التحميل : ') + file.name;
-                    statusEl.style.color = 'var(--success)';
-                };
-                reader.readAsDataURL(file);
             }
+
+            if (!finalSelection.includes(banksDB.ALSALAM) && numCapital > 2000000 && sector !== 'agriculture' && sector !== 'technology') {
+                finalSelection.push(banksDB.ALSALAM);
+            }
+
+            // Absolute failsafe
+            if (finalSelection.length === 0) {
+                finalSelection = [banksDB.CPA, banksDB.BDL];
+            }
+
+            const cardsWrapper = document.getElementById('cards-wrapper');
+            cardsWrapper.innerHTML = '';
+
+            finalSelection.forEach(bank => {
+                const card = document.createElement('div');
+                card.className = 'bank-card';
+                card.innerHTML = `
+                    <div class="bank-header">
+                        <h3>${bank.name[currentLang]}</h3>
+                        <span class="tag">${currentLang === 'fr' ? 'Recommandé' : 'موصى به'}</span>
+                    </div>
+                    <div class="bank-body">
+                        <div class="detail-group">
+                            <span class="detail-label"><i class="fa-solid fa-circle-info"></i> ${currentLang === 'fr' ? 'Définition :' : 'التعريف :'}</span>
+                            <p class="detail-text">${bank.definition[currentLang]}</p>
+                        </div>
+                        <div class="detail-group">
+                            <span class="detail-label"><i class="fa-solid fa-list-check"></i> ${currentLang === 'fr' ? 'Conditions :' : 'شروط الاستفادة :'}</span>
+                            <p class="detail-text">${bank.conditions[currentLang]}</p>
+                        </div>
+                        <div class="detail-group">
+                            <span class="detail-label"><i class="fa-solid fa-folder-open"></i> ${currentLang === 'fr' ? 'Dossier Requis :' : 'الوثائق المطلوبة :'}</span>
+                            <p class="detail-text">${bank.documents[currentLang]}</p>
+                        </div>
+                        <div class="contact-box">
+                            <span class="detail-label"><i class="fa-solid fa-map-location"></i> ${currentLang === 'fr' ? 'Adresse &' : 'المقر والاتصال :'}</span>
+                            <p class="detail-text">${bank.address[currentLang]}</p>
+                            <p class="detail-text" style="direction: ltr; text-align: start; margin-top:5px; font-weight:600;">${bank.contact[currentLang]}</p>
+                        </div>
+                        <div class="aapi-section">
+                            <h4><i class="fa-solid fa-gem"></i> ${currentLang === 'fr' ? 'Avantages Fiscaux (AAPI) :' : 'امتيازات الاستثمار (AAPI) :'}</h4>
+                            <p class="detail-text">${bank.aapi[currentLang]}</p>
+                        </div>
+                    </div>
+                `;
+                cardsWrapper.appendChild(card);
+            });
+
+            document.getElementById('results-area').style.display = 'block';
+        }
+
+        document.getElementById('settingsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const configPayload = {
+                about_fr: document.getElementById('set-about-fr').value,
+                about_ar: document.getElementById('set-about-ar').value,
+                services_fr: document.getElementById('set-services-fr').value,
+                services_ar: document.getElementById('set-services-ar').value,
+                privacy_fr: document.getElementById('set-privacy-fr').value,
+                privacy_ar: document.getElementById('set-privacy-ar').value,
+                contact_fr: document.getElementById('set-contact-fr').value,
+                contact_ar: document.getElementById('set-contact-ar').value,
+                map_url: document.getElementById('set-map-url').value
+            };
+
+            db.ref('settings').set(configPayload).then(() => {
+                alert('Paramètres sauvegardés et déployés en ligne !');
+            });
+        });
+
+        // --- EXPORT PDF GENERATION UTILITY ---
+        function downloadTablePDF(tableId, docTitle) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('l', 'pt', 'a4'); 
+
+            doc.setFontSize(20);
+            doc.setTextColor(30, 58, 138); 
+            doc.text(`Sahla Finance - Backup Database: ${docTitle.replace('_', ' ')}`, 40, 45);
+
+            doc.setFontSize(10);
+            doc.setTextColor(100, 116, 139);
+            doc.text(`Généré le : ${new Date().toLocaleDateString()}`, 40, 65);
+
+            doc.autoTable({
+                html: `#${tableId}`,
+                startY: 85,
+                styles: { fontSize: 8, cellPadding: 8, font: 'Helvetica' },
+                headStyles: { fillColor: [3, 15, 38], textColor: [255, 255, 255] },
+                columnStyles: {
+                    8: { display: 'none' }
+                }
+            });
+
+            doc.save(`SahlaFinance_${docTitle}_${new Date().toISOString().slice(0, 10)}.pdf`);
         }
 
         function toggleLanguage() {
@@ -2988,6 +3108,14 @@
                 if (item.value === savedVal) opt.selected = true;
                 sectorSelect.appendChild(opt);
             });
+
+            // Re-render recommended banks instantly if results are active!
+            const resultsArea = document.getElementById('results-area');
+            if (resultsArea && resultsArea.style.display === 'block') {
+                const sectorVal = document.getElementById('sector').value;
+                const capitalVal = document.getElementById('capital').value;
+                calculateRecommendations(sectorVal, capitalVal);
+            }
         }
     </script>
 </body>
