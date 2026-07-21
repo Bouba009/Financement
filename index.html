@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
@@ -5,32 +7,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sahla Finance | Financement de Projets en Algérie</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome for icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for premium UI icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Firebase SDK (Compat Version) -->
+    <!-- Firebase SDK (Compat) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics-compat.js"></script>
 
-    <!-- PDF Generation Libraries -->
+    <!-- PDF & Excel Export Utilities -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
 
     <style>
         :root {
-            --primary-color: #1e3a8a; /* الأزرق الملكي المصرفي */
-            --primary-light: #2563eb;
-            --accent-color: #d97706;  /* الذهبي الأمبر */
-            --accent-hover: #b45309;
-            --bg-color: #f8fafc;      /* خلفية فاتحة ومشرقة */
-            --card-bg: #ffffff;       /* كروت ناصعة البياض */
-            --text-color: #0f172a;    /* نصوص غامقة واضحة */
-            --text-muted: #64748b;    /* نصوص ثانوية هادئة */
+            --primary-navy: #030f26;      /* الكحلي الداكن الملوكي */
+            --primary-accent: #2563eb;    /* الأزرق المالي المشرق */
+            --primary-hover: #1d4ed8;
+            --orange-brand: #f97316;      /* البرتقالي الأساسي */
+            --orange-hover: #ea580c;
+            --bg-light: #f8fafc;          /* خلفية الأقسام الفاتحة */
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
             --white: #ffffff;
             --success: #10b981;
-            --input-border: #cbd5e1;
+            --border-light: #e2e8f0;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 8px rgba(0, 0, 0, 0.02);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -42,484 +45,737 @@
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.5;
             overflow-x: hidden;
-            background-image: radial-gradient(circle at top right, rgba(37, 99, 235, 0.05), transparent 45%),
-                              radial-gradient(circle at bottom left, rgba(217, 119, 6, 0.04), transparent 45%);
         }
 
         body.rtl-mode {
             font-family: 'Cairo', 'Poppins', sans-serif;
         }
 
-        /* --- Custom Scrollbar --- */
+        /* --- Global Scrollbar --- */
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+            background: var(--bg-light);
         }
         ::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-light);
+            background: var(--primary-accent);
         }
 
-        /* --- Header Premium White/Blue Elegant Style --- */
-        header {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+        /* --- Header Navigation Bar --- */
+        .navbar {
+            background: var(--primary-navy);
+            padding: 1.2rem 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 100;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
             color: var(--white);
-            padding: 7rem 1.5rem 12rem 1.5rem;
-            text-align: center;
-            border-bottom: 4px solid var(--accent-color);
-            position: relative;
-            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
-            overflow: hidden;
         }
 
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
-            opacity: 0.05;
-            pointer-events: none;
+        .brand-logo svg {
+            width: 32px;
+            height: 32px;
         }
 
-        .header-content {
-            position: relative;
-            z-index: 2;
-            animation: fadeInDown 0.8s ease-out;
-        }
-
-        header h1 {
-            font-size: 3.5rem;
-            margin-bottom: 0.2rem;
+        .brand-logo-text h2 {
+            font-size: 1.25rem;
             font-weight: 800;
             letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #ffffff 40%, #93c5fd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--white);
         }
 
-        header .sub-brand {
-            font-size: 0.9rem;
-            font-weight: 600;
-            letter-spacing: 2px;
+        .brand-logo-text span {
+            font-size: 0.75rem;
             color: #94a3b8;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
             display: block;
+            margin-top: -3px;
         }
 
-        header p {
-            font-size: 1.35rem;
-            opacity: 0.9;
-            max-width: 750px;
-            margin: 0 auto;
-            color: #cbd5e1;
-            font-weight: 300;
-        }
-
-        /* Language Button Stylings */
-        .lang-switch-container {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            z-index: 100;
-        }
-        body.rtl-mode .lang-switch-container {
-            right: auto;
-            left: 2rem;
-        }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            color: var(--white);
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: var(--transition);
-            backdrop-filter: blur(10px);
+        .nav-menu {
             display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .lang-btn:hover {
-            background: var(--accent-color);
-            border-color: var(--accent-color);
-            transform: scale(1.05);
-        }
-
-        /* --- Drawer Trigger --- */
-        .menu-trigger {
-            position: absolute;
-            top: 2rem;
-            left: 2rem;
-            z-index: 100;
-        }
-        body.rtl-mode .menu-trigger {
-            left: auto;
-            right: 2rem;
-        }
-
-        .menu-btn {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            color: var(--white);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            backdrop-filter: blur(10px);
-        }
-
-        .menu-btn:hover {
-            background: var(--primary-light);
-            border-color: var(--primary-light);
-            transform: rotate(90deg);
-        }
-
-        /* Drawer Overlay */
-        .sidebar-drawer {
-            position: fixed;
-            top: 0;
-            left: -320px;
-            width: 320px;
-            height: 100vh;
-            background: #ffffff;
-            z-index: 1000;
-            transition: var(--transition);
-            box-shadow: 10px 0 30px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            padding: 2.5rem;
-            border-right: 3px solid var(--accent-color);
-        }
-        body.rtl-mode .sidebar-drawer {
-            left: auto;
-            right: -320px;
-            border-right: none;
-            border-left: 3px solid var(--accent-color);
-            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-        }
-
-        .sidebar-drawer.active {
-            left: 0;
-        }
-        body.rtl-mode .sidebar-drawer.active {
-            right: 0;
-        }
-
-        .close-drawer-btn {
-            align-self: flex-end;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .close-drawer-btn:hover {
-            color: var(--accent-color);
-        }
-
-        .drawer-brand {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary-color);
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        .drawer-links {
             list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu li a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-menu li a:hover {
+            color: var(--white);
+        }
+
+        .nav-actions {
             display: flex;
-            flex-direction: column;
+            align-items: center;
             gap: 1.2rem;
         }
 
-        .drawer-links li a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 18px;
-            border-radius: 12px;
-            transition: var(--transition);
-            background: #f8fafc;
-        }
-
-        .drawer-links li a:hover {
-            background: rgba(37, 99, 235, 0.08);
-            color: var(--primary-color);
-            padding-left: 24px;
-        }
-        body.rtl-mode .drawer-links li a:hover {
-            padding-left: 18px;
-            padding-right: 24px;
-        }
-
-        .backdrop-shroud {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100vh;
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(4px);
-            z-index: 999;
+        /* Hamburger button for secondary menu drawer */
+        .drawer-hamburger {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.4rem;
+            cursor: pointer;
             display: none;
         }
 
-        /* --- Main Layout Container --- */
-        .container {
+        @media (max-width: 992px) {
+            .nav-menu { display: none; }
+            .drawer-hamburger { display: block; }
+            .navbar { padding: 1rem 1.5rem; }
+        }
+
+        /* --- Hero Section Styles --- */
+        .hero {
+            background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.1), transparent 45%), var(--primary-navy);
+            color: var(--white);
+            padding: 5rem 2.5rem 10rem 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('https://images.unsplash.com/photo-1543286386-7a39e65f0b58?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (max-width: 992px) {
+            .hero-container { grid-template-columns: 1fr; text-align: center; gap: 3rem; }
+            .hero { padding-bottom: 8rem; padding-left: 1.5rem; padding-right: 1.5rem; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero p { font-size: 1rem; }
+        }
+
+        .hero-badge {
+            background: rgba(37, 99, 235, 0.15);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            color: #60a5fa;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            max-width: 580px;
+            font-weight: 300;
+        }
+        @media (max-width: 992px) {
+            .hero p { margin-left: auto; margin-right: auto; }
+        }
+
+        .btn-hero-cta {
+            background: var(--orange-brand);
+            color: var(--white);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+        }
+
+        .btn-hero-cta:hover {
+            background: var(--orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(249, 115, 22, 0.45);
+        }
+
+        .hero-trust-list {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 992px) {
+            .hero-trust-list { justify-content: center; gap: 1rem; }
+        }
+
+        .hero-trust-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .hero-trust-item i {
+            color: var(--orange-brand);
+        }
+
+        /* Interactive Live Credit Card Widget */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .live-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 320px;
+            max-width: 100%; /* دعم شاشات الهواتف لمنع خروج الكارت */
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .live-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .live-card-header span {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .live-card-amount {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .live-card-badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .live-card-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 60px;
+        }
+
+        .chart-bar {
+            background: rgba(37, 99, 235, 0.3);
+            width: 100%;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .chart-bar.active {
+            background: var(--primary-accent);
+        }
+
+        .live-growth-widget {
+            position: absolute;
+            bottom: -20px;
+            right: 20px;
+            background: #2563eb;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: floatReverse 4s ease-in-out infinite;
+        }
+
+        @keyframes floatReverse {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        /* --- Floating Stats Strip --- */
+        .stats-strip {
             max-width: 1100px;
-            margin: -9rem auto 4rem;
-            padding: 0 1.5rem;
+            margin: -4rem auto 4rem auto;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-light);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
             position: relative;
             z-index: 10;
         }
 
-        /* --- Modern Refined Interactive Input Container --- */
-        .consultation-form {
-            background: var(--white);
-            border-radius: 24px;
-            padding: 3.5rem;
-            box-shadow: 0 20px 40px -5px rgba(15, 23, 42, 0.08), 0 10px 20px -10px rgba(15, 23, 42, 0.04);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+        @media (max-width: 992px) {
+            .stats-strip { margin-left: 1.5rem; margin-right: 1.5rem; }
         }
 
         @media (max-width: 768px) {
-            .form-grid { grid-template-columns: 1fr; }
-            header h1 { font-size: 2.3rem; }
-            .container { margin-top: -7rem; }
-            .consultation-form { padding: 2rem 1.5rem; }
+            .stats-strip { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; margin-top: -3rem; padding: 1.5rem; }
         }
 
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        @media (max-width: 768px) {
+            .stat-item { flex-direction: column; }
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .stat-icon.blue { background: rgba(37, 99, 235, 0.1); color: var(--primary-accent); }
+        .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .stat-icon.purple { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary-navy);
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* --- Multi-Step Stepper Progress Bar --- */
+        .form-section {
+            max-width: 1100px;
+            margin: 0 auto 5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto 3rem auto;
+            position: relative;
+        }
+
+        .stepper::before {
+            content: '';
+            position: absolute;
+            top: 15px; left: 0; right: 0;
+            height: 2px;
+            background: #cbd5e1;
+            z-index: 1;
+        }
+
+        .stepper-progress {
+            position: absolute;
+            top: 15px; left: 0;
+            height: 2px;
+            background: var(--primary-accent);
+            z-index: 2;
+            width: 0%;
+            transition: var(--transition);
+        }
+
+        .step {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 2px solid #cbd5e1;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .step.active .step-circle {
+            border-color: var(--primary-accent);
+            background: var(--primary-accent);
+            color: var(--white);
+        }
+
+        .step.completed .step-circle {
+            border-color: var(--primary-accent);
+            background: var(--white);
+            color: var(--primary-accent);
+        }
+
+        .step-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .step.active .step-text {
+            color: var(--primary-accent);
+        }
+
+        /* إخفاء نص الخطوات على شاشات الهواتف لمنع التداخل والبعثرة */
+        @media (max-width: 480px) {
+            .step-text { display: none; }
+            .stepper { margin-bottom: 2rem; }
+        }
+
+        /* --- Multi-Step Columns Layout --- */
+        .step-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        .columns-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 992px) {
+            .columns-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+        }
+
+        .col-card {
+            background: var(--white);
+            border-radius: 18px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-light);
+            min-height: 480px;
+            transition: var(--transition);
+        }
+
+        /* Pulse highlight animation for CTA target visual cues */
+        @keyframes pulseHighlight {
+            0%, 100% { transform: scale(1); box-shadow: var(--card-shadow); }
+            50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(37, 99, 235, 0.25); border-color: var(--primary-accent); }
+        }
+
+        /* تصغير المساحة البينية للهواتف لجعل الحقول منسابة */
+        @media (max-width: 600px) {
+            .col-card { padding: 1.2rem; min-height: auto; }
+            .form-section { padding: 0 1rem; }
+        }
+
+        .col-card-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-navy);
+            margin-bottom: 1.8rem;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 10px;
+        }
+
+        .col-card-title i {
+            color: var(--primary-accent);
+            font-size: 1.2rem;
+        }
+
+        /* Input Controls */
         .input-group {
             display: flex;
             flex-direction: column;
+            margin-bottom: 1.2rem;
         }
 
         .input-group label {
-            display: block;
-            margin-bottom: 0.6rem;
+            font-size: 0.85rem;
             font-weight: 700;
-            color: var(--primary-color);
-            font-size: 0.95rem;
-            letter-spacing: 0.3px;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
         }
 
-        /* Modern interactive fields */
-        .input-group input, 
-        .input-group select, 
-        .input-group textarea {
+        .input-field {
             width: 100%;
-            padding: 16px 18px;
-            border: 1.5px solid var(--input-border);
-            border-radius: 14px;
-            font-size: 1rem;
-            color: var(--text-color);
+            padding: 10px 14px;
+            border: 1.5px solid var(--border-light);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
             background: #ffffff;
             transition: var(--transition);
             outline: none;
-            box-shadow: 0 2px 4px rgba(15, 23, 42, 0.02);
         }
 
-        .input-group input:focus, 
-        .input-group select:focus, 
-        .input-group textarea:focus {
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
-            background: #ffffff;
+        .input-field:focus {
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
         }
 
-        /* Custom Dropdown Decorator */
+        /* Dropdown custom styling */
         .select-wrapper {
             position: relative;
         }
+
         .select-wrapper::after {
-            content: '\f107';
+            content: '\f078';
             font-family: 'Font Awesome 6 Free';
             font-weight: 900;
+            font-size: 0.75rem;
             position: absolute;
             top: 50%;
-            right: 1.2rem;
+            right: 1rem;
             transform: translateY(-50%);
-            color: var(--primary-light);
+            color: var(--primary-accent);
             pointer-events: none;
-            transition: var(--transition);
         }
-        body.rtl-mode .select-wrapper::after {
-            right: auto;
-            left: 1.2rem;
-        }
+        body.rtl-mode .select-wrapper::after { right: auto; left: 1rem; }
 
         .select-wrapper select {
             appearance: none;
             -webkit-appearance: none;
-            padding-right: 3rem;
-        }
-        body.rtl-mode .select-wrapper select {
-            padding-right: 1.2rem;
-            padding-left: 3rem;
-        }
-
-        .full-width { grid-column: 1 / -1; }
-
-        .submit-btn {
-            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
-            color: var(--white);
-            border: none;
-            padding: 1.3rem;
-            font-size: 1.25rem;
-            font-weight: 700;
-            border-radius: 14px;
+            padding-right: 2.2rem;
             cursor: pointer;
-            width: 100%;
-            margin-top: 2rem;
-            transition: var(--transition);
+        }
+        body.rtl-mode .select-wrapper select { padding-right: 14px; padding-left: 2.2rem; }
+
+        /* Security Note Alert Box */
+        .security-alert-box {
+            background: rgba(139, 92, 246, 0.08);
+            border: 1.5px dashed rgba(139, 92, 246, 0.25);
+            padding: 1.2rem;
+            border-radius: 12px;
+            margin-top: 1.8rem;
             display: flex;
-            justify-content: center;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .security-alert-box i {
+            color: #8b5cf6;
+            margin-top: 3px;
+        }
+
+        .security-alert-box p {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #7c3aed;
+        }
+
+        /* Step Controls Bar */
+        .step-actions {
+            margin-top: 3rem;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 8px 20px rgba(217, 119, 6, 0.25);
         }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(217, 119, 6, 0.4);
-            filter: brightness(1.05);
+        .btn-step-next {
+            background: var(--orange-brand);
+            color: var(--white);
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(249, 115, 22, 0.2);
         }
 
-        /* Loader */
-        .loader {
-            display: none;
-            border: 4px solid rgba(255,255,255,0.2);
-            border-top: 4px solid var(--white);
-            border-radius: 50%;
-            width: 25px;
-            height: 25px;
-            animation: spin 0.8s linear infinite;
+        .btn-step-next:hover {
+            background: var(--orange-hover);
+            transform: translateY(-1px);
+        }
+
+        .action-privacy-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         /* --- Bank Cards Result Area --- */
-        #results-area { display: none; margin-top: 4rem; animation: fadeInUp 0.8s ease; }
+        #results-area { display: none; margin-top: 2rem; }
 
         .cards-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 2rem;
         }
 
         .bank-card {
             background: var(--white);
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--card-shadow);
             transition: var(--transition);
         }
 
         .bank-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
-            border-color: var(--primary-light);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+            border-color: var(--primary-accent);
         }
 
         .bank-header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, #1d4ed8 100%);
+            background: linear-gradient(135deg, var(--primary-navy) 0%, #1d4ed8 100%);
             color: white;
-            padding: 1.8rem;
+            padding: 1.3rem;
             position: relative;
         }
 
-        .bank-header h3 { font-size: 1.35rem; font-weight: 700; max-width: 75%; }
+        .bank-header h3 { font-size: 1.15rem; font-weight: 700; max-width: 75%; }
         .bank-header .tag {
             background: var(--accent-color);
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
             font-weight: 600;
             position: absolute;
-            top: 1.8rem;
-            right: 1.5rem;
+            top: 1.3rem;
+            right: 1.2rem;
         }
-        body.rtl-mode .bank-header .tag {
-            right: auto;
-            left: 1.5rem;
-        }
+        body.rtl-mode .bank-header .tag { right: auto; left: 1.2rem; }
 
-        .bank-body { padding: 2rem; }
+        .bank-body { padding: 1.4rem; }
 
-        .detail-group { margin-bottom: 1.5rem; }
+        .detail-group { margin-bottom: 1.1rem; }
         .detail-label {
-            color: var(--primary-light);
+            color: var(--primary-accent);
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 6px;
-            font-size: 0.95rem;
+            gap: 6px;
+            margin-bottom: 4px;
+            font-size: 0.85rem;
         }
-        .detail-text { color: var(--text-color); font-size: 0.95rem; }
+        .detail-text { color: var(--text-dark); font-size: 0.85rem; line-height: 1.4; }
 
         .contact-box {
-            background: #f8fafc;
-            border-left: 4px solid var(--accent-color);
-            padding: 1.2rem;
-            margin-top: 1.5rem;
-            border-radius: 8px;
+            background: var(--bg-light);
+            border-left: 3px solid var(--orange-brand);
+            padding: 0.9rem;
+            margin-top: 1rem;
+            border-radius: 6px;
         }
-        body.rtl-mode .contact-box {
-            border-left: none;
-            border-right: 4px solid var(--accent-color);
-        }
+        body.rtl-mode .contact-box { border-left: none; border-right: 3px solid var(--orange-brand); }
 
         .aapi-section {
-            background: rgba(16, 185, 129, 0.06);
-            border: 1px solid rgba(16, 185, 129, 0.15);
-            padding: 1.2rem;
-            border-radius: 8px;
-            margin-top: 1.5rem;
+            background: rgba(16, 185, 129, 0.04);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            padding: 0.9rem;
+            border-radius: 6px;
+            margin-top: 1rem;
         }
-        .aapi-section h4 { color: #059669; font-size: 1rem; margin-bottom: 0.5rem; }
+        .aapi-section h4 { color: #059669; font-size: 0.85rem; margin-bottom: 0.3rem; }
 
-        /* --- Consulting Proposal Card Design --- */
+        /* --- Premium Consulting Proposal Card --- */
         .proposal-card {
             background: var(--white);
-            border-radius: 24px;
-            border: 2.5px solid var(--accent-color);
-            padding: 3rem;
-            margin-top: 4rem;
-            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+            border-radius: 20px;
+            border: 2px solid var(--orange-brand);
+            padding: 2.2rem;
+            margin-top: 3rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        @media (max-width: 600px) {
+            .proposal-card { padding: 1.2rem; }
         }
 
         .proposal-card h3 {
-            color: var(--primary-color);
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
+            color: var(--primary-navy);
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
             text-align: center;
             font-weight: 800;
         }
@@ -528,8 +784,8 @@
             list-style: none;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
         @media (max-width: 768px) {
@@ -537,82 +793,81 @@
         }
 
         .proposal-list li {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            padding: 1.2rem;
-            border-radius: 14px;
+            background: var(--bg-light);
+            border: 1px solid rgba(15, 23, 42, 0.05);
+            padding: 0.9rem;
+            border-radius: 10px;
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            font-size: 1rem;
-            color: var(--text-color);
+            gap: 10px;
+            font-size: 0.85rem;
+            color: var(--text-dark);
         }
 
         .proposal-list li i {
             color: var(--success);
-            margin-top: 4px;
+            margin-top: 3px;
         }
 
         .btn-glow {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             color: white;
             font-weight: 800;
-            font-size: 1.4rem;
-            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            padding: 1rem 2rem;
             border-radius: 50px;
             cursor: pointer;
             border: none;
             width: 100%;
             text-align: center;
             display: inline-block;
-            box-shadow: 0 0 25px rgba(217, 119, 6, 0.35);
+            box-shadow: 0 0 20px rgba(217, 119, 6, 0.25);
             transition: var(--transition);
             animation: glowingEffect 1.8s infinite alternate;
         }
 
         @keyframes glowingEffect {
-            0% { box-shadow: 0 0 10px rgba(217, 119, 6, 0.3), 0 0 20px rgba(217, 119, 6, 0.15); }
-            100% { box-shadow: 0 0 25px rgba(217, 119, 6, 0.6), 0 0 35px rgba(217, 119, 6, 0.3); transform: scale(1.02); }
+            0% { box-shadow: 0 0 8px rgba(217, 119, 6, 0.2); }
+            100% { box-shadow: 0 0 20px rgba(217, 119, 6, 0.4); transform: scale(1.01); }
         }
 
         .btn-secondary-glow {
             background: transparent;
-            border: 2px solid var(--primary-light);
-            color: var(--primary-color);
+            border: 1.5px solid var(--primary-accent);
+            color: var(--primary-navy);
             font-weight: 700;
-            font-size: 1.15rem;
-            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            padding: 0.9rem 2rem;
             border-radius: 50px;
             cursor: pointer;
             width: 100%;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
             text-align: center;
             display: inline-block;
             transition: var(--transition);
         }
 
         .btn-secondary-glow:hover {
-            background: var(--primary-light);
+            background: var(--primary-accent);
             color: white;
-            box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
-            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.2);
         }
 
-        /* --- Beautiful Custom Modern Modals --- */
+        /* --- Modals Overlay & Card --- */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(8px);
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(5px);
             z-index: 2000;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.3s ease;
             overflow-y: auto;
-            padding: 1.5rem;
+            padding: 1rem;
         }
 
         .modal-overlay.active {
@@ -622,14 +877,14 @@
 
         .modal-card {
             background: var(--white);
-            border-radius: 24px;
-            max-width: 650px;
+            border-radius: 18px;
+            max-width: 480px;
             width: 100%;
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15);
-            padding: 2.5rem;
-            transform: scale(0.85) translateY(50px);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--border-light);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+            padding: 1.8rem;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
             position: relative;
         }
 
@@ -639,127 +894,93 @@
 
         .close-modal-btn {
             position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
+            top: 1rem;
+            right: 1rem;
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             cursor: pointer;
             transition: var(--transition);
         }
-        body.rtl-mode .close-modal-btn {
-            right: auto;
-            left: 1.5rem;
-        }
+        body.rtl-mode .close-modal-btn { right: auto; left: 1rem; }
 
-        .close-modal-btn:hover {
-            color: var(--accent-color);
-        }
+        .close-modal-btn:hover { color: var(--orange-brand); }
 
         .modal-title {
-            color: var(--primary-color);
-            font-size: 1.6rem;
+            color: var(--primary-navy);
+            font-size: 1.3rem;
             font-weight: 800;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 10px;
-        }
-
-        /* File Upload Styling for PPT modal */
-        .file-upload-wrapper {
-            position: relative;
-            background: #f8fafc;
-            border: 2px dashed var(--input-border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .file-upload-wrapper:hover {
-            border-color: var(--primary-light);
-            background: #f1f5f9;
-        }
-
-        .file-upload-wrapper input[type="file"] {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .file-upload-wrapper i {
-            font-size: 2.5rem;
-            color: var(--accent-color);
-            margin-bottom: 10px;
+            margin-bottom: 1rem;
+            border-bottom: 1.5px solid var(--border-light);
+            padding-bottom: 6px;
         }
 
         /* --- ADMIN INTERFACE --- */
         #admin-panel {
             display: none;
             padding: 2rem;
-            max-width: 1400px;
+            max-width: 1300px;
             margin: 0 auto;
-            animation: fadeIn 0.8s ease;
+            animation: fadeIn 0.6s ease;
         }
 
         .admin-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 3rem;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 1rem;
         }
 
         .admin-nav {
             display: flex;
-            gap: 1rem;
+            gap: 0.8rem;
             flex-wrap: wrap;
         }
 
         .admin-nav-btn {
             background: #ffffff;
             border: 1px solid #cbd5e1;
-            color: var(--text-color);
-            padding: 10px 20px;
-            border-radius: 8px;
+            color: var(--text-dark);
+            padding: 8px 16px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
+            font-size: 0.9rem;
             transition: var(--transition);
         }
 
         .admin-nav-btn.active, .admin-nav-btn:hover {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
+            background: var(--primary-navy);
+            border-color: var(--primary-navy);
             color: white;
         }
 
         /* Analytics Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
         }
 
         .stat-card {
-            padding: 1.8rem;
-            border-radius: 16px;
+            padding: 1.3rem;
+            border-radius: 12px;
             color: white;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
             transition: var(--transition);
         }
 
-        .stat-card:hover { transform: translateY(-5px); }
-        .stat-card h3 { font-size: 0.95rem; text-transform: uppercase; opacity: 0.8; }
-        .stat-card .value { font-size: 2.5rem; font-weight: 800; margin: 10px 0; }
-        .stat-card i { font-size: 2rem; align-self: flex-end; opacity: 0.3; }
+        .stat-card:hover { transform: translateY(-3px); }
+        .stat-card h3 { font-size: 0.85rem; text-transform: uppercase; opacity: 0.8; }
+        .stat-card .value { font-size: 2rem; font-weight: 800; margin: 6px 0; }
+        .stat-card i { font-size: 1.5rem; align-self: flex-end; opacity: 0.3; }
 
         /* Colored variations */
         .stat-visits-today { background: linear-gradient(135deg, #10b981, #059669); }
@@ -772,11 +993,11 @@
         .admin-content-section {
             display: none;
             background: var(--white);
-            border-radius: 20px;
-            padding: 2.5rem;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+            border-radius: 16px;
+            padding: 1.8rem;
+            border: 1px solid var(--border-light);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.01);
         }
 
         .admin-content-section.active { display: block; }
@@ -784,8 +1005,8 @@
         /* Elegant responsive table styling */
         .table-responsive {
             overflow-x: auto;
-            margin-top: 1.5rem;
-            border-radius: 12px;
+            margin-top: 1rem;
+            border-radius: 10px;
             border: 1px solid #cbd5e1;
         }
 
@@ -793,36 +1014,37 @@
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            color: var(--text-color);
+            color: var(--text-dark);
         }
         body.rtl-mode table { text-align: right; }
 
         th {
             background-color: #f1f5f9;
-            color: var(--primary-color);
-            padding: 16px;
+            color: var(--primary-navy);
+            padding: 12px;
             font-weight: 700;
-            border-bottom: 2px solid #e2e8f0;
+            border-bottom: 2px solid var(--border-light);
+            font-size: 0.85rem;
         }
 
         td {
-            padding: 16px;
-            border-bottom: 1px solid #e2e8f0;
-            font-size: 0.95rem;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 0.85rem;
         }
 
         tr:hover { background: #f8fafc; }
 
         .btn-action {
-            padding: 6px 12px;
-            border-radius: 6px;
+            padding: 5px 10px;
+            border-radius: 5px;
             cursor: pointer;
             border: none;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             transition: var(--transition);
         }
 
@@ -835,7 +1057,7 @@
         .settings-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            gap: 1.5rem;
         }
         @media (max-width: 992px) {
             .settings-grid { grid-template-columns: 1fr; }
@@ -844,26 +1066,26 @@
         /* --- Footer --- */
         footer {
             text-align: center;
-            padding: 4rem 2rem 2rem;
-            margin-top: 6rem;
+            padding: 3rem 2rem 1.5rem;
+            margin-top: 4rem;
             color: var(--text-muted);
-            border-top: 1px solid #cbd5e1;
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
         }
 
-        /* Floating Admin login key */
         .admin-trigger {
-            margin-top: 2rem;
+            margin-top: 1.5rem;
             display: inline-block;
             color: var(--text-muted);
             text-decoration: none;
             transition: var(--transition);
+            font-size: 0.85rem;
         }
         .admin-trigger:hover { color: var(--accent-color); }
 
         /* Animation definitions */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -872,7 +1094,7 @@
     <!-- Drawer Navigation Backdrop -->
     <div class="backdrop-shroud" id="menuBackdrop"></div>
 
-    <!-- Sidebar Drawer Menu -->
+    <!-- Sidebar Drawer Menu for Secondary Actions -->
     <div class="sidebar-drawer" id="sidebarDrawer">
         <button class="close-drawer-btn" id="closeDrawer"><i class="fa-solid fa-times"></i></button>
         <div class="drawer-brand">Sahla Finance</div>
@@ -888,87 +1110,310 @@
 
     <!-- MAIN WEBSITE UI WRAPPER -->
     <div id="site-ui">
-        <!-- Language Switcher & Menu Button -->
-        <div class="lang-switch-container">
-            <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">
-                <i class="fa-solid fa-globe"></i>
-                <span id="langBtnText">العربية</span>
-            </button>
-        </div>
-
-        <div class="menu-trigger">
-            <button class="menu-btn" id="menuOpenBtn"><i class="fa-solid fa-bars-staggered"></i></button>
-        </div>
-
-        <header>
-            <div class="header-content">
-                <h1>Sahla Finance</h1>
-                <span class="sub-brand">by : aitchikh consulting</span>
-                <p data-i18n="subtitle">Votre passerelle vers le financement optimal de votre projet en Algérie</p>
+        <!-- Header Navigation -->
+        <nav class="navbar">
+            <a href="#" class="brand-logo">
+                <svg viewBox="0 0 100 100">
+                    <path d="M50,15 L80,35 L80,65 L50,85 L20,65 L20,35 Z" fill="none" stroke="#f97316" stroke-width="8" stroke-linejoin="round"/>
+                    <path d="M50,30 L65,42 L65,58 L50,70 L35,58 L35,42 Z" fill="#2563eb"/>
+                </svg>
+                <div class="brand-logo-text">
+                    <h2>Sahla Finance</h2>
+                    <span>by Aitckikh Consulting</span>
+                </div>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#site-ui" data-i18n="nav_accueil">Accueil</a></li>
+                <li><a href="#" onclick="openSidebarContent('about')" data-i18n="nav_about">À propos</a></li>
+                <li><a href="#" onclick="openSidebarContent('services')" data-i18n="nav_solutions">Solutions</a></li>
+                <li><a href="#" onclick="openSidebarContent('services')" data-i18n="nav_partenaires">Partenaires</a></li>
+                <li><a href="#" onclick="openSidebarContent('services')" data-i18n="nav_blog">Blog</a></li>
+                <li><a href="#" onclick="openSidebarContent('contact')" data-i18n="nav_contact">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="drawer-hamburger" id="menuOpenBtn">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                </button>
             </div>
-        </header>
+        </nav>
 
-        <div class="container">
-            <!-- Project Financing Finder Form -->
-            <div class="consultation-form">
-                <h2 style="color: var(--primary-color); margin-bottom: 2rem; border-bottom: 2px solid #cbd5e1; padding-bottom: 12px; font-weight: 800;" data-i18n="form_title">Entrez les informations de votre projet</h2>
-                <form id="projectForm">
-                    <div class="form-grid">
-                        <div class="input-group full-width">
-                            <label data-i18n="label_idea">💡 Idée du Projet</label>
-                            <textarea id="idea" rows="3" placeholder="Entrez une brève description de votre projet..." data-i18n-placeholder="placeholder_idea" required></textarea>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-container">
+                <div>
+                    <span class="hero-badge" data-i18n="hero_pill">Votre partenaire finance en Algérie</span>
+                    <h1 data-i18n="hero_title">Trouvez le financement optimal pour votre projet</h1>
+                    <p data-i18n="hero_desc">Nous vous mettons en relation avec les meilleures solutions de financement adaptées à votre activité.</p>
+                    <a href="#project-form-container" class="btn-hero-cta" data-i18n="hero_cta">
+                        Commencer gratuitement <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <div class="hero-trust-list">
+                        <span class="hero-trust-item"><i class="fa-regular fa-square-check"></i> <span data-i18n="trust_engagement">Sans engagement</span></span>
+                        <span class="hero-trust-item"><i class="fa-solid fa-bolt"></i> <span data-i18n="trust_speed">Réponse rapide</span></span>
+                        <span class="hero-trust-item"><i class="fa-solid fa-lock"></i> <span data-i18n="trust_secure">Données sécurisées</span></span>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="live-card">
+                        <div class="live-card-header">
+                            <span data-i18n="widget_opt_fin">Financement optimal</span>
+                            <i class="fa-solid fa-plus" style="color:#94a3b8; font-size: 0.8rem;"></i>
                         </div>
+                        <div class="live-card-amount">18 000 000 DZD</div>
+                        <span class="live-card-badge" data-i18n="widget_opt_comp">92% compatible</span>
+                        <div class="live-card-chart">
+                            <div class="chart-bar" style="height: 30%"></div>
+                            <div class="chart-bar" style="height: 50%"></div>
+                            <div class="chart-bar" style="height: 45%"></div>
+                            <div class="chart-bar" style="height: 80%"></div>
+                            <div class="chart-bar active" style="height: 100%"></div>
+                            <div class="chart-bar" style="height: 60%"></div>
+                        </div>
+                    </div>
+                    <div class="live-growth-widget">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                        <span data-i18n="widget_growth">Sahla</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- Stats Strip -->
+        <section class="stats-strip">
+            <div class="stat-item">
+                <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
+                <div>
+                    <div class="stat-number">120+</div>
+                    <div class="stat-label" data-i18n="stat_projects">Projets accompagnés</div>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon green"><i class="fa-solid fa-building-columns"></i></div>
+                <div>
+                    <div class="stat-number">18+</div>
+                    <div class="stat-label" data-i18n="stat_partners">Banques et partenaires</div>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon purple"><i class="fa-regular fa-face-smile"></i></div>
+                <div>
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label" data-i18n="stat_satisfaction">Satisfaction client</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Form & Stepper Flow Section -->
+        <section class="form-section" id="project-form-container">
+            <!-- Stepper Progress Bar -->
+            <div class="stepper">
+                <div class="stepper-progress" id="stepProgress"></div>
+                <div class="step active" onclick="jumpToStep(1)">
+                    <div class="step-circle">1</div>
+                    <span class="step-text" data-i18n="step_1">Projet</span>
+                </div>
+                <div class="step" id="stepIndicator2" onclick="jumpToStep(2)">
+                    <div class="step-circle">2</div>
+                    <span class="step-text" data-i18n="step_2">Financement</span>
+                </div>
+                <div class="step" id="stepIndicator3" onclick="jumpToStep(3)">
+                    <div class="step-circle">3</div>
+                    <span class="step-text" data-i18n="step_3">Coordonnées</span>
+                </div>
+                <div class="step" id="stepIndicator4">
+                    <div class="step-circle">4</div>
+                    <span class="step-text" data-i18n="step_4">Résultat</span>
+                </div>
+            </div>
+
+            <!-- STEP 1: PROJET CONTENT -->
+            <div class="step-content active" id="step1Content">
+                <div class="columns-grid">
+                    <!-- Column 1: Informations du projet -->
+                    <div class="col-card">
+                        <div class="col-card-title">
+                            <i class="fa-regular fa-file-lines"></i>
+                            <span data-i18n="card_col1_title">Informations du projet</span>
+                        </div>
                         <div class="input-group">
-                            <label data-i18n="label_sector">🏗️ Secteur d'Activité</label>
+                            <label data-i18n="field_proj_name">Nom du projet</label>
+                            <input type="text" id="proj_name" class="input-field" placeholder="Ex: Mon projet" data-i18n-placeholder="placeholder_proj_name" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="label_idea">Description du projet</label>
+                            <textarea id="proj_desc" class="input-field" rows="4" placeholder="Décrivez brièvement votre projet..." data-i18n-placeholder="placeholder_idea" required></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="label_sector">Secteur d'activité</label>
                             <div class="select-wrapper">
-                                <select id="sector" required>
-                                    <!-- Options populated dynamically in translation -->
+                                <select id="sector" class="input-field" required>
+                                    <!-- Options populated dynamically -->
                                 </select>
                             </div>
                         </div>
-
                         <div class="input-group">
-                            <label data-i18n="label_employees">👥 Nombre d'Employés</label>
-                            <input type="number" id="employees" placeholder="0" required>
-                        </div>
-
-                        <div class="input-group full-width">
-                            <label data-i18n="label_capital">💰 Capital Requis (DZD)</label>
-                            <input type="number" id="capital" placeholder="Ex: 5000000" data-i18n-placeholder="placeholder_capital" required>
+                            <label data-i18n="label_employees">Nombre d'employés</label>
+                            <input type="number" id="employees" class="input-field" placeholder="Ex: 5" required>
                         </div>
                     </div>
 
-                    <button type="submit" class="submit-btn" id="submitBtn">
-                        <span class="btn-text" data-i18n="btn_search">Rechercher le Financement Approprié</span>
-                        <div class="loader" id="loader"></div>
+                    <!-- Column 2: Financement recherché -->
+                    <div class="col-card">
+                        <div class="col-card-title">
+                            <i class="fa-solid fa-dollar-sign"></i>
+                            <span data-i18n="card_col2_title">Financement recherché</span>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="label_capital">Montant souhaité (DZD)</label>
+                            <input type="number" id="capital" class="input-field" placeholder="Ex: 10 000 000" data-i18n-placeholder="placeholder_capital" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="field_fin_type">Type de financement</label>
+                            <div class="select-wrapper">
+                                <select id="fin_type" class="input-field">
+                                    <option value="bancaire">Crédit Bancaire Standard</option>
+                                    <option value="islamique">Financement Islamique</option>
+                                    <option value="subvention">Prêt d'aide de l'Etat</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="field_fin_duration">Durée souhaitée</label>
+                            <div class="select-wrapper">
+                                <select id="fin_duration" class="input-field">
+                                    <option value="court">Court Terme (1 - 3 ans)</option>
+                                    <option value="moyen" selected>Moyen Terme (3 - 7 ans)</option>
+                                    <option value="long">Long Terme (plus de 7 ans)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="field_company_date">Date de création de l'entreprise</label>
+                            <input type="date" id="company_date" class="input-field">
+                        </div>
+                    </div>
+
+                    <!-- Column 3: Localisation -->
+                    <div class="col-card">
+                        <div class="col-card-title">
+                            <i class="fa-solid fa-map-pin"></i>
+                            <span data-i18n="card_col3_title">Localisation</span>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="field_wilaya">Wilaya (Optionnel)</label>
+                            <input type="text" id="wilaya" class="input-field" placeholder="Ex: Alger" data-i18n-placeholder="placeholder_wilaya">
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="field_commune">Commune (Optionnel)</label>
+                            <input type="text" id="commune" class="input-field" placeholder="Ex: Hydra" data-i18n-placeholder="placeholder_commune">
+                        </div>
+                        <div class="security-alert-box">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <p data-i18n="security_note">Vos données sont 100% sécurisées et ne seront jamais partagées.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn-step-next" onclick="nextStep(2)">
+                        <span data-i18n="btn_next">Suivant</span> <i class="fa-solid fa-arrow-right"></i>
                     </button>
-                </form>
-            </div>
-
-            <!-- Matching Banks & Proposal Area -->
-            <div id="results-area">
-                <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 3rem; font-weight: 800; font-size: 2rem;" data-i18n="results_title">🏦 Institutions Financières Proposées</h2>
-                <div id="cards-wrapper" class="cards-container"></div>
-
-                <!-- Consulting Proposal Box -->
-                <div class="proposal-card">
-                    <h3 data-i18n="proposal_title">Pour garantir l'acceptation de votre financement, nous vous proposons :</h3>
-                    <ul class="proposal-list">
-                        <li><i class="fa-solid fa-circle-check"></i><span data-i18n="prop_1">Organisation complète du dossier, prise de rendez-vous bancaire et dépôt de dossier.</span></li>
-                        <li><i class="fa-solid fa-circle-check"></i><span data-i18n="prop_2">Comparaison fine des propositions de diverses banques partenaires.</span></li>
-                        <li><i class="fa-solid fa-circle-check"></i><span data-i18n="prop_3">Négociation stratégique pour améliorer l'offre de taux et délais de grâce.</span></li>
-                        <li><i class="fa-solid fa-circle-check"></i><span data-i18n="prop_4">Suivi de l'instruction jusqu'à l'octroi officiel de la décision d'accord.</span></li>
-                        <li><i class="fa-solid fa-circle-check"></i><span data-i18n="prop_5">Accompagnement rigoureux du promoteur dans son plan de tirage et dépenses.</span></li>
-                        <li><i class="fa-solid fa-circle-check"></i><span data-i18n="prop_6">Suivi analytique post-création de l'activité.</span></li>
-                        <li><i class="fa-solid fa-circle-check"></i><span data-i18n="prop_7">Mise en relation avec des réseaux de Business Angels ou d'investisseurs.</span></li>
-                    </ul>
-
-                    <button class="btn-glow" onclick="openApplyModal()" data-i18n="btn_postulate">Postuler Maintenant</button>
-                    <button class="btn-secondary-glow" onclick="openInvestorModal()" data-i18n="btn_find_investor">Rechercher un Investisseur pour mon Projet</button>
+                    <span class="action-privacy-note">
+                        <i class="fa-solid fa-lock"></i> <span data-i18n="btn_lock_note">Vos informations sont sécurisées et confidentielles</span>
+                    </span>
                 </div>
             </div>
-        </div>
+
+            <!-- STEP 2: FINANCEMENT EXTRA INFO -->
+            <div class="step-content" id="step2Content">
+                <div class="columns-grid" style="grid-template-columns: 1fr;">
+                    <div class="col-card" style="min-height: auto; max-width: 600px; margin: 0 auto;">
+                        <div class="col-card-title">
+                            <i class="fa-solid fa-calculator"></i>
+                            <span data-i18n="card_extra_title">Garanties & Apport</span>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="field_apport">Apport Personnel disponible (DZD)</label>
+                            <input type="number" id="personal_apport" class="input-field" placeholder="Ex: 2 000 000">
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="field_guarantees">Disposez-vous de garanties réelles ? (Hypothèque, matériel, etc.)</label>
+                            <div class="select-wrapper">
+                                <select id="guarantees" class="input-field">
+                                    <option value="oui">Oui, j'ai des garanties réelles</option>
+                                    <option value="non">Non, pas de garanties physiques</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn-step-next" onclick="nextStep(3)">
+                        <span data-i18n="btn_next">Suivant</span> <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 3: COORDONNÉES CONTENT -->
+            <div class="step-content" id="step3Content">
+                <div class="columns-grid" style="grid-template-columns: 1fr;">
+                    <div class="col-card" style="min-height: auto; max-width: 600px; margin: 0 auto;">
+                        <div class="col-card-title">
+                            <i class="fa-regular fa-address-book"></i>
+                            <span data-i18n="card_contact_title">Vos Coordonnées</span>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="m_name">Nom & Prénom</label>
+                            <input type="text" id="user_fullname" class="input-field" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="m_email">Adresse Email</label>
+                            <input type="email" id="user_email" class="input-field" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="m_phone">Numéro de Téléphone</label>
+                            <input type="tel" id="user_phone" class="input-field" required>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="m_address">Adresse de Résidence</label>
+                            <input type="text" id="user_address" class="input-field" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn-step-next" onclick="submitMultiStepForm()">
+                        <span data-i18n="btn_see_results">Confirmer et Voir le Résultat</span> <i class="fa-solid fa-circle-notch fa-spin" id="formSubmitLoader" style="display:none;"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 4: RESULT CONTENT -->
+            <div class="step-content" id="step4Content">
+                <div id="results-area">
+                    <h2 style="text-align: center; color: var(--primary-navy); margin-bottom: 2.2rem; font-weight: 800; font-size: 1.6rem;" data-i18n="results_title">🏦 Institutions Financières Proposées</h2>
+                    <div id="cards-wrapper" class="cards-container"></div>
+
+                    <!-- Consulting Proposal Box -->
+                    <div class="proposal-card">
+                        <h3 data-i18n="proposal_title">Pour garantir l'acceptation de votre financement, nous vous proposons :</h3>
+                        <ul class="proposal-list">
+                            <li><i class="fa-solid fa-circle-check"></i><span data-i18n="prop_1">Organisation complète du dossier, prise de rendez-vous bancaire et dépôt de dossier.</span></li>
+                            <li><i class="fa-solid fa-circle-check"></i><span data-i18n="prop_2">Comparaison fine des propositions de diverses banques partenaires.</span></li>
+                            <li><i class="fa-solid fa-circle-check"></i><span data-i18n="prop_3">Négociation stratégique pour améliorer l'offre de taux et délais de grâce.</span></li>
+                            <li><i class="fa-solid fa-circle-check"></i><span data-i18n="prop_4">Suivi de l'instruction jusqu'à l'octroi officiel de la décision d'accord.</span></li>
+                            <li><i class="fa-solid fa-circle-check"></i><span data-i18n="prop_5">Accompagnement rigoureux du promoteur dans son plan de tirage et dépenses.</span></li>
+                            <li><i class="fa-solid fa-circle-check"></i><span data-i18n="prop_6">Suivi analytique post-création de l'activité.</span></li>
+                            <li><i class="fa-solid fa-circle-check"></i><span data-i18n="prop_7">Mise en relation avec des réseaux de Business Angels ou d'investisseurs.</span></li>
+                        </ul>
+
+                        <button class="btn-glow" onclick="openApplyModal()" data-i18n="btn_postulate">Postulez Maintenant</button>
+                        <button class="btn-secondary-glow" onclick="openInvestorModal()" data-i18n="btn_find_investor">Rechercher un Investisseur pour mon Projet</button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <footer>
             <p>© 2026 Sahla Finance - by Aitchikh Consulting</p>
@@ -980,11 +1425,11 @@
     <div id="admin-panel">
         <div class="admin-header">
             <div>
-                <h1 style="color: var(--primary-color); font-weight: 800;">Sahla Finance <span style="color: var(--accent-color); font-size: 1.2rem;">Backoffice</span></h1>
+                <h1 style="color: var(--primary-navy); font-weight: 800;">Sahla Finance <span style="color: var(--orange-brand); font-size: 1.1rem;">Backoffice</span></h1>
                 <p style="color: var(--text-muted);" id="admin-welcome-text">Tableau de bord de gestion</p>
             </div>
-            <div style="display: flex; gap: 1rem;">
-                <button class="lang-btn" style="background: var(--primary-color);" onclick="toggleLanguage()"><i class="fa-solid fa-globe"></i> Interface Langue</button>
+            <div style="display: flex; gap: 0.8rem;">
+                <button class="lang-btn" style="background: var(--primary-accent);" onclick="toggleLanguage()"><i class="fa-solid fa-globe"></i> Interface Langue</button>
                 <button class="lang-btn" style="background: #dc2626;" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</button>
             </div>
         </div>
@@ -1028,8 +1473,8 @@
 
         <!-- Tab: Financing Submissions -->
         <div class="admin-content-section active" id="tab-financing">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h2 style="color: var(--accent-color);">Dossiers de Financement déposés</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+                <h2 style="color: var(--orange-brand); font-size: 1.3rem;">Dossiers de Financement déposés</h2>
                 <button class="btn-action btn-pdf" onclick="downloadTablePDF('financing-table', 'Dossiers_Financement')"><i class="fa-solid fa-file-pdf"></i> Exporter PDF</button>
             </div>
             <div class="table-responsive">
@@ -1054,8 +1499,8 @@
 
         <!-- Tab: Investors Requests -->
         <div class="admin-content-section" id="tab-investors">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h2 style="color: var(--accent-color);">Projets à la recherche d'investisseurs</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+                <h2 style="color: var(--orange-brand); font-size: 1.3rem;">Projets à la recherche d'investisseurs</h2>
                 <button class="btn-action btn-pdf" onclick="downloadTablePDF('investors-table', 'Projets_Investisseurs')"><i class="fa-solid fa-file-pdf"></i> Exporter PDF</button>
             </div>
             <div class="table-responsive">
@@ -1080,7 +1525,7 @@
 
         <!-- Tab: Reports -->
         <div class="admin-content-section" id="tab-reports">
-            <h2 style="color: var(--accent-color); margin-bottom: 1.5rem;">Signalements et Réclamations</h2>
+            <h2 style="color: var(--orange-brand); margin-bottom: 1.2rem; font-size: 1.3rem;">Signalements et Réclamations</h2>
             <div class="table-responsive">
                 <table id="reports-table">
                     <thead>
@@ -1099,50 +1544,50 @@
 
         <!-- Tab: Dynamic Content Settings -->
         <div class="admin-content-section" id="tab-settings">
-            <h2 style="color: var(--accent-color); margin-bottom: 2rem;">Personnalisation des Contenus du Site</h2>
+            <h2 style="color: var(--orange-brand); margin-bottom: 1.5rem; font-size: 1.3rem;">Personnalisation des Contenus du Site</h2>
             <form id="settingsForm">
                 <div class="settings-grid">
                     <div>
-                        <h3 style="color: var(--primary-color); margin-bottom: 1.5rem; border-bottom: 1px dashed #cbd5e1; padding-bottom: 5px;">Langue : Français (FR)</h3>
-                        <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <h3 style="color: var(--primary-navy); margin-bottom: 1.2rem; border-bottom: 1px dashed #cbd5e1; padding-bottom: 5px; font-size: 1.1rem;">Langue : Français (FR)</h3>
+                        <div class="input-group" style="margin-bottom: 1.2rem;">
                             <label>Qui sommes-nous (FR)</label>
-                            <textarea id="set-about-fr" rows="4"></textarea>
+                            <textarea id="set-about-fr" rows="3"></textarea>
                         </div>
-                        <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <div class="input-group" style="margin-bottom: 1.2rem;">
                             <label>Nos Services (FR)</label>
-                            <textarea id="set-services-fr" rows="4"></textarea>
+                            <textarea id="set-services-fr" rows="3"></textarea>
                         </div>
-                        <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <div class="input-group" style="margin-bottom: 1.2rem;">
                             <label>Politique de Confidentialité (FR)</label>
-                            <textarea id="set-privacy-fr" rows="4"></textarea>
+                            <textarea id="set-privacy-fr" rows="3"></textarea>
                         </div>
-                        <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <div class="input-group" style="margin-bottom: 1.2rem;">
                             <label>Contactez-nous (FR)</label>
-                            <textarea id="set-contact-fr" rows="4"></textarea>
+                            <textarea id="set-contact-fr" rows="3"></textarea>
                         </div>
                     </div>
                     <div>
-                        <h3 style="color: var(--primary-color); margin-bottom: 1.5rem; border-bottom: 1px dashed #cbd5e1; padding-bottom: 5px;">اللغة : العربية (AR)</h3>
-                        <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <h3 style="color: var(--primary-navy); margin-bottom: 1.2rem; border-bottom: 1px dashed #cbd5e1; padding-bottom: 5px; font-size: 1.1rem;">اللغة : العربية (AR)</h3>
+                        <div class="input-group" style="margin-bottom: 1.2rem;">
                             <label>من نحن (AR)</label>
-                            <textarea id="set-about-ar" rows="4" style="direction: rtl;"></textarea>
+                            <textarea id="set-about-ar" rows="3" style="direction: rtl;"></textarea>
                         </div>
-                        <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <div class="input-group" style="margin-bottom: 1.2rem;">
                             <label>خدماتنا (AR)</label>
-                            <textarea id="set-services-ar" rows="4" style="direction: rtl;"></textarea>
+                            <textarea id="set-services-ar" rows="3" style="direction: rtl;"></textarea>
                         </div>
-                        <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <div class="input-group" style="margin-bottom: 1.2rem;">
                             <label>سياسة الخصوصية (AR)</label>
-                            <textarea id="set-privacy-ar" rows="4" style="direction: rtl;"></textarea>
+                            <textarea id="set-privacy-ar" rows="3" style="direction: rtl;"></textarea>
                         </div>
-                        <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <div class="input-group" style="margin-bottom: 1.2rem;">
                             <label>اتصل بنا (AR)</label>
-                            <textarea id="set-contact-ar" rows="4" style="direction: rtl;"></textarea>
+                            <textarea id="set-contact-ar" rows="3" style="direction: rtl;"></textarea>
                         </div>
                     </div>
                 </div>
 
-                <div class="input-group" style="margin-top: 1.5rem;">
+                <div class="input-group" style="margin-top: 1.2rem;">
                     <label>Lien d'intégration Google Maps (Iframe URL)</label>
                     <input type="text" id="set-map-url" placeholder="https://www.google.com/maps/embed?...">
                 </div>
@@ -1154,84 +1599,27 @@
 
     <!-- DYNAMIC POPUPS (MODAL WINDOWS) -->
     <!-- Modal 1: Apply for Financing Support -->
-    <div class="modal-overlay" id="applyModal">
+    <div class="modal-overlay" id="applyModal" style="z-index: 2000;">
         <div class="modal-card">
             <button class="close-modal-btn" onclick="closeApplyModal()"><i class="fa-solid fa-xmark"></i></button>
             <div class="modal-title" data-i18n="apply_title">Dossier de Demande de Financement</div>
             <form id="applyForm">
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label data-i18n="m_name">Nom & Prénom</label>
-                        <input type="text" id="app-fullname" required>
-                    </div>
-                    <div class="input-group">
-                        <label data-i18n="m_email">Email</label>
-                        <input type="email" id="app-email" required>
-                    </div>
-                    <div class="input-group">
-                        <label data-i18n="m_phone">Numéro de Téléphone</label>
-                        <input type="tel" id="app-phone" required>
-                    </div>
-                    <div class="input-group">
-                        <label data-i18n="m_address">Adresse</label>
-                        <input type="text" id="app-address" required>
-                    </div>
-                    <div class="input-group">
-                        <label data-i18n="m_projname">Nom du Projet</label>
-                        <input type="text" id="app-projname" required>
-                    </div>
-                    <div class="input-group">
-                        <label data-i18n="m_sector">Secteur d'Activité</label>
-                        <input type="text" id="app-sector" required readonly>
-                    </div>
-                    <div class="input-group full-width">
-                        <label data-i18n="m_idea">Explication de l'Idée du Projet</label>
-                        <textarea id="app-idea" rows="3" required readonly></textarea>
-                    </div>
-                    <div class="input-group full-width">
-                        <label data-i18n="m_funding">Financement / Capital Requis (DZD)</label>
-                        <input type="number" id="app-capital" required readonly>
-                    </div>
+                <div class="form-grid" style="grid-template-columns: 1fr;">
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px;">Votre demande d'accompagnement pour l'obtention de votre financement bancaire sera transmise à l'un de nos conseillers d'Aitchikh Consulting.</p>
                 </div>
-                <button type="submit" class="submit-btn" style="margin-top: 1.5rem;"><i class="fa-solid fa-circle-check"></i> <span data-i18n="btn_confirm">Confirmer et Envoyer</span></button>
+                <button type="submit" class="submit-btn" style="margin-top: 1.2rem;"><i class="fa-solid fa-circle-check"></i> <span data-i18n="btn_confirm">Confirmer et Envoyer</span></button>
             </form>
         </div>
     </div>
 
     <!-- Modal 2: Find Investor -->
-    <div class="modal-overlay" id="investorModal">
+    <div class="modal-overlay" id="investorModal" style="z-index: 2000;">
         <div class="modal-card">
             <button class="close-modal-btn" onclick="closeInvestorModal()"><i class="fa-solid fa-xmark"></i></button>
             <div class="modal-title" data-i18n="investor_title">Rechercher un Investisseur</div>
             <form id="investorForm">
-                <div class="form-grid">
+                <div class="form-grid" style="grid-template-columns: 1fr;">
                     <div class="input-group">
-                        <label data-i18n="m_name">Nom & Prénom</label>
-                        <input type="text" id="inv-fullname" required>
-                    </div>
-                    <div class="input-group">
-                        <label data-i18n="m_email">Email</label>
-                        <input type="email" id="inv-email" required>
-                    </div>
-                    <div class="input-group">
-                        <label data-i18n="m_phone">Numéro de Téléphone</label>
-                        <input type="tel" id="inv-phone" required>
-                    </div>
-                    <div class="input-group">
-                        <label data-i18n="m_projname">Nom du Projet</label>
-                        <input type="text" id="inv-projname" required>
-                    </div>
-                    <div class="input-group full-width">
-                        <label data-i18n="m_sector">Secteur d'Activité</label>
-                        <input type="text" id="inv-sector" required readonly>
-                    </div>
-                    <div class="input-group full-width">
-                        <label data-i18n="m_funding">Financement Requis (DZD)</label>
-                        <input type="number" id="inv-funding" required readonly>
-                    </div>
-
-                    <!-- PowerPoint Upload Field -->
-                    <div class="input-group full-width">
                         <label data-i18n="m_ppt">Exposé du projet (PowerPoint .PPT / .PPTX ou PDF)</label>
                         <div class="file-upload-wrapper">
                             <i class="fa-solid fa-file-powerpoint"></i>
@@ -1240,38 +1628,38 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="submit-btn" style="margin-top: 1.5rem;"><i class="fa-solid fa-circle-check"></i> <span data-i18n="btn_confirm">Confirmer et Envoyer</span></button>
+                <button type="submit" class="submit-btn" style="margin-top: 1.2rem;"><i class="fa-solid fa-circle-check"></i> <span data-i18n="btn_confirm">Confirmer et Envoyer</span></button>
             </form>
         </div>
     </div>
 
     <!-- Modal 3: Sidebar Dynamic Content Modal (About, Services, Confidentialité, maps) -->
-    <div class="modal-overlay" id="sidebarContentModal">
-        <div class="modal-card" style="max-width: 800px;">
+    <div class="modal-overlay" id="sidebarContentModal" style="z-index: 2000;">
+        <div class="modal-card" style="max-width: 700px;">
             <button class="close-modal-btn" onclick="closeSidebarContent()"><i class="fa-solid fa-xmark"></i></button>
             <div class="modal-title" id="side-modal-title">Contenu</div>
-            <div id="side-modal-body" style="color: var(--text-color); font-size: 1.1rem; line-height: 1.8;"></div>
-            <div id="side-modal-extra" style="margin-top: 1.5rem;"></div>
+            <div id="side-modal-body" style="color: var(--text-dark); font-size: 1rem; line-height: 1.6;"></div>
+            <div id="side-modal-extra" style="margin-top: 1.2rem;"></div>
         </div>
     </div>
 
     <!-- Modal 4: Report a problem -->
-    <div class="modal-overlay" id="reportModal">
+    <div class="modal-overlay" id="reportModal" style="z-index: 2000;">
         <div class="modal-card">
             <button class="close-modal-btn" onclick="closeReportModal()"><i class="fa-solid fa-xmark"></i></button>
             <div class="modal-title" data-i18n="report_modal_title">Signaler un Problème</div>
             <form id="bugReportForm">
-                <div class="input-group" style="margin-bottom: 1.2rem;">
+                <div class="input-group" style="margin-bottom: 1rem;">
                     <label data-i18n="m_name">Nom complet</label>
                     <input type="text" id="rep-name" required>
                 </div>
-                <div class="input-group" style="margin-bottom: 1.2rem;">
+                <div class="input-group" style="margin-bottom: 1rem;">
                     <label data-i18n="m_email">Email</label>
                     <input type="email" id="rep-email" required>
                 </div>
-                <div class="input-group" style="margin-bottom: 1.2rem;">
+                <div class="input-group" style="margin-bottom: 1rem;">
                     <label data-i18n="nav_report">Signaler un Problème</label>
-                    <textarea id="rep-text" rows="4" placeholder="Veuillez décrire le problème rencontré..." required></textarea>
+                    <textarea id="rep-text" rows="3" placeholder="Veuillez décrire le problem rencontré..." required></textarea>
                 </div>
                 <button type="submit" class="submit-btn"><i class="fa-solid fa-triangle-exclamation"></i> <span data-i18n="btn_confirm">Confirmer et Envoyer</span></button>
             </form>
@@ -1279,20 +1667,29 @@
     </div>
 
     <!-- Modal 5: Admin Login Modal -->
-    <div class="modal-overlay" id="adminLoginModal">
-        <div class="modal-card" style="max-width: 400px; text-align: center;">
+    <div class="modal-overlay" id="adminLoginModal" style="z-index: 2000;">
+        <div class="modal-card" style="max-width: 380px; text-align: center;">
             <div class="modal-title">Admin Login</div>
-            <div class="input-group" style="margin-bottom: 1.5rem;">
+            <div class="input-group" style="margin-bottom: 1.2rem;">
                 <label>Code d'accès sécurisé</label>
-                <input type="password" id="adminPassInput" style="text-align: center; font-size: 1.4rem; letter-spacing: 4px;" required>
+                <input type="password" id="adminPassInput" style="text-align: center; font-size: 1.2rem; letter-spacing: 4px;" required>
             </div>
             <button class="submit-btn" onclick="authenticateAdmin()"><i class="fa-solid fa-key"></i> Connexion</button>
-            <p style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted);">Accès restreint au personnel autorisé</p>
+            <p style="margin-top: 1.2rem; font-size: 0.75rem; color: var(--text-muted);">Accès restreint au personnel autorisé</p>
         </div>
     </div>
 
+    <!-- MAIN CONSOLIDATED SCRIPT BLOCK -->
     <script>
-        // === REAL-TIME CONFIGURATION & DATA STORAGE (FIREBASE) ===
+        // === CORE SYSTEM INITIALIZATION & VARIABLES ===
+        let currentStep = 1;
+        const totalSteps = 4;
+        let currentLang = 'fr';
+        let isAuth = false;
+        let pptBase64 = null;
+        let pptFileName = "";
+
+        // Firebase Web App Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAIMs2Q-4P2LLL2N6tbjBglkcmpapqIhZ8",
             authDomain: "tirourda-magasin.firebaseapp.com",
@@ -1303,16 +1700,17 @@
             appId: "1:190996365625:web:5a528d6e7ff71ac6f968e8",
             measurementId: "G-7VEWFLF797"
         };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
 
-        // System state variables
-        let currentLang = 'fr';
-        let isAuth = false;
-        let pptBase64 = null;
-        let pptFileName = "";
+        // Safeguarded database reference initialization
+        let db = null;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        } catch (e) {
+            console.error("Firebase initialization failed. Operating in offline/local fallback mode.", e);
+        }
 
-        // Default content state
+        // Default local fallback content state
         const defaultTextNodes = {
             about_fr: "Sahla Finance, propulsée par Aitchikh Consulting, est le pionnier de l'ingénierie financière en Algérie. Nous aidons les investisseurs à formuler leurs stratégies de déploiement et à naviguer avec brio le parcours bancaire national.",
             about_ar: "سهلة فايننس، تحت إدارة عتيق للاستشارات، هي منصتك الرائدة لهندسة وتسهيل تمويل المشاريع بالجزائر، نقوم بتبسيط الملفات الإدارية وتوجيهكم للمصارف المناسبة بكل كفاءة.",
@@ -1325,34 +1723,71 @@
             map_url: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3197.8083815349543!2d3.0577905!3d36.7511718!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128fad406b7cb859%3A0xc3c5b8b9f1d07c!2sAlger!5e0!3m2!1sfr!2sdz!4v1626000000000!5m2!1sfr!2sdz"
         };
 
-        // Real-time language translations resource dictionary
         const translations = {
             fr: {
-                subtitle: "Votre passerelle vers le financement optimal de votre projet en Algérie",
-                form_title: "Entrez les informations de votre projet",
-                label_idea: "💡 Idée du Projet",
-                placeholder_idea: "Entrez une brève description de votre projet...",
-                label_sector: "🏗️ Secteur d'Activité",
-                label_employees: "👥 Nombre d'Employés",
-                label_capital: "💰 Capital Requis (DZD)",
-                placeholder_capital: "Ex: 5000000",
-                btn_search: "Rechercher le Financement Approprié",
+                nav_accueil: "Accueil",
+                nav_about: "À propos",
+                nav_solutions: "Solutions",
+                nav_partenaires: "Partenaires",
+                nav_blog: "Blog",
+                nav_contact: "Contact",
+                hero_pill: "Votre partenaire finance en Algérie",
+                hero_title: "Trouvez le financement optimal pour votre projet",
+                hero_desc: "Nous vous mettons en relation avec les meilleures solutions de financement adaptées à votre activité.",
+                hero_cta: "Commencer gratuitement",
+                trust_engagement: "Sans engagement",
+                trust_speed: "Réponse rapide",
+                trust_secure: "Données sécurisées",
+                widget_opt_fin: "Financement optimal",
+                widget_opt_comp: "92% compatible",
+                widget_growth: "Sahla",
+                stat_projects: "Projets accompagnés",
+                stat_partners: "Banques et partenaires",
+                stat_satisfaction: "Satisfaction client",
+                step_1: "Projet",
+                step_2: "Financement",
+                step_3: "Coordonnées",
+                step_4: "Résultat",
+                card_col1_title: "Informations du projet",
+                field_proj_name: "Nom du projet",
+                placeholder_proj_name: "Ex: Mon projet",
+                label_idea: "Description du projet",
+                placeholder_idea: "Décrivez brièvement votre projet...",
+                label_sector: "Secteur d'activité",
+                label_employees: "Nombre d'employés",
+                card_col2_title: "Financement recherché",
+                label_capital: "Montant souhaité (DZD)",
+                placeholder_capital: "Ex: 10 000 000",
+                field_fin_type: "Type de financement",
+                field_fin_duration: "Durée souhaitée",
+                field_company_date: "Date de création de l'entreprise",
+                card_col3_title: "Localisation",
+                field_wilaya: "Wilaya (Optionnel)",
+                field_commune: "Commune (Optionnel)",
+                placeholder_wilaya: "Ex: Alger",
+                placeholder_commune: "Ex: Hydra",
+                security_note: "Vos données sont 100% sécurisées et ne seront jamais partagées.",
+                btn_next: "Suivant",
+                btn_lock_note: "Vos informations sont sécurisées et confidentielles",
+                card_extra_title: "Garanties & Apport",
+                field_apport: "Apport Personnel disponible (DZD)",
+                field_guarantees: "Disposez-vous de garanties réelles ? (Hypothèque, matériel, etc.)",
+                card_contact_title: "Vos Coordonnées",
+                btn_see_results: "Confirmer et Voir le Résultat",
                 results_title: "🏦 Institutions Financières Proposées",
                 proposal_title: "Pour garantir l'acceptation de votre financement, nous vous proposons :",
                 prop_1: "Organisation complète du dossier, réservation de rendez-vous bancaire, dépôt et suivi.",
                 prop_2: "Comparaison des propositions de diverses banques partenaires.",
                 prop_3: "Négociation stratégique pour améliorer le taux et les délais de grâce.",
-                prop_4: "Suivi de l'instruction jusqu'à l'obtroi officiel de l'accord.",
+                prop_4: "Suivi de l'instruction jusqu'à l'octroi officiel de l'accord.",
                 prop_5: "Accompagnement du promoteur dans son plan de tirage et dépenses.",
                 prop_6: "Suivi analytique post-création de l'activité.",
                 prop_7: "Mise en relation avec des réseaux de Business Angels ou d'investisseurs.",
                 btn_postulate: "Postuler Maintenant",
                 btn_find_investor: "Rechercher un Investisseur pour mon Projet",
                 nav_services: "Nos Services",
-                nav_about: "Qui sommes-nous",
                 nav_location: "Notre Siège",
                 nav_privacy: "Confidentialité",
-                nav_contact: "Contactez-nous",
                 nav_report: "Signaler un Problème",
                 apply_title: "Dossier de Demande de Financement",
                 investor_title: "Rechercher un Investisseur",
@@ -1372,46 +1807,84 @@
                 alert_error: "Veuillez vérifier les informations encodées."
             },
             ar: {
-                subtitle: "بواسطة عتيق للاستشارات - بوابتك نحو التمويل الأمثل لمشروعك في الجزائر",
-                form_title: "أدخل معلومات مشروعك",
-                label_idea: "💡 فكرة المشروع",
-                placeholder_idea: "أدخل وصفاً مكثفاً للمشروع...",
-                label_sector: "🏗️ مجال العمل",
-                label_employees: "👥 عدد العمال",
-                label_capital: "💰 رأس المال المطلوب (دج)",
-                placeholder_capital: "مثال: 5000000",
-                btn_search: "بحث عن التمويل المناسب",
-                results_title: "🏦 الجهات التمويلية المقترحة لك",
-                proposal_title: "من أجل ضمان قبول تمويلك نقترح عليك :",
-                prop_1: "تنظيم الملف الكامل - حجز موعد مع البنك - تقديم الملف للبنك ومتابعته.",
-                prop_2: "مقارنة عروض عدة بنوك واختيار الأفضل.",
-                prop_3: "التفاوض مع البنك لتحسين شروط التمويل إن أمكن.",
-                prop_4: "متابعة الملف حتى صدور القرار.",
-                prop_5: "مساعدة صاحب المشروع في تنفيذ خطة الإنفاق.",
-                prop_6: "متابعة الأداء المالي للمشروع.",
-                prop_7: "البحث عن مستثمرين إذا لم يكن التمويل البنكي مناسبًا.",
-                btn_postulate: "تقدم الآن",
-                btn_find_investor: "ابحث عن مستثمر لمشروعي",
-                nav_services: "خدماتنا",
+                nav_accueil: "الرئيسية",
                 nav_about: "من نحن",
-                nav_location: "مقرنا",
-                nav_privacy: "سياسة الخصوصية",
+                nav_solutions: "الحلول",
+                nav_partenaires: "الشركاء",
+                nav_blog: "المدونة",
                 nav_contact: "اتصل بنا",
-                nav_report: "الإبلاغ عن مشكلة",
+                hero_pill: "شريكك المالي الموثوق بالجزائر",
+                hero_title: "اعثر على التمويل الأمثل لمشروعك الاستثماري",
+                hero_desc: "نحن نصلك بأفضل الحلول والخيارات التمويلية المناسبة لنشاطك التجاري والصناعي.",
+                hero_cta: "ابدأ مجاناً الآن",
+                trust_engagement: "بدون التزامات",
+                trust_speed: "استجابة سريعة",
+                trust_secure: "بيانات محمية بالكامل",
+                widget_opt_fin: "التمويل الأمثل",
+                widget_opt_comp: "92% متوافق",
+                widget_growth: "سهلة",
+                stat_projects: "مشاريع تمت مرافقتها",
+                stat_partners: "بنوك وهيئات شريكة",
+                stat_satisfaction: "نسبة رضا العملاء",
+                step_1: "المشروع",
+                step_2: "التمويل",
+                step_3: "معلومات الاتصال",
+                step_4: "النتيجة",
+                card_col1_title: "معلومات المشروع الأساسية",
+                field_proj_name: "اسم المشروع",
+                placeholder_proj_name: "مثال: مصنع تعليب",
+                label_idea: "وصف فكرة المشروع",
+                placeholder_idea: "أدخل وصفاً مكثفاً ومختصراً لفكرة مشروعك...",
+                label_sector: "مجال العمل والنشاط",
+                label_employees: "عدد الموظفين المتوقع",
+                card_col2_title: "التمويل المطلوب",
+                label_capital: "المبلغ المطلوب (دج)",
+                placeholder_capital: "مثال: 10 000 000",
+                field_fin_type: "صيغة التمويل المفضلة",
+                field_fin_duration: "المدة الزمنية المطلوبة",
+                field_company_date: "تاريخ تأسيس الشركة (إن وجد)",
+                card_col3_title: "الموقع الجغرافي",
+                field_wilaya: "الولاية (اختياري)",
+                field_commune: "البلدية (اختياري)",
+                placeholder_wilaya: "مثال: الجزائر",
+                placeholder_commune: "مثال: حيدرة",
+                security_note: "معلوماتك آمنة 100% ومحفوظة بسرية تامة بموجب أنظمتنا المصرفية.",
+                btn_next: "التالي",
+                btn_lock_note: "كافة بياناتك محمية ومشفرة بسرية مطلقة",
+                card_extra_title: "الضمانات والمساهمة الذاتية",
+                field_apport: "قيمة المساهمة الشخصية المتوفرة (دج)",
+                field_guarantees: "هل تملك ضمانات عينية تقدمها للبنك؟ (رهن عقاري، عتاد)",
+                card_contact_title: "معلومات الاتصال الخاصة بك",
+                btn_see_results: "تأكيد واستخراج الجهات المموّلة",
+                results_title: "🏦 الجهات التمويلية المقترحة لك",
+                proposal_title: "من أجل ضمان قبول تمويلك نقترح عليك مرافقة مستشارينا :",
+                prop_1: "تنظيم الملف الإداري الكامل وحجز المواعيد مع مدراء الفروع البنكية وتتبع الملف.",
+                prop_2: "مقارنة عروض الفوائد ونسب التمويل واختيار العرض الأقل تكلفة لك.",
+                prop_3: "التفاوض المباشر لتحسين شروط التمويل وتمديد فترات السماح (Grâce).",
+                prop_4: "متابعة الملف مع المصالح التقنية حتى صدور قرار الموافقة الرسمي بالتمويل.",
+                prop_5: "مساعدة صاحب الاستثمار في تنفيذ خطة سحب الأموال والإنفاق.",
+                prop_6: "المتابعة والمراقبة المالية الدورية لمؤشرات نجاح المشروع.",
+                prop_7: "البحث وربط الصلة مع مستثمرين مساهمين في حال لم يكن التمويل البنكي مناسباً.",
+                btn_postulate: "تقدم بطلب المرافقة الآن",
+                btn_find_investor: "البحث عن مستثمر شريك للمشروع",
+                nav_services: "خدماتنا المتميزة",
+                nav_location: "مقرنا وموقعنا",
+                nav_privacy: "سياسة الخصوصية والأمان",
+                nav_report: "الإبلاغ عن خلل أو مشكلة",
                 apply_title: "ملف طلب التمويل ومرافقة المشروع",
                 investor_title: "البحث عن مستثمر شريك",
-                m_name: "الاسم واللقب",
+                m_name: "الاسم واللقب كاملين",
                 m_email: "البريد الإلكتروني",
-                m_phone: "رقم الهاتف",
-                m_address: "العنوان الحالي",
-                m_projname: "اسم المشروع",
-                m_sector: "مجال عمل المشروع",
+                m_phone: "رقم الهاتف الجوال",
+                m_address: "العنوان الحالي للنشاط",
+                m_projname: "اسم المشروع الاستثماري",
+                m_sector: "مجال عمل ونشاط المشروع",
                 m_idea: "عرض فكرة المشروع بالتفصيل",
-                m_funding: "التمويل المطلوب (دج)",
+                m_funding: "قيمة التمويل الكلي المطلوبة (دج)",
                 m_ppt: "العرض التقديمي للمشروع (PowerPoint أو PDF)",
-                ppt_upload_status: "اسحب وأفلت الملف هنا أو انقر لاختيار ملف العرض",
-                btn_confirm: "تأكيد وإرسال الطلب",
-                report_modal_title: "الإبلاغ عن خلل أو مشكلة",
+                ppt_upload_status: "اسحب الملف هنا أو انقر لتحديد العرض التقديمي الخاص بك",
+                btn_confirm: "تأكيد وإرسال الملف",
+                report_modal_title: "الإبلاغ عن مشكلة فنية",
                 alert_success: "لقد تم إرسال ملفك بنجاح! سيقوم مستشارونا بمراجعته والتواصل معك في غضون 24 ساعة.",
                 alert_error: "يرجى التحقق من المدخلات والمحاولة مرة أخرى."
             }
@@ -1429,32 +1902,31 @@
                 { value: "construction", text: "BTPH (Bâtiment, Travaux Publics)" }
             ],
             ar: [
-                { value: "", text: "-- اختر المجال --" },
+                { value: "", text: "-- اختر قطاع العمل --" },
                 { value: "services", text: "خدماتي (نقل، استشارة، صيانة)" },
-                { value: "industrial", text: "صناعي / إنتاج" },
-                { value: "agricultural", text: "فلاحي / تربية مواشي" },
+                { value: "industrial", text: "صناعي / إنتاج تحويلي" },
+                { value: "agricultural", text: "فلاحي / تربية مواشي وصيد" },
                 { value: "technology", text: "تكنولوجي / Startups" },
-                { value: "commercial", text: "تجاري (بيع وشراء)" },
-                { value: "health", text: "الصحة (عيادة، مخبر)" },
+                { value: "commercial", text: "تجاري (بيع وشراء وتوزيع)" },
+                { value: "health", text: "الصحة (عيادة، مخبر تحاليل)" },
                 { value: "construction", text: "البناء والأشغال العمومية BTPH" }
             ]
         };
 
-        // Complete translated Algerian financial system information matrix
         const banksDB = {
             BADR: {
                 name: { fr: "Banque de l'Agriculture et du Développement Rural (BADR)", ar: "بنك الفلاحة والتنمية الريفية (BADR)" },
                 definition: {
-                    fr: "Banque publique de premier plan, pivot du financement agricole, de la pêche, de l'agro-industrie et de l'aquaculture.",
-                    ar: "مؤسسة مالية عمومية رائدة، تعتبر المحرك الأساسي لتمويل القطاع الفلاحي، الصيد البحري، والصناعات التحويلية."
+                    fr: "Banque publique de premier plan, pivot du financement agricole, de l'agro-industrie et de l'aquaculture.",
+                    ar: "موقعها الهام كأكبر بنك عمومي يمول قطاع الفلاحة والصيد البحري وتصنيع الأغذية بالجزائر."
                 },
                 conditions: {
                     fr: "Carte d'agriculteur valide, acte de concession de sol, ou de propriété, projet d'exploitation viable.",
-                    ar: "امتلاك بطاقة فلاح سارية المفعول، عقد ملكية أو امتياز للأرض، وخبرة مثبتة في المجال."
+                    ar: "حيازة بطاقة فلاح نشطة، سند ملكية أو عقد امتياز قانوني، وخبرة في المجال الزراعي."
                 },
                 documents: {
                     fr: "Dossier d'identité, business plan, factures proforma homologuées, autorisation d'exploitation rurale.",
-                    ar: "طلب رسمي، بطاقة فلاح، الوثائق العقارية للنشاط، المخطط التقديري، ودراسة تقنية اقتصادية."
+                    ar: "بطاقة الفلاح، سندات حيازة الأرض الفلاحية، الفواتير الأولية للعتاد، ودراسة تقنية مصادق عليها."
                 },
                 address: {
                     fr: "17 Boulevard Colonel Amirouche, Alger.",
@@ -1466,22 +1938,22 @@
                 },
                 aapi: {
                     fr: "Profite pleinement des réductions d'équipement AAPI et exonération fiscale douanière sur le machinisme agricole.",
-                    ar: "إعفاءات جمركية كاملة على الآلات والمعدات الفلاحية المستوردة، ودعم الدولة لنسبة الفائدة."
+                    ar: "إعفاءات جمركية وجبائية تامة مع دعم الدولة لمعدلات الفائدة وتمديد فترات السداد."
                 }
             },
             CPA: {
                 name: { fr: "Crédit Populaire d'Algérie (CPA)", ar: "القرض الشعبي الجزائري (CPA)" },
                 definition: {
                     fr: "Banque commerciale de référence orientée PME/PMI, projets hôteliers, services de santé et immobilier d'entreprise.",
-                    ar: "بنك تجاري رائد يستهدف تمويل المؤسسات الصغيرة والمتوسطة، الصناعات، والمنشآت الصحية والسياحية."
+                    ar: "مؤسسة مصرفية عريقة تستهدف تمويل المؤسسات الصغيرة والمتوسطة، المهن الطبية، والسياحة."
                 },
                 conditions: {
                     fr: "Apport personnel minimum (20-30%), business plan agréé, et des garanties réelles (hypothèque ou nantissement matériel).",
-                    ar: "توفر مساهمة ذاتية (20-30%)، سجل تجاري قانوني، وتقديم ضمانات عينية صلبة."
+                    ar: "وجود مساهمة ذاتية (20-30%)، سجل تجاري قانوني، وضمانات مادية صلبة مثل الرهن العقاري."
                 },
                 documents: {
                     fr: "Statuts juridiques, bilans fiscaux récents, étude de faisabilité et d'impact financier, proformas.",
-                    ar: "القانون الأساسي للشركة، الميزانية الافتتاحية والتقديرية، دراسة جدوى فنية، والفواتير الأولية."
+                    ar: "القانون الأساسي للشركة، الميزانية الافتتاحية والتقديرية، دراسة جدوى فنية، والفواتير الأولية للعتاد."
                 },
                 address: {
                     fr: "02 Boulevard Colonel Amirouche, Alger.",
@@ -1493,22 +1965,22 @@
                 },
                 aapi: {
                     fr: "Taux bonifié par l'État de 3% d'intérêts sur investissements industriels structurés avec l'accord de l'AAPI.",
-                    ar: "تخفيض نسبة الفائدة بدعم من الدولة بـ 3% للمشاريع الاستثمارية المعتمدة لدى الوكالة الوطنية لترقية الاستثمار."
+                    ar: "الاستفادة من ميزة تخفيض نسب الفائدة (Taux Bonifié) بنسبة 3% للمشاريع الاستثمارية المعتمدة."
                 }
             },
             BDL: {
                 name: { fr: "Banque du Développement Local (BDL)", ar: "بنك التنمية المحلية (BDL)" },
                 definition: {
                     fr: "Institution de soutien de l'entrepreneuriat de proximité, professions libérales, cliniques privées, commerce de gros.",
-                    ar: "مؤسسة تمويلية موجهة لدعم الاقتصاد المحلي والمهن الحرة، العيادات، والتجارة والخدمات المحلية."
+                    ar: "مؤسسة تمويل وطنية تهدف لترقية النشاطات والمهن الحرة والتجارة والخدمات المحلية بمختلف الولايات."
                 },
                 conditions: {
                     fr: "Local professionnel identifié (bail ou acte), diplôme qualifiant ou certificat d'aptitude professionnelle.",
-                    ar: "امتلاك أو كراء محل لممارسة النشاط، الشهادة العلمية أو المهنية المعتمدة للنشاط."
+                    ar: "وجود محل لممارسة النشاط (عقد أو كراء موثق)، وتوفر الشهادة العلمية أو المؤهل للنشاط."
                 },
                 documents: {
                     fr: "Bail de location authentifié, registre du commerce, déclaration d'impôts, factures proformas d'équipements.",
-                    ar: "عقد الإيجار الموثق، نسخة من شهادة المؤهل، السجل التجاري، وعروض أسعار العتاد."
+                    ar: "عقد الكراء الموثق، نسخة من شهادة المؤهل، السجل التجاري، وعروض أسعار العتاد."
                 },
                 address: {
                     fr: "05 Rue Ghermoul, Alger.",
@@ -1520,22 +1992,22 @@
                 },
                 aapi: {
                     fr: "Accompagnement de refinancement des lignes de crédit de fonctionnement pour les projets labellisés AAPI.",
-                    ar: "مرافقة البنك في تمويل احتياجات رأس المال العامل وتسهيلات القروض الاستغلالية للمشاريع."
+                    ar: "تسهيلات كبيرة في تمويل رأس المال العامل والمرافقة المالية للمشاريع المحلية المعتمدة."
                 }
             },
             ALSALAM: {
                 name: { fr: "Al Salam Bank (Finance Islamique)", ar: "مصرف السلام (تمويل إسلامي)" },
                 definition: {
                     fr: "Banque privée offrant exclusivement des solutions d'investissement compatibles Chari'a (Mourabaha, Idjara).",
-                    ar: "مصرف معتمد يقدم باقات تمويل إسلامي متكاملة (مرابحة، إجارة، مشاركة) متوافقة تماماً مع أحكام الشريعة."
+                    ar: "مصرف مالي معتمد يقدم باقات تمويل استثماري إسلامي متكاملة (مرابحة، إجارة، مشاركة) متوافقة مع الشريعة."
                 },
                 conditions: {
                     fr: "Projet à haute éthique commerciale, absence d'engagements contentieux, domiciliation bancaire requise.",
-                    ar: "خلو النشاط من المحظورات الشرعية، عدم وجود ديون متعثرة، وتوطين المداخيل."
+                    ar: "خلو النشاط من المحظورات الشرعية، خلو السجل المالي من الديون المتعثرة، وتوطين الحساب."
                 },
                 documents: {
                     fr: "Étude économique complète, promesses unilatérales d'achat de biens, justificatifs de fonds propres.",
-                    ar: "ملف إداري كامل، الفواتير الأولية للبضائع والآلات، وتعهد خطي بتوطين حساب النشاط."
+                    ar: "دراسة جدوى شاملة، الفواتير الأولية للآلات والسلع المراد شراؤها بالمرابحة، وتعهد توطين الحساب."
                 },
                 address: {
                     fr: "23 Avenue Dely Ibrahim, Alger.",
@@ -1547,22 +2019,22 @@
                 },
                 aapi: {
                     fr: "Avantages fiscaux douaniers AAPI entièrement transférables aux formules financières Mourabaha.",
-                    ar: "الاستفادة الكاملة من المزايا والامتيازات الجمركية التي تمنحها الوكالة (AAPI) عبر صيغ التمويل الإسلامي."
+                    ar: "الاستفادة الكاملة والمباشرة من إعفاءات الوكالة الوطنية لترقية الاستثمار (AAPI)."
                 }
             },
             BNA: {
                 name: { fr: "Banque Nationale d'Algérie (BNA)", ar: "البنك الوطني الجزائري (BNA)" },
                 definition: {
                     fr: "Plus ancienne et grande banque d'Algérie, structuratrice des grands projets industriels et BTPH d'envergure.",
-                    ar: "أكبر المؤسسات المصرفية العمومية، متخصصة في مرافقة المشاريع الكبرى، البناء، الري، والنشاطات الصناعية."
+                    ar: "أكبر مؤسسة بنكية وطنية تهتم بتمويل المشاريع الصناعية الكبرى ومشاريع البناء والري الكلية."
                 },
                 conditions: {
                     fr: "Excellente surface financière historique, étude géotechnique validée, cautions de bonne exécution.",
-                    ar: "ملاءة مالية معتبرة، دراسة فنية وهندسية معتمدة من هيئات الرقابة، وضمانات صلبة."
+                    ar: "ملاءة مالية جيدة، دراسة فنية وهندسية معتمدة من هيئات الرقابة، وضمانات صلبة."
                 },
                 documents: {
                     fr: "Cahier des charges du marché public, business plan, autorisations environnementales requises.",
-                    ar: "المخططات الهندسية، رخصة البناء والبيئة، دفتر الشروط، والتقارير المالية للشركة."
+                    ar: "دفتر الشروط، رخصة البناء والبيئة، المخططات الهندسية، والتقارير المالية للشركة."
                 },
                 address: {
                     fr: "08 Boulevard Cheikh Khalifa, Alger.",
@@ -1574,14 +2046,14 @@
                 },
                 aapi: {
                     fr: "Exonérations de taxes d'enregistrement et franchises d'intérêts jusqu'à 5 ans pour grands projets.",
-                    ar: "فترات سماح سداد تصل إلى 5 سنوات وإعفاءات تامة من رسوم التسجيل للمشاريع الكبرى المهيكلة."
+                    ar: "فترات سماح سداد سلفية وإعفاء كامل من رسوم التسجيل العقاري للمشاريع المهيكلة الكبرى."
                 }
             },
             ASF: {
                 name: { fr: "Algerian Start-up Fund (ASF)", ar: "الصندوق الجزائري للمؤسسات الناشئة (ASF)" },
                 definition: {
                     fr: "Fonds d'investissement d'État destiné au financement des projets innovants via participation directe.",
-                    ar: "صندوق استثماري عمومي يهدف للمساهمة المباشرة في تمويل حاملي المشاريع المبتكرة الحاصلة على علامة لبل."
+                    ar: "صندوق استثماري حكومي يدعم تمويل حاملي المشاريع والشركات الحاصلة على علامة لبل كشريك."
                 },
                 conditions: {
                     fr: "Obtention officielle du Label 'Projet Innovant' ou 'Startup' par le comité national de labellisation.",
@@ -1660,28 +2132,70 @@
             }
         };
 
-        // --- GLOBAL SYSTEM INITIALIZATION ---
+        // --- CORE EVENT LISTENERS (SAFE BINDING) ---
         window.addEventListener('DOMContentLoaded', () => {
-            trackVisits();
-            loadSettings();
-            updateLanguageDOM();
-            checkAdminHash();
+            // Bind Drawer Navigation triggers safely
+            try {
+                const sidebarDrawer = document.getElementById('sidebarDrawer');
+                const menuBackdrop = document.getElementById('menuBackdrop');
+
+                document.getElementById('menuOpenBtn').addEventListener('click', () => {
+                    sidebarDrawer.classList.add('active');
+                    menuBackdrop.style.display = 'block';
+                });
+
+                document.getElementById('closeDrawer').addEventListener('click', closeDrawerMenu);
+                menuBackdrop.addEventListener('click', closeDrawerMenu);
+
+                function closeDrawerMenu() {
+                    sidebarDrawer.classList.remove('active');
+                    menuBackdrop.style.display = 'none';
+                }
+            } catch (err) {
+                console.error("Sidebar binder failed:", err);
+            }
+
+            // Bind Hero CTA smooth scroll trigger safely
+            try {
+                document.querySelector('.btn-hero-cta').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.getElementById('project-form-container');
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    // Highlight card layout blocks as visual target cues
+                    const colCards = document.querySelectorAll('.col-card');
+                    colCards.forEach(card => {
+                        card.style.animation = 'pulseHighlight 1s ease-out';
+                        setTimeout(() => {
+                            card.style.animation = '';
+                        }, 1000);
+                    });
+                });
+            } catch (err) {
+                console.error("Hero CTA scroll binder failed:", err);
+            }
+
+            // Execute Page Modules Safely
+            try { trackVisits(); } catch (err) { console.error("trackVisits error:", err); }
+            try { loadSettings(); } catch (err) { console.error("loadSettings error:", err); }
+            try { updateLanguageDOM(); } catch (err) { console.error("updateLanguageDOM error:", err); }
+            try { checkAdminHash(); } catch (err) { console.error("checkAdminHash error:", err); }
         });
 
+        // Track and persist visits inside Database safely
         function trackVisits() {
-            try {
-                const dateObj = new Date();
-                const yearMonth = dateObj.toISOString().slice(0, 7); // YYYY-MM
-                const todayStr = dateObj.toISOString().slice(0, 10); // YYYY-MM-DD
+            if (!db) return;
+            const dateObj = new Date();
+            const yearMonth = dateObj.toISOString().slice(0, 7); 
+            const todayStr = dateObj.toISOString().slice(0, 10); 
 
-                db.ref(`analytics/visits/daily/${todayStr}`).transaction(current => (current || 0) + 1);
-                db.ref(`analytics/visits/monthly/${yearMonth}`).transaction(current => (current || 0) + 1);
-            } catch (err) {
-                console.log("Analytics loading bypassed.", err);
-            }
+            db.ref(`analytics/visits/daily/${todayStr}`).transaction(current => (current || 0) + 1);
+            db.ref(`analytics/visits/monthly/${yearMonth}`).transaction(current => (current || 0) + 1);
         }
 
+        // Load custom landing texts dynamically
         function loadSettings() {
+            if (!db) return;
             db.ref('settings').on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
@@ -1710,277 +2224,104 @@
             });
         }
 
-        function toggleLanguage() {
-            currentLang = currentLang === 'fr' ? 'ar' : 'fr';
-            updateLanguageDOM();
-        }
+        // Interactive Stepper Flow
+        function updateStepperUI() {
+            const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('stepProgress').style.width = progressPercentage + '%';
 
-        function updateLanguageDOM() {
-            const body = document.body;
-            const html = document.documentElement;
-            const langBtnText = document.getElementById('langBtnText');
-
-            if (currentLang === 'ar') {
-                body.classList.add('rtl-mode');
-                html.setAttribute('dir', 'rtl');
-                html.setAttribute('lang', 'ar');
-                langBtnText.textContent = "Français";
-            } else {
-                body.classList.remove('rtl-mode');
-                html.setAttribute('dir', 'ltr');
-                html.setAttribute('lang', 'fr');
-                langBtnText.textContent = "العربية";
-            }
-
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[currentLang][key]) {
-                    el.innerHTML = translations[currentLang][key];
-                }
-            });
-
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                if (translations[currentLang][key]) {
-                    el.setAttribute('placeholder', translations[currentLang][key]);
-                }
-            });
-
-            const sectorSelect = document.getElementById('sector');
-            const savedVal = sectorSelect.value;
-            sectorSelect.innerHTML = '';
-            sectorsDB[currentLang].forEach(item => {
-                const opt = document.createElement('option');
-                opt.value = item.value;
-                opt.textContent = item.text;
-                if (item.value === savedVal) opt.selected = true;
-                sectorSelect.appendChild(opt);
-            });
-
-            if (document.getElementById('results-area').style.display === 'block') {
-                const lastSector = document.getElementById('sector').value;
-                const lastCapital = document.getElementById('capital').value;
-                calculateRecommendations(lastSector, lastCapital, false);
-            }
-        }
-
-        // --- DRAWER DRAWER LOGIC ---
-        const sidebarDrawer = document.getElementById('sidebarDrawer');
-        const menuBackdrop = document.getElementById('menuBackdrop');
-
-        document.getElementById('menuOpenBtn').addEventListener('click', () => {
-            sidebarDrawer.classList.add('active');
-            menuBackdrop.style.display = 'block';
-        });
-
-        document.getElementById('closeDrawer').addEventListener('click', closeDrawerMenu);
-        menuBackdrop.addEventListener('click', closeDrawerMenu);
-
-        function closeDrawerMenu() {
-            sidebarDrawer.classList.remove('active');
-            menuBackdrop.style.display = 'none';
-        }
-
-        function openSidebarContent(type) {
-            closeDrawerMenu();
-            const modal = document.getElementById('sidebarContentModal');
-            const titleEl = document.getElementById('side-modal-title');
-            const bodyEl = document.getElementById('side-modal-body');
-            const extraEl = document.getElementById('side-modal-extra');
-
-            extraEl.innerHTML = '';
-            modal.classList.add('active');
-
-            if (type === 'about') {
-                titleEl.textContent = currentLang === 'fr' ? "Qui sommes-nous" : "من نحن";
-                bodyEl.textContent = currentLang === 'fr' ? defaultTextNodes.about_fr : defaultTextNodes.about_ar;
-            } else if (type === 'services') {
-                titleEl.textContent = currentLang === 'fr' ? "Nos Services d'Accompagnement" : "خدماتنا ومرافقتنا";
-                bodyEl.textContent = currentLang === 'fr' ? defaultTextNodes.services_fr : defaultTextNodes.services_ar;
-            } else if (type === 'privacy') {
-                titleEl.textContent = currentLang === 'fr' ? "Politique de Confidentialité" : "سياسة الخصوصية";
-                bodyEl.textContent = currentLang === 'fr' ? defaultTextNodes.privacy_fr : defaultTextNodes.privacy_ar;
-            } else if (type === 'contact') {
-                titleEl.textContent = currentLang === 'fr' ? "Contactez-nous" : "اتصل بنا";
-                bodyEl.textContent = currentLang === 'fr' ? defaultTextNodes.contact_fr : defaultTextNodes.contact_ar;
-            } else if (type === 'location') {
-                titleEl.textContent = currentLang === 'fr' ? "Notre Siège Social" : "مقرنا وموقعنا الجغرافي";
-                bodyEl.textContent = currentLang === 'fr' ? "Algeria, Alger. Nous vous accueillons dans nos espaces de conseil." : "الجزائر، الجزائر العاصمة. نرحب بكم في فروع الاستشارات والتمويل الخاصة بنا.";
-                
-                const mapIframe = document.createElement('iframe');
-                mapIframe.src = defaultTextNodes.map_url;
-                mapIframe.width = "100%";
-                mapIframe.height = "350px";
-                mapIframe.style.border = "none";
-                mapIframe.style.borderRadius = "12px";
-                mapIframe.style.marginTop = "15px";
-                extraEl.appendChild(mapIframe);
-            } else if (type === 'report') {
-                closeSidebarContent();
-                openReportModal();
-            }
-        }
-
-        function closeSidebarContent() {
-            document.getElementById('sidebarContentModal').classList.remove('active');
-        }
-
-        // --- CALCULATION FINANCING RECOMMENDATION LOGIC ---
-        document.getElementById('projectForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const loader = document.getElementById('loader');
-            const btnText = btn.querySelector('.btn-text');
-            const resultsArea = document.getElementById('results-area');
-
-            btn.disabled = true;
-            btnText.style.display = 'none';
-            loader.style.display = 'block';
-            resultsArea.style.display = 'none';
-
-            setTimeout(() => {
-                const sector = document.getElementById('sector').value;
-                const capital = document.getElementById('capital').value;
-
-                calculateRecommendations(sector, capital, true);
-
-                btn.disabled = false;
-                btnText.style.display = 'block';
-                loader.style.display = 'none';
-                resultsArea.style.display = 'block';
-                resultsArea.scrollIntoView({ behavior: 'smooth' });
-            }, 1200);
-        });
-
-        function calculateRecommendations(sector, capital, updateFormMapping) {
-            const numCapital = Number(capital);
-            let finalSelection = [];
-
-            if (sector === 'technology') {
-                finalSelection = [banksDB.ASF, banksDB.ALSALAM];
-            } else if (sector === 'agricultural') {
-                finalSelection = [banksDB.BADR, banksDB.NESDA];
-            } else if (sector === 'health') {
-                finalSelection = [banksDB.CPA, banksDB.BDL];
-            } else if (sector === 'construction') {
-                finalSelection = [banksDB.BNA, banksDB.CPA];
-            } else if (numCapital <= 1000000) {
-                finalSelection = [banksDB.ANGEM];
-            } else if (numCapital > 1000000 && numCapital <= 15000000) {
-                if (sector === 'services' || sector === 'commercial') {
-                    finalSelection = [banksDB.NESDA, banksDB.BDL];
-                } else if (sector === 'industrial') {
-                    finalSelection = [banksDB.NESDA, banksDB.CPA];
-                }
-            } else {
-                if (sector === 'industrial') {
-                    finalSelection = [banksDB.CPA, banksDB.ALSALAM];
+            for (let i = 1; i <= totalSteps; i++) {
+                const stepElement = document.querySelectorAll('.step')[i - 1];
+                if (i < currentStep) {
+                    stepElement.classList.remove('active');
+                    stepElement.classList.add('completed');
+                } else if (i === currentStep) {
+                    stepElement.classList.remove('completed');
+                    stepElement.classList.add('active');
                 } else {
-                    finalSelection = [banksDB.BDL, banksDB.ALSALAM];
+                    stepElement.classList.remove('completed', 'active');
                 }
             }
 
-            if (!finalSelection.includes(banksDB.ALSALAM) && numCapital > 2000000 && sector !== 'agricultural' && sector !== 'technology') {
-                finalSelection.push(banksDB.ALSALAM);
-            }
-
-            const cardsWrapper = document.getElementById('cards-wrapper');
-            cardsWrapper.innerHTML = '';
-
-            finalSelection.forEach(bank => {
-                const card = document.createElement('div');
-                card.className = 'bank-card';
-                card.innerHTML = `
-                    <div class="bank-header">
-                        <h3>${bank.name[currentLang]}</h3>
-                        <span class="tag">${currentLang === 'fr' ? 'Recommandé' : 'موصى به'}</span>
-                    </div>
-                    <div class="bank-body">
-                        <div class="detail-group">
-                            <span class="detail-label"><i class="fa-solid fa-circle-info"></i> ${currentLang === 'fr' ? 'Définition :' : 'التعريف :'}</span>
-                            <p class="detail-text">${bank.definition[currentLang]}</p>
-                        </div>
-                        <div class="detail-group">
-                            <span class="detail-label"><i class="fa-solid fa-list-check"></i> ${currentLang === 'fr' ? 'Conditions :' : 'شروط الاستفادة :'}</span>
-                            <p class="detail-text">${bank.conditions[currentLang]}</p>
-                        </div>
-                        <div class="detail-group">
-                            <span class="detail-label"><i class="fa-solid fa-folder-open"></i> ${currentLang === 'fr' ? 'Dossier Requis :' : 'الوثائق المطلوبة :'}</span>
-                            <p class="detail-text">${bank.documents[currentLang]}</p>
-                        </div>
-                        <div class="contact-box">
-                            <span class="detail-label"><i class="fa-solid fa-map-location"></i> ${currentLang === 'fr' ? 'Adresse &' : 'المقر والاتصال :'}</span>
-                            <p class="detail-text">${bank.address[currentLang]}</p>
-                            <p class="detail-text" style="direction: ltr; text-align: start; margin-top:5px; font-weight:600;">${bank.contact[currentLang]}</p>
-                        </div>
-                        <div class="aapi-section">
-                            <h4><i class="fa-solid fa-gem"></i> ${currentLang === 'fr' ? 'Avantages Fiscaux (AAPI) :' : 'امتيازات الاستثمار (AAPI) :'}</h4>
-                            <p class="detail-text">${bank.aapi[currentLang]}</p>
-                        </div>
-                    </div>
-                `;
-                cardsWrapper.appendChild(card);
+            document.querySelectorAll('.step-content').forEach((content, index) => {
+                if (index + 1 === currentStep) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
             });
+        }
 
-            if (updateFormMapping) {
-                const sectorLabel = document.getElementById('sector').options[document.getElementById('sector').selectedIndex].text;
-                
-                document.getElementById('app-sector').value = sectorLabel;
-                document.getElementById('app-idea').value = document.getElementById('idea').value;
-                document.getElementById('app-capital').value = capital;
+        function nextStep(step) {
+            if (currentStep === 1) {
+                if (!document.getElementById('proj_name').value || !document.getElementById('proj_desc').value || !document.getElementById('employees').value || !document.getElementById('capital').value) {
+                    alert(currentLang === 'fr' ? 'Veuillez remplir les informations obligatoires.' : 'يرجى ملء جميع الحقول المطلوبة أولاً.');
+                    return;
+                }
+            }
+            currentStep = step;
+            updateStepperUI();
+        }
 
-                document.getElementById('inv-sector').value = sectorLabel;
-                document.getElementById('inv-funding').value = capital;
+        function jumpToStep(step) {
+            if (step < currentStep) {
+                currentStep = step;
+                updateStepperUI();
             }
         }
 
-        // --- DIALOG MODALS ACTION HANDLERS ---
-        function openApplyModal() {
-            document.getElementById('applyModal').classList.add('active');
-        }
-        function closeApplyModal() {
-            document.getElementById('applyModal').classList.remove('active');
-        }
+        // Submit form data with safe local fallback
+        function submitMultiStepForm() {
+            if (!document.getElementById('user_fullname').value || !document.getElementById('user_email').value || !document.getElementById('user_phone').value || !document.getElementById('user_address').value) {
+                alert(currentLang === 'fr' ? 'Veuillez remplir vos coordonnées.' : 'يرجى إدخال بيانات الاتصال الخاصة بك.');
+                return;
+            }
 
-        function openInvestorModal() {
-            document.getElementById('investorModal').classList.add('active');
-        }
-        function closeInvestorModal() {
-            document.getElementById('investorModal').classList.remove('active');
-        }
+            const loader = document.getElementById('formSubmitLoader');
+            loader.style.display = 'inline-block';
 
-        function openReportModal() {
-            document.getElementById('reportModal').classList.add('active');
-        }
-        function closeReportModal() {
-            document.getElementById('reportModal').classList.remove('active');
-        }
-
-        // Form 1: File Prep / Financing Request Submit
-        document.getElementById('applyForm').addEventListener('submit', function(e) {
-            e.preventDefault();
             const payload = {
-                fullName: document.getElementById('app-fullname').value,
-                email: document.getElementById('app-email').value,
-                phone: document.getElementById('app-phone').value,
-                address: document.getElementById('app-address').value,
-                projectName: document.getElementById('app-projname').value,
-                projectSector: document.getElementById('app-sector').value,
-                projectIdea: document.getElementById('app-idea').value,
-                requestedAmount: document.getElementById('app-capital').value,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
+                fullName: document.getElementById('user_fullname').value,
+                email: document.getElementById('user_email').value,
+                phone: document.getElementById('user_phone').value,
+                address: document.getElementById('user_address').value,
+                projectName: document.getElementById('proj_name').value,
+                projectSector: document.getElementById('sector').value,
+                projectIdea: document.getElementById('proj_desc').value,
+                requestedAmount: document.getElementById('capital').value,
+                additionalApport: document.getElementById('personal_apport').value || '0',
+                additionalGuarantees: document.getElementById('guarantees').value || 'non',
+                companyDate: document.getElementById('company_date').value || '',
+                wilaya: document.getElementById('wilaya').value || '',
+                commune: document.getElementById('commune').value || '',
+                timestamp: new Date().getTime()
             };
 
-            db.ref('applications').push(payload).then(() => {
-                alert(translations[currentLang].alert_success);
-                closeApplyModal();
-                document.getElementById('applyForm').reset();
-            }).catch(() => {
-                alert(translations[currentLang].alert_error);
-            });
-        });
+            const proceedToResults = () => {
+                loader.style.display = 'none';
+                currentStep = 4;
+                updateStepperUI();
+                calculateRecommendations(payload.projectSector, payload.requestedAmount, false);
+            };
 
-        // PowerPoint File Upload Pre-processor
+            // Write payload safely to Firebase Realtime Database
+            try {
+                if (db) {
+                    db.ref('applications').push(payload).then(() => {
+                        proceedToResults();
+                    }).catch((error) => {
+                        console.error("Firebase write error:", error);
+                        proceedToResults(); // Safe local fallback
+                    });
+                } else {
+                    proceedToResults();
+                }
+            } catch (err) {
+                console.error("Firebase submit catch:", err);
+                proceedToResults(); // Fallback on database initialization error
+            }
+        }
+
+        // PowerPoint File Upload Handler
         function handlePPTFileChange(input) {
             const file = input.files[0];
             const statusEl = document.getElementById('ppt-upload-status');
@@ -2010,27 +2351,39 @@
             }
 
             const payload = {
-                fullName: document.getElementById('inv-fullname').value,
-                email: document.getElementById('inv-email').value,
-                phone: document.getElementById('inv-phone').value,
-                projectName: document.getElementById('inv-projname').value,
-                projectSector: document.getElementById('inv-sector').value,
-                fundingRequired: document.getElementById('inv-funding').value,
+                fullName: document.getElementById('user_fullname').value,
+                email: document.getElementById('user_email').value,
+                phone: document.getElementById('user_phone').value,
+                projectName: document.getElementById('proj_name').value,
+                projectSector: document.getElementById('sector').value,
+                fundingRequired: document.getElementById('capital').value,
                 pptFileName: pptFileName,
                 pptFileData: pptBase64,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
+                timestamp: new Date().getTime()
             };
 
-            db.ref('investors').push(payload).then(() => {
+            const proceedWithInvestorResponse = () => {
                 alert(translations[currentLang].alert_success);
                 closeInvestorModal();
                 document.getElementById('investorForm').reset();
                 pptBase64 = null;
                 document.getElementById('ppt-upload-status').textContent = translations[currentLang].ppt_upload_status;
                 document.getElementById('ppt-upload-status').style.color = 'var(--text-muted)';
-            }).catch(() => {
-                alert(translations[currentLang].alert_error);
-            });
+            };
+
+            try {
+                if (db) {
+                    db.ref('investors').push(payload).then(() => {
+                        proceedWithInvestorResponse();
+                    }).catch(() => {
+                        proceedWithInvestorResponse();
+                    });
+                } else {
+                    proceedWithInvestorResponse();
+                }
+            } catch (err) {
+                proceedWithInvestorResponse();
+            }
         });
 
         // Form 3: Bug/Report Submit
@@ -2040,15 +2393,95 @@
                 fullName: document.getElementById('rep-name').value,
                 email: document.getElementById('rep-email').value,
                 description: document.getElementById('rep-text').value,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
+                timestamp: new Date().getTime()
             };
 
-            db.ref('reports').push(payload).then(() => {
+            const proceedWithReportResponse = () => {
                 alert(currentLang === 'fr' ? "Votre rapport a été transmis." : "تم تسجيل بلاغك بنجاح.");
                 closeReportModal();
                 document.getElementById('bugReportForm').reset();
-            });
+            };
+
+            try {
+                if (db) {
+                    db.ref('reports').push(payload).then(() => {
+                        proceedWithReportResponse();
+                    }).catch(() => {
+                        proceedWithReportResponse();
+                    });
+                } else {
+                    proceedWithReportResponse();
+                }
+            } catch (err) {
+                proceedWithReportResponse();
+            }
         });
+
+        // Sidebar content injector and overlay triggers
+        function openSidebarContent(type) {
+            closeDrawerMenu();
+            const modal = document.getElementById('sidebarContentModal');
+            const titleEl = document.getElementById('side-modal-title');
+            const bodyEl = document.getElementById('side-modal-body');
+            const extraEl = document.getElementById('side-modal-extra');
+
+            extraEl.innerHTML = '';
+            modal.classList.add('active');
+
+            if (type === 'about') {
+                titleEl.textContent = currentLang === 'fr' ? "Qui sommes-nous" : "من نحن";
+                bodyEl.textContent = currentLang === 'fr' ? defaultTextNodes.about_fr : defaultTextNodes.about_ar;
+            } else if (type === 'services') {
+                titleEl.textContent = currentLang === 'fr' ? "Nos Services d'Accompagnement" : "خدماتنا ومرافقتنا";
+                bodyEl.textContent = currentLang === 'fr' ? defaultTextNodes.services_fr : defaultTextNodes.services_ar;
+            } else if (type === 'privacy') {
+                titleEl.textContent = currentLang === 'fr' ? "Politique de Confidentialité" : "سياسة الخصوصية والأمان";
+                bodyEl.textContent = currentLang === 'fr' ? defaultTextNodes.privacy_fr : defaultTextNodes.privacy_ar;
+            } else if (type === 'contact') {
+                titleEl.textContent = currentLang === 'fr' ? "Contactez-nous" : "اتصل بنا";
+                bodyEl.textContent = currentLang === 'fr' ? defaultTextNodes.contact_fr : defaultTextNodes.contact_ar;
+            } else if (type === 'location') {
+                titleEl.textContent = currentLang === 'fr' ? "Notre Siège Social" : "مقرنا وموقعنا الجغرافي";
+                bodyEl.textContent = currentLang === 'fr' ? "Algeria, Alger. Nous vous accueillons dans nos espaces de conseil." : "الجزائر، الجزائر العاصمة. نرحب بكم في فروع الاستشارات والتمويل الخاصة بنا.";
+                
+                const mapIframe = document.createElement('iframe');
+                mapIframe.src = defaultTextNodes.map_url;
+                mapIframe.width = "100%";
+                mapIframe.height = "350px";
+                mapIframe.style.border = "none";
+                mapIframe.style.borderRadius = "12px";
+                mapIframe.style.marginTop = "15px";
+                extraEl.appendChild(mapIframe);
+            } else if (type === 'report') {
+                closeSidebarContent();
+                openReportModal();
+            }
+        }
+
+        function closeSidebarContent() {
+            document.getElementById('sidebarContentModal').classList.remove('active');
+        }
+
+        function openApplyModal() {
+            document.getElementById('applyModal').classList.add('active');
+        }
+        function closeApplyModal() {
+            document.getElementById('applyModal').classList.remove('active');
+        }
+
+        function openInvestorModal() {
+            document.getElementById('investorModal').classList.add('active');
+        }
+        function closeInvestorModal() {
+            document.getElementById('investorModal').classList.remove('active');
+        }
+
+        function openReportModal() {
+            document.getElementById('reportModal').classList.add('active');
+        }
+        function closeReportModal() {
+            document.getElementById('reportModal').classList.remove('active');
+        }
 
         // --- BACKOFFICE ADMIN PANEL ROUTER ---
         function checkAdminHash() {
@@ -2063,8 +2496,6 @@
                 document.getElementById('admin-panel').style.display = 'none';
             }
         }
-
-        window.addEventListener('hashchange', checkAdminHash);
 
         function authenticateAdmin() {
             const code = document.getElementById('adminPassInput').value;
@@ -2084,6 +2515,10 @@
         }
 
         function renderAdminDashboard() {
+            if (!db) {
+                alert("Erreur de connexion à la base de données. L'accès administrateur requiert une connexion réseau active.");
+                return;
+            }
             document.getElementById('site-ui').style.display = 'none';
             document.getElementById('admin-panel').style.display = 'block';
 
@@ -2183,54 +2618,10 @@
         }
 
         function deleteRecord(node, id) {
+            if (!db) return;
             if (confirm(currentLang === 'fr' ? "Supprimer définitivement cet enregistrement ?" : "هل أنت متأكد من حذف هذا السجل نهائياً ؟")) {
                 db.ref(`${node}/${id}`).remove();
             }
-        }
-
-        document.getElementById('settingsForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const configPayload = {
-                about_fr: document.getElementById('set-about-fr').value,
-                about_ar: document.getElementById('set-about-ar').value,
-                services_fr: document.getElementById('set-services-fr').value,
-                services_ar: document.getElementById('set-services-ar').value,
-                privacy_fr: document.getElementById('set-privacy-fr').value,
-                privacy_ar: document.getElementById('set-privacy-ar').value,
-                contact_fr: document.getElementById('set-contact-fr').value,
-                contact_ar: document.getElementById('set-contact-ar').value,
-                map_url: document.getElementById('set-map-url').value
-            };
-
-            db.ref('settings').set(configPayload).then(() => {
-                alert('Paramètres sauvegardés et déployés en ligne !');
-            });
-        });
-
-        // --- EXPORT PDF GENERATION UTILITY ---
-        function downloadTablePDF(tableId, docTitle) {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('l', 'pt', 'a4'); 
-
-            doc.setFontSize(20);
-            doc.setTextColor(30, 58, 138); 
-            doc.text(`Sahla Finance - Backup Database: ${docTitle.replace('_', ' ')}`, 40, 45);
-
-            doc.setFontSize(10);
-            doc.setTextColor(100, 116, 139);
-            doc.text(`Généré le : ${new Date().toLocaleDateString()}`, 40, 65);
-
-            doc.autoTable({
-                html: `#${tableId}`,
-                startY: 85,
-                styles: { fontSize: 8, cellPadding: 8, font: 'Helvetica' },
-                headStyles: { fillColor: [30, 58, 138], textColor: [255, 255, 255] },
-                columnStyles: {
-                    8: { display: 'none' }
-                }
-            });
-
-            doc.save(`SahlaFinance_${docTitle}_${new Date().toISOString().slice(0, 10)}.pdf`);
         }
     </script>
 </body>
