@@ -1297,6 +1297,7 @@
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -1901,7 +1902,7 @@
                 <i class="fa-solid fa-circle-check"></i>
             </div>
             <h3 class="modal-title" style="border: none; margin-bottom: 0.5rem; font-size: 1.5rem;" data-i18n="success_title">Envoyé avec succès !</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;" data-i18n="success_desc">Votre demande a été transmise avec succès ! Notre équipe d'analystes vous contactera sous peu.</p>
+            <p id="successModalDesc" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;" data-i18n="success_desc">Votre demande a été transmise avec succès ! Notre équipe d'analystes vous contactera sous peu.</p>
             <button class="submit-btn" style="margin-top: 0;" onclick="closeModal('successModal')" data-i18n="btn_confirm_label">Fermer</button>
         </div>
     </div>
@@ -2427,6 +2428,28 @@
             }
         };
 
+        // === MODAL OPEN/CLOSE UTILITIES ===
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            modal.style.display = 'flex';
+            // Force reflow to ensure display:flex is applied before opacity transition
+            void modal.offsetWidth;
+            modal.classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            modal.classList.remove('active');
+            // Wait for opacity transition to finish before hiding
+            setTimeout(() => {
+                if (!modal.classList.contains('active')) {
+                    modal.style.display = 'none';
+                }
+            }, 300);
+        }
+
         // --- CORE EVENT LISTENERS (SAFE BINDING) ---
         window.addEventListener('DOMContentLoaded', () => {
             // Bind Drawer Navigation triggers safely
@@ -2676,10 +2699,22 @@
 
         // Finalize selection decision flow with decoupled backgrounds writes so UI always shows success instantly!
         function finalizeRequest(choiceType) {
-            // 1. Immediately trigger the success modal popup with fluid spring animations
+            // 1. Update success modal content dynamically based on language
+            const successTitle = document.querySelector('#successModal .modal-title');
+            const successDesc = document.getElementById('successModalDesc');
+
+            if (currentLang === 'ar') {
+                if (successTitle) successTitle.textContent = 'تم الإرسال بنجاح !';
+                if (successDesc) successDesc.textContent = 'لقد تم ارسال طلبك بنجاح سنتصل بك قريبا';
+            } else {
+                if (successTitle) successTitle.textContent = 'Envoyé avec succès !';
+                if (successDesc) successDesc.textContent = 'Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.';
+            }
+
+            // 2. Immediately trigger the success modal popup with fluid spring animations
             openModal('successModal');
 
-            // 2. Fire and forget the database update in the background silently
+            // 3. Fire and forget the database update in the background silently
             try {
                 if (db && lastApplicationKey && typeof lastApplicationKey === 'string' && lastApplicationKey.trim() !== '') {
                     db.ref(`applications/${lastApplicationKey}`).update({
